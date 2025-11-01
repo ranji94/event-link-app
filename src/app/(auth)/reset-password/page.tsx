@@ -15,9 +15,8 @@ export default function Page() {
   });
 
   async function onSubmit(values: z.infer<typeof requestResetSchema>) {
-    await apiFetch("/auth/requestPasswordReset", {
+    await apiFetch(`/auth/requestPasswordReset?email=${values.email}`, {
       method: "POST",
-      body: JSON.stringify(values),
     });
     alert("Jeśli konto istnieje, wysłaliśmy mail z instrukcjami.");
   }

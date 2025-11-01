@@ -7,12 +7,13 @@ import { AuthCard } from "@/components/auth/AuthCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { apiFetch, type ApiError } from "@/lib/api";
+import { apiFetch } from "@/lib/api";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import { normalizeAuthError } from "@/lib/errors";
+import { AuthCode } from "@/common/enum/auth-code.enum";
+import { translate } from "@/locales";
 
 export default function Page() {
   const router = useRouter();
@@ -26,7 +27,6 @@ export default function Page() {
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors, isSubmitting },
   } = form;
 
@@ -38,12 +38,12 @@ export default function Page() {
       );
       router.push("/login?registered=1");
     } catch (e) {
-      const err = e as ApiError;
-      const { code, message } = normalizeAuthError(err.data);
+      const payload = (e as { data: { message: AuthCode.Failed } })?.data;
+      const errorCode = payload?.message || AuthCode.Failed.InvalidCredentials;
 
-      if (code === "EMAIL_ALREADY_USED") setError("email", { message });
-      if (code === "PASSWORD_WEAK") setError("password", { message });
+      const message = translate(`error.auth.${errorCode}`);
 
+      // Ładny toast według kodu
       toast.error(message);
     }
   }
@@ -109,32 +109,17 @@ export default function Page() {
         {/* Imię i nazwisko */}
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <div className="space-y-1.5">
-            <Label htmlFor="firstName">Imię</Label>
-            <Input
-              id="firstName"
-              placeholder="Jan"
-              aria-invalid={!!errors.firstName}
-              {...register("firstName")}
-              disabled={isSubmitting}
-            />
-            {errors.firstName && (
-              <p className="text-xs text-destructive">
-                {errors.firstName.message as string}
-              </p>
-            )}
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="lastName">Nazwisko</Label>
+            <Label htmlFor="lastName">Imię i nazwisko</Label>
             <Input
               id="lastName"
               placeholder="Kowalski"
-              aria-invalid={!!errors.lastName}
-              {...register("lastName")}
+              aria-invalid={!!errors.name}
+              {...register("name")}
               disabled={isSubmitting}
             />
-            {errors.lastName && (
+            {errors.name && (
               <p className="text-xs text-destructive">
-                {errors.lastName.message as string}
+                {errors.name.message as string}
               </p>
             )}
           </div>

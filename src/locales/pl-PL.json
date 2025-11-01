@@ -1,0 +1,35 @@
+{
+  "error": {
+    "auth": {
+      "USER_CREATE_EMAIL_ALREADY_IN_USE": "Taki adres e-mail jest już używany.",
+      "USER_CREATE_VERIFICATION_CODE_SEND_FAILED": "Nie udało się wysłać kodu weryfikacyjnego. Spróbuj ponownie później.",
+      "USER_INVALID_CREDENTIALS": "Nieprawidłowy e-mail lub hasło.",
+      "USER_NOT_FOUND": "Nie znaleziono użytkownika o podanym adresie e-mail.",
+      "USER_INVALID_REFRESH_TOKEN": "Nieprawidłowy token odświeżania. Zaloguj się ponownie.",
+      "USER_INVALID_TOKEN": "Nieprawidłowy lub wygasły token.",
+      "USER_INVALID_OR_EXPIRED_RESET_PASSWORD_TOKEN": "Link do resetu hasła jest nieprawidłowy lub wygasł.",
+      "USER_CREATE_RESET_PASSWORD_TOKEN_SEND_FAILED": "Nie udało się wysłać linku do resetu hasła. Spróbuj ponownie.",
+      "INSUFFICIENT_PERMISSIONS": "Brak uprawnień do wykonania tej operacji.",
+      "ALREADY_AUTHENTICATED": "Jesteś już zalogowany/a."
+    }
+  },
+  "success": {
+    "auth": {
+      "UserCreatedVerifyEmail": "Konto utworzono. Sprawdź skrzynkę i potwierdź adres e-mail.",
+      "UserVerified": "Adres e-mail zweryfikowano. Można się zalogować.",
+      "UserPasswordResetRequested": "Wysłano instrukcje resetu hasła na podany adres e-mail.",
+      "UserPasswordResetSuccess": "Hasło zmieniono pomyślnie.",
+      "LoggedOut": "Wylogowano.",
+      "Refreshed": "Sesję odświeżono.",
+      "LoggedIn": "Zalogowano pomyślnie."
+    }
+  },
+  "validation": {
+    "email": "Sprawdź adres e-mail.",
+    "incorrect_password": "Sprawdź hasło."
+  },
+  "not_found_title": "Nie znaleziono strony",
+  "not_found_description": "Wygląda na to, że szukana ścieżka nie istnieje lub została przeniesiona.",
+  "not_found_go_back": "Wróć",
+  "not_found_go_home": "Przejdź do strony powitalnej"
+}

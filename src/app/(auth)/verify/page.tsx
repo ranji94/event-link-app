@@ -4,8 +4,9 @@ import { useCallback, useEffect, useState } from "react";
 import { AuthCard } from "@/components/auth/AuthCard";
 import { Button } from "@/components/ui/button";
 import { apiFetch, type ApiError } from "@/lib/api";
-import { normalizeAuthError } from "@/lib/errors";
+import { AuthCode, normalizeAuthError } from "@/common/enum/auth-code.enum";
 import { CheckCircle2, XCircle, Loader2 } from "lucide-react";
+import { translate } from "@/locales";
 
 type ViewState = "loading" | "success" | "error" | "missing";
 
@@ -31,8 +32,14 @@ export default function Page() {
       });
       setState("success");
     } catch (e) {
-      const err = e as ApiError;
-      const { message } = normalizeAuthError(err?.data);
+      const payload = (e as { data: { message: AuthCode.Failed } })?.data;
+      const errorCode = payload?.message || AuthCode.Failed.InvalidCredentials;
+
+      const message =
+        typeof errorCode === AuthCode.Failed
+          ? translate(`error.auth.${errorCode}`)
+          : errorCode;
+
       setErrorMsg(message || "Nieprawidłowy lub wygasły token.");
       setState("error");
     }

@@ -8,8 +8,7 @@ export const loginSchema = z.object({
 export const registerSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
-  firstName: z.string().min(1),
-  lastName: z.string().min(1),
+  name: z.string().optional(),
 });
 
 export const requestResetSchema = z.object({ email: z.string().email() });

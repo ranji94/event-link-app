@@ -7,13 +7,14 @@ import { AuthCard } from "@/components/auth/AuthCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { apiFetch, type ApiError, getMe } from "@/lib/api";
-import { normalizeAuthError } from "@/lib/errors";
+import { apiFetch, getMe } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "sonner";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useState } from "react";
+import { translate } from "@/locales";
+import { AuthCode } from "@/common/enum/auth-code.enum";
 
 export default function Page() {
   const router = useRouter();
@@ -27,7 +28,6 @@ export default function Page() {
   const {
     register,
     handleSubmit,
-    setError,
     setValue,
     formState: { errors, isSubmitting },
   } = form;
@@ -35,20 +35,14 @@ export default function Page() {
   async function onSubmit(values: z.infer<typeof loginSchema>) {
     try {
       await apiFetch("/auth/login", { method: "POST", body: values });
-      // opcjonalnie „rozgrzej” tożsamość
       await getMe();
-      router.push("/dashboard");
-    } catch (e) {
-      const err = e as ApiError;
-      const { code, message } = normalizeAuthError(err?.data);
+      router.replace("/dashboard");
+    } catch (e: unknown) {
+      const payload = (e as { data: { message: AuthCode.Failed } })?.data;
+      const errorCode = payload?.message || AuthCode.Failed.InvalidCredentials;
 
-      // Przyjemne mapowanie błędu na pola
-      if (code === "INVALID_CREDENTIALS") {
-        setError("email", { message: "Sprawdź adres e-mail." });
-        setError("password", { message: "Sprawdź hasło." });
-      }
+      const message = translate(`error.auth.${errorCode}`);
 
-      // Reset hasła i focus zostaje w polu
       setValue("password", "");
 
       // Ładny toast według kodu

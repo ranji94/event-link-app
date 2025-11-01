@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Toaster } from "sonner";
+import Providers from "./providers";
+import { GlobalOverlay } from "@/components/common/global-overlay";
 
 export const metadata: Metadata = {
   title: "EventSpot",
@@ -14,8 +15,8 @@ export default function RootLayout({
   return (
     <html lang="pl">
       <body>
-        {children}
-        <Toaster />
+        <GlobalOverlay />
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
