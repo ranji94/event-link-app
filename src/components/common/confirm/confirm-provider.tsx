@@ -71,10 +71,15 @@ export function ConfirmProvider({ children }: { children: React.ReactNode }) {
             <div className="flex-1 overflow-auto px-6 pb-4" />
 
             <DialogFooter className="gap-2 px-6 py-4">
-              <Button variant="outline" onClick={() => handleClose(false)}>
+              <Button
+                className="cursor-pointer"
+                variant="outline"
+                onClick={() => handleClose(false)}
+              >
                 {opts.cancelText ?? "Anuluj"}
               </Button>
               <Button
+                className="cursor-pointer"
                 variant={opts.danger ? "destructive" : "default"}
                 onClick={() => handleClose(true)}
               >

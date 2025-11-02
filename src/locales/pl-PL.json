@@ -50,10 +50,15 @@
   "not_found_go_home": "Przejdź do strony powitalnej",
   "events": {
     "new": {
+      "fullscreen": "Pełny ekran",
       "title": "Nowe wydarzenie",
       "subtitle": "Uzupełnij dane i wybierz szablon zaproszenia.",
       "submit": "Utwórz wydarzenie",
       "live_preview": "Podgląd zaproszenia",
+      "exit_dialog": {
+        "warning": "Uwaga",
+        "description": "Wszelkie niezapisane zmiany zostaną usunięte. Czy kontynuować?"
+      },
       "errors": {
         "title_min": "Tytuł powinien mieć co najmniej 3 znaki.",
         "date_required": "Podaj datę i godzinę wydarzenia.",
@@ -74,5 +79,13 @@
   },
   "common": {
     "saving": "Zapisywanie…"
+  },
+  "button": {
+    "close": "Zamknij",
+    "cancel": "Anuluj",
+    "delete": "Usuń"
+  },
+  "templates": {
+    "preview": "Podgląd"
   }
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -16,6 +16,8 @@ import {
 import { templates } from "@/templates/registry";
 import { translate } from "@/locales";
 import { useEvents } from "@/lib/events/use-events";
+import { FullscreenPreview } from "@/components/templates/FullScreenPreview";
+import { useConfirm } from "@/components/common/confirm/confirm-provider";
 
 const schema = z.object({
   title: z
@@ -45,6 +47,7 @@ export default function NewEventPage() {
   const kindParam = (params.get("kind") as CreateEventDtoKind) || "WEDDING";
 
   const { create, isCreating, createError } = useEvents();
+  const confirm = useConfirm();
 
   const {
     register,
@@ -64,11 +67,6 @@ export default function NewEventPage() {
   });
 
   const current = watch();
-  const SelectedPreview =
-    useMemo(
-      () => getTemplateById(current.templateId)?.Preview,
-      [current.templateId]
-    ) ?? templates[0].Preview;
 
   async function onSubmit(values: FormValues) {
     const payload: CreateEventDto = {
@@ -89,6 +87,33 @@ export default function NewEventPage() {
       alert(res.message);
     }
   }
+
+  async function onCancel() {
+    // router.replace("/");
+    const yes = await confirm({
+      title: translate("events.new.exit_dialog.warning") ?? "Uwaga",
+      description: (
+        <div>
+          <p>{translate("events.new.exit_dialog.description")}</p>
+        </div>
+      ),
+      confirmText: translate("button.delete") ?? "Usuń",
+      cancelText: translate("button.cancel") ?? "Anuluj",
+      danger: true,
+    });
+
+    if (yes) {
+      router.replace("/");
+    }
+  }
+
+  const [fsOpen, setFsOpen] = useState(false);
+
+  const SelectedPreview =
+    useMemo(
+      () => getTemplateById(current.templateId)?.Preview,
+      [current.templateId]
+    ) ?? templates[0].Preview;
 
   return (
     <div className="grid gap-8 lg:grid-cols-2">
@@ -160,7 +185,7 @@ export default function NewEventPage() {
             </div>
           </div>
 
-          <div>
+          <div className="space-y-2 sm:space-y-3">
             <label className="block text-sm font-medium text-gray-700">
               {translate("events.fields.template")}
             </label>
@@ -178,33 +203,91 @@ export default function NewEventPage() {
             </div>
           )}
 
-          <div className="pt-2">
-            <button
-              type="submit"
-              disabled={isCreating}
-              className="inline-flex items-center rounded-xl bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 disabled:opacity-50"
-            >
-              {isCreating
-                ? translate("common.saving")
-                : translate("events.new.submit")}
-            </button>
+          <div className="pt-4">
+            <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center">
+              {/* Cancel */}
+              <button
+                type="button"
+                onClick={onCancel}
+                className="inline-flex w-full items-center justify-center rounded-xl bg-red-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500/50 disabled:opacity-50 sm:w-auto"
+              >
+                {translate("button.cancel")}
+              </button>
+
+              {/* Submit */}
+              <button
+                type="submit"
+                disabled={isCreating}
+                aria-busy={isCreating}
+                className="inline-flex w-full items-center justify-center rounded-xl bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 disabled:opacity-50 sm:w-auto"
+              >
+                {isCreating && (
+                  <svg
+                    className="mr-2 h-4 w-4 animate-spin"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      fill="none"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                    />
+                  </svg>
+                )}
+                {isCreating
+                  ? translate("common.saving")
+                  : translate("events.new.submit")}
+              </button>
+            </div>
           </div>
         </form>
       </section>
 
       <aside className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-black/5">
-        <h2 className="text-sm font-medium uppercase tracking-wide text-gray-600">
-          {translate("events.new.live_preview")}
-        </h2>
+        <div className="flex items-center justify-between">
+          <h2 className="text-sm font-medium uppercase tracking-wide text-gray-600">
+            {translate("events.new.live_preview")}
+          </h2>
+          <button
+            type="button"
+            onClick={() => setFsOpen(true)}
+            className="rounded-lg px-3 py-1.5 text-sm font-medium text-indigo-700 ring-1 ring-indigo-200 hover:bg-indigo-50"
+          >
+            {translate("events.new.fullscreen")}
+          </button>
+        </div>
+
+        {/* większy, „pół-stronicowy” podgląd */}
         <div className="mt-4">
-          <SelectedPreview
-            title={current.title}
-            description={current.description}
-            date={toIsoFromDatetimeLocal(current.datetime)}
-            location={current.location}
-          />
+          <div className="rounded-2xl border border-black/5 p-4">
+            <SelectedPreview
+              title={current.title}
+              description={current.description}
+              date={toIsoFromDatetimeLocal(current.datetime)}
+              location={current.location}
+            />
+          </div>
         </div>
       </aside>
+
+      {/* Modal pełnoekranowy */}
+      <FullscreenPreview open={fsOpen} onClose={() => setFsOpen(false)}>
+        <SelectedPreview
+          title={current.title}
+          description={current.description}
+          date={toIsoFromDatetimeLocal(current.datetime)}
+          location={current.location}
+        />
+      </FullscreenPreview>
     </div>
   );
 }
