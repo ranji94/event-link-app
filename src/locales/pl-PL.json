@@ -63,6 +63,28 @@
         "title_min": "Tytuł powinien mieć co najmniej 3 znaki.",
         "date_required": "Podaj datę i godzinę wydarzenia.",
         "create_failed": "Nie udało się utworzyć wydarzenia."
+      },
+      "header": {
+        "WEDDING": "Nowe wydarzenie — Ślub/Wesele",
+        "BAPTISM": "Nowe wydarzenie — Chrzciny",
+        "BIRTHDAY_18": "Nowe wydarzenie — 18. urodziny",
+        "BIRTHDAY_30": "Nowe wydarzenie — 30. urodziny",
+        "BIRTHDAY_50": "Nowe wydarzenie — 50. urodziny",
+        "BABY_SHOWER": "Nowe wydarzenie — Baby Shower",
+        "HOLY_COMMUNION": "Nowe wydarzenie — Pierwsza Komunia",
+        "OTHER": "Nowe wydarzenie"
+      },
+      "placeholders": {
+        "title_by_kind": {
+          "WEDDING": "Np. Ślub Ani i Pawła",
+          "BAPTISM": "Np. Chrzciny Hani",
+          "BIRTHDAY_18": "Np. 18. urodziny Kuby",
+          "BIRTHDAY_30": "Np. 30. urodziny Oli",
+          "BIRTHDAY_50": "Np. 50. urodziny Jacka",
+          "BABY_SHOWER": "Np. Baby Shower Kasi",
+          "HOLY_COMMUNION": "Np. Komunia Święta Filipa",
+          "OTHER": "Np. Wyjątkowe wydarzenie"
+        }
       }
     },
     "fields": {

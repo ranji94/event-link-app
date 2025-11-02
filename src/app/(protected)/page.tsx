@@ -1,7 +1,16 @@
 import { EventKind } from "@/common/enum";
 import { EventTypeGrid } from "@/components/event/EventTypeGrid";
 import { EventTypeDef } from "@/lib/types";
-import { Baby, Cake, HelpCircle, PartyPopper, Wine, Heart } from "lucide-react";
+import {
+  Baby,
+  Cake,
+  HelpCircle,
+  PartyPopper,
+  Wine,
+  Heart,
+  Cross,
+  Church,
+} from "lucide-react";
 
 const items: EventTypeDef[] = [
   {
@@ -31,7 +40,7 @@ const items: EventTypeDef[] = [
   {
     kind: EventKind.BIRTHDAY_30,
     label: "Trzydziestka",
-    href: "/events/new?kind=OTHER",
+    href: "/events/new?kind=BIRTHDAY_30",
     bg: "bg-green-100",
     fg: "text-green-700",
     icon: <Wine strokeWidth={1.75} />,
@@ -39,7 +48,7 @@ const items: EventTypeDef[] = [
   {
     kind: EventKind.BIRTHDAY_50,
     label: "Pięćdziesiątka",
-    href: "/events/new?kind=OTHER",
+    href: "/events/new?kind=BIRTHDAY_50",
     bg: "bg-orange-100",
     fg: "text-orange-700",
     icon: <Cake strokeWidth={1.75} />,
@@ -47,18 +56,18 @@ const items: EventTypeDef[] = [
   {
     kind: EventKind.BABY_SHOWER,
     label: "Baby Shower",
-    href: "/events/new?kind=OTHER",
-    bg: "bg-amber-100",
-    fg: "text-amber-700",
+    href: "/events/new?kind=BABY_SHOWER",
+    bg: "bg-lime-100",
+    fg: "text-lime-700",
     icon: <Baby strokeWidth={1.75} />,
   },
   {
     kind: EventKind.HOLY_COMMUNION,
     label: "Pierwsza komunia święta",
-    href: "/events/new?kind=OTHER",
-    bg: "bg-gray-200",
-    fg: "text-gray-700",
-    icon: <HelpCircle strokeWidth={1.75} />,
+    href: "/events/new?kind=HOLY_COMMUNION",
+    bg: "bg-amber-100",
+    fg: "text-amber-700",
+    icon: <Church strokeWidth={1.75} />,
   },
   {
     kind: EventKind.OTHER,

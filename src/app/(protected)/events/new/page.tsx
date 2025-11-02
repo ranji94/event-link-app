@@ -18,6 +18,11 @@ import { translate } from "@/locales";
 import { useEvents } from "@/lib/events/use-events";
 import { FullscreenPreview } from "@/components/templates/FullScreenPreview";
 import { useConfirm } from "@/components/common/confirm/confirm-provider";
+import {
+  getNewEventTexts,
+  getTitlePlaceholder,
+} from "@/lib/events/title-placeholder";
+import { EventKind } from "@/common/enum";
 
 const schema = z.object({
   title: z
@@ -44,10 +49,12 @@ function toIsoFromDatetimeLocal(input?: string): string | undefined {
 export default function NewEventPage() {
   const router = useRouter();
   const params = useSearchParams();
-  const kindParam = (params.get("kind") as CreateEventDtoKind) || "WEDDING";
+  const kindParam = (params.get("kind") as EventKind) || EventKind.WEDDING;
 
   const { create, isCreating, createError } = useEvents();
   const confirm = useConfirm();
+
+  const { titlePlaceholder, pageTitle } = getNewEventTexts(kindParam);
 
   const {
     register,
@@ -118,9 +125,7 @@ export default function NewEventPage() {
   return (
     <div className="grid gap-8 lg:grid-cols-2">
       <section className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-black/5">
-        <h1 className="text-2xl font-bold tracking-tight">
-          {translate("events.new.title")}
-        </h1>
+        <h1 className="text-2xl font-bold tracking-tight">{pageTitle}</h1>
         <p className="mt-1 text-sm text-gray-600">
           {translate("events.new.subtitle")}
         </p>
@@ -134,7 +139,7 @@ export default function NewEventPage() {
               type="text"
               className="mt-1 w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
               {...register("title")}
-              placeholder={translate("events.placeholders.title")}
+              placeholder={titlePlaceholder}
             />
             {errors.title && (
               <p className="mt-1 text-xs text-red-600">
@@ -162,7 +167,7 @@ export default function NewEventPage() {
               </label>
               <input
                 type="datetime-local"
-                className="mt-1 w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+                className="cursor-pointer mt-1 w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
                 {...register("datetime")}
               />
               {errors.datetime && (
@@ -209,7 +214,7 @@ export default function NewEventPage() {
               <button
                 type="button"
                 onClick={onCancel}
-                className="inline-flex w-full items-center justify-center rounded-xl bg-red-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500/50 disabled:opacity-50 sm:w-auto"
+                className="cursor-pointer inline-flex w-full items-center justify-center rounded-xl bg-red-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500/50 disabled:opacity-50 sm:w-auto"
               >
                 {translate("button.cancel")}
               </button>
@@ -219,7 +224,7 @@ export default function NewEventPage() {
                 type="submit"
                 disabled={isCreating}
                 aria-busy={isCreating}
-                className="inline-flex w-full items-center justify-center rounded-xl bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 disabled:opacity-50 sm:w-auto"
+                className="cursor-pointer inline-flex w-full items-center justify-center rounded-xl bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 disabled:opacity-50 sm:w-auto"
               >
                 {isCreating && (
                   <svg
