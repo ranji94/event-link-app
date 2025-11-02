@@ -265,7 +265,7 @@ export default function NewEventPage() {
           <button
             type="button"
             onClick={() => setFsOpen(true)}
-            className="rounded-lg px-3 py-1.5 text-sm font-medium text-indigo-700 ring-1 ring-indigo-200 hover:bg-indigo-50"
+            className="cursor-pointer rounded-lg px-3 py-1.5 text-sm font-medium text-indigo-700 ring-1 ring-indigo-200 hover:bg-indigo-50"
           >
             {translate("events.new.fullscreen")}
           </button>

@@ -1,12 +1,6 @@
 import type { TemplateDef } from "./types";
 export type { TemplateDef, PreviewProps } from "./types";
 
-import { classicRose } from "./variants/classic-rose";
-import { minimalIndigo } from "./variants/minimal-indigo";
-import { darkElegant } from "./variants/dark-elegant";
+import { weddingBotanicalGold } from "./variants/wedding-botanical-gold";
 
-export const templates: TemplateDef[] = [
-  classicRose,
-  minimalIndigo,
-  darkElegant,
-];
+export const templates: TemplateDef[] = [weddingBotanicalGold];

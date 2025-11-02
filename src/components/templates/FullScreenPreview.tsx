@@ -28,7 +28,7 @@ export function FullscreenPreview({
           </span>
           <button
             onClick={onClose}
-            className="rounded-lg px-3 py-1.5 text-sm font-medium text-gray-700 ring-1 ring-black/10 hover:bg-gray-50"
+            className="cursor-pointer rounded-lg px-3 py-1.5 text-sm font-medium text-gray-700 ring-1 ring-black/10 hover:bg-gray-50"
           >
             {translate("button.close")}
           </button>
