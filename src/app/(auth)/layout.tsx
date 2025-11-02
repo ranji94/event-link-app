@@ -11,7 +11,7 @@ export default async function AuthLayout({
   const hasRefresh = !!cookieStore.get("refresh_token");
 
   if (hasAccess || hasRefresh) {
-    redirect("/dashboard");
+    redirect("/events");
   }
   return <>{children}</>;
 }

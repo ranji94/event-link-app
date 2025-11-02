@@ -1,4 +1,3 @@
-// /middleware.ts
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
@@ -11,9 +10,9 @@ const AUTH_PAGES = [
 ];
 
 // (opcjonalnie) tu skonfiguruj wzorce tras chronionych
-const PROTECTED_PREFIXES = ["/dashboard"];
+const PROTECTED_PREFIXES = ["/events", "/"];
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const access = req.cookies.get("access_token")?.value;
   const refresh = req.cookies.get("refresh_token")?.value;
@@ -29,7 +28,7 @@ export function middleware(req: NextRequest) {
   // Zalogowany → nie wpuszczamy na strony auth
   if (isAuthenticated && isAuthPage) {
     const url = req.nextUrl.clone();
-    url.pathname = "/dashboard";
+    url.pathname = "/events";
     return NextResponse.redirect(url);
   }
 
@@ -51,6 +50,7 @@ export const config = {
     "/register",
     "/reset-password/:path*",
     "/verify",
-    "/dashboard/:path*",
+    "/events/:path*",
+    "/",
   ],
 };

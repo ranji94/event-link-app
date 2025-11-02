@@ -28,7 +28,7 @@ export function NotFoundContent() {
             {translate("not_found_go_back")}
           </Button>
           <Button asChild variant="ghost">
-            <Link href="/dashboard">{translate("not_found_go_home")}</Link>
+            <Link href="/events">{translate("not_found_go_home")}</Link>
           </Button>
         </div>
       </div>

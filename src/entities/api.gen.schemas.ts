@@ -21,6 +21,171 @@ export interface ResetPasswordDto {
   newPassword: string;
 }
 
+export type CreateEventDtoKind = typeof CreateEventDtoKind[keyof typeof CreateEventDtoKind];
+
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateEventDtoKind = {
+  WEDDING: 'WEDDING',
+  BAPTISM: 'BAPTISM',
+  BIRTHDAY_18: 'BIRTHDAY_18',
+  BIRTHDAY_30: 'BIRTHDAY_30',
+  BIRTHDAY_50: 'BIRTHDAY_50',
+  BABY_SHOWER: 'BABY_SHOWER',
+  HOLY_COMMUNION: 'HOLY_COMMUNION',
+  OTHER: 'OTHER',
+} as const;
+
+export interface CreateEventDto {
+  title: string;
+  description?: string;
+  /** ISO 8601 */
+  date?: string;
+  location?: string;
+  kind?: CreateEventDtoKind;
+  templateId?: string;
+}
+
+export type UpdateEventDtoKind = typeof UpdateEventDtoKind[keyof typeof UpdateEventDtoKind];
+
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateEventDtoKind = {
+  WEDDING: 'WEDDING',
+  BAPTISM: 'BAPTISM',
+  BIRTHDAY_18: 'BIRTHDAY_18',
+  BIRTHDAY_30: 'BIRTHDAY_30',
+  BIRTHDAY_50: 'BIRTHDAY_50',
+  BABY_SHOWER: 'BABY_SHOWER',
+  HOLY_COMMUNION: 'HOLY_COMMUNION',
+  OTHER: 'OTHER',
+} as const;
+
+export interface UpdateEventDto {
+  title: string;
+  description?: string;
+  /** ISO 8601 */
+  date?: string;
+  location?: string;
+  kind?: UpdateEventDtoKind;
+  templateId?: string;
+}
+
+export interface CreateForInviteeDto {
+  /** Bazowy URL frontendu do zbudowania publicznego linku */
+  frontendBase?: string;
+}
+
+export interface InvitationsStatsDto {
+  total: number;
+  accepted: number;
+  declined: number;
+  tentative: number;
+  viewed: number;
+}
+
+export type PublicEventDtoDate = { [key: string]: unknown };
+
+export type PublicEventDtoLocation = { [key: string]: unknown };
+
+export type PublicEventDtoDescription = { [key: string]: unknown };
+
+/**
+ * Konfiguracja/metadata szablonu (jeśli przypisany)
+ */
+export type PublicEventDtoTemplate = { [key: string]: unknown };
+
+export interface PublicEventDto {
+  title: string;
+  date?: PublicEventDtoDate;
+  location?: PublicEventDtoLocation;
+  description?: PublicEventDtoDescription;
+  /** Konfiguracja/metadata szablonu (jeśli przypisany) */
+  template?: PublicEventDtoTemplate;
+}
+
+export interface PublicInviteeDto {
+  fullName: string;
+  seats: number;
+}
+
+/**
+ * Aktualny status RSVP
+ */
+export type PublicInvitationGetResponseDtoStatus = typeof PublicInvitationGetResponseDtoStatus[keyof typeof PublicInvitationGetResponseDtoStatus];
+
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const PublicInvitationGetResponseDtoStatus = {
+  ACCEPTED: 'ACCEPTED',
+  DECLINED: 'DECLINED',
+  TENTATIVE: 'TENTATIVE',
+  PENDING: 'PENDING',
+} as const;
+
+export interface PublicInvitationGetResponseDto {
+  event: PublicEventDto;
+  invitee: PublicInviteeDto;
+  /** Aktualny status RSVP */
+  status: PublicInvitationGetResponseDtoStatus;
+}
+
+export type PublicRsvpDtoStatus = typeof PublicRsvpDtoStatus[keyof typeof PublicRsvpDtoStatus];
+
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const PublicRsvpDtoStatus = {
+  ACCEPTED: 'ACCEPTED',
+  DECLINED: 'DECLINED',
+  TENTATIVE: 'TENTATIVE',
+  PENDING: 'PENDING',
+} as const;
+
+export interface PublicRsvpDto {
+  status: PublicRsvpDtoStatus;
+  /** Ile osób przyjdzie (≤ seats) */
+  count?: number;
+  note?: string;
+}
+
+export type PublicRsvpResponseDtoStatus = typeof PublicRsvpResponseDtoStatus[keyof typeof PublicRsvpResponseDtoStatus];
+
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const PublicRsvpResponseDtoStatus = {
+  ACCEPTED: 'ACCEPTED',
+  DECLINED: 'DECLINED',
+  TENTATIVE: 'TENTATIVE',
+  PENDING: 'PENDING',
+} as const;
+
+export type PublicRsvpResponseDtoRsvpAt = { [key: string]: unknown };
+
+export type PublicRsvpResponseDtoRsvpCount = { [key: string]: unknown };
+
+export interface PublicRsvpResponseDto {
+  status: PublicRsvpResponseDtoStatus;
+  rsvpAt?: PublicRsvpResponseDtoRsvpAt;
+  rsvpCount?: PublicRsvpResponseDtoRsvpCount;
+}
+
+export interface CreateInviteeDto {
+  fullName: string;
+  email?: string;
+  phone?: string;
+  /**
+   * Liczba miejsc dla zaproszonego
+   * @minimum 1
+   */
+  seats?: number;
+  groupName?: string;
+  notes?: string;
+}
+
+export interface BulkCreateInviteesDto {
+  items: CreateInviteeDto[];
+}
+
 export type AuthControllerVerifyEmailParams = {
 token: string;
 };

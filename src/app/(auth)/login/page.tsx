@@ -7,7 +7,6 @@ import { AuthCard } from "@/components/auth/AuthCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { apiFetch, getMe } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -15,6 +14,7 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { translate } from "@/locales";
 import { AuthCode } from "@/common/enum/auth-code.enum";
+import { login } from "@/lib/auth-store";
 
 export default function Page() {
   const router = useRouter();
@@ -34,9 +34,8 @@ export default function Page() {
 
   async function onSubmit(values: z.infer<typeof loginSchema>) {
     try {
-      await apiFetch("/auth/login", { method: "POST", body: values });
-      await getMe();
-      router.replace("/dashboard");
+      await login(values);
+      router.replace("/");
     } catch (e: unknown) {
       const payload = (e as { data: { message: AuthCode.Failed } })?.data;
       const errorCode = payload?.message || AuthCode.Failed.InvalidCredentials;

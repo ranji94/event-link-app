@@ -1,4 +1,3 @@
-// /lib/http.ts
 import axios, { AxiosError, AxiosInstance } from "axios";
 import { env } from "./env";
 import { useAuthStore } from "./auth-store";
@@ -93,5 +92,5 @@ http.interceptors.response.use(
 );
 
 export function getMe() {
-  return apiFetch<{ userId: string; email: string }>("/users/me");
+  return apiFetch<{ userId: string; email: string; name: string }>("/users/me");
 }

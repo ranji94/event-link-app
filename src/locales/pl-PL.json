@@ -28,8 +28,51 @@
     "email": "Sprawdź adres e-mail.",
     "incorrect_password": "Sprawdź hasło."
   },
+  "auth": {
+    "logging_out": "Wylogowywanie w toku."
+  },
+  "nav": {
+    "my_events": "Moje Wydarzenia",
+    "create_new": "Stwórz Nowe",
+    "account_settings": "Ustawienia Konta"
+  },
+  "menu": {
+    "settings": "Ustawienia",
+    "logout": "Wyloguj"
+  },
+  "aria": {
+    "notifications": "Powiadomienia",
+    "open_profile_menu": "Otwórz menu profilu"
+  },
   "not_found_title": "Nie znaleziono strony",
   "not_found_description": "Wygląda na to, że szukana ścieżka nie istnieje lub została przeniesiona.",
   "not_found_go_back": "Wróć",
-  "not_found_go_home": "Przejdź do strony powitalnej"
+  "not_found_go_home": "Przejdź do strony powitalnej",
+  "events": {
+    "new": {
+      "title": "Nowe wydarzenie",
+      "subtitle": "Uzupełnij dane i wybierz szablon zaproszenia.",
+      "submit": "Utwórz wydarzenie",
+      "live_preview": "Podgląd zaproszenia",
+      "errors": {
+        "title_min": "Tytuł powinien mieć co najmniej 3 znaki.",
+        "date_required": "Podaj datę i godzinę wydarzenia.",
+        "create_failed": "Nie udało się utworzyć wydarzenia."
+      }
+    },
+    "fields": {
+      "title": "Tytuł",
+      "description": "Opis na zaproszeniu",
+      "datetime": "Data i godzina",
+      "location": "Lokalizacja",
+      "template": "Szablon"
+    },
+    "placeholders": {
+      "title": "Np. Ślub Ani i Pawła",
+      "description": "Tu wpisz treść zaproszenia…"
+    }
+  },
+  "common": {
+    "saving": "Zapisywanie…"
+  }
 }

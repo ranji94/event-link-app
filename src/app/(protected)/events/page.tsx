@@ -27,7 +27,7 @@ export default function Page() {
   if (!me) return <main className="p-6">Brak dostępu lub nie zalogowano.</main>;
   return (
     <main className="p-6">
-      Witaj, {me.email}
+      EVENTSPAGE, {me.email}
       <Button onClick={onSubmit} title="Logout" />
     </main>
   );
