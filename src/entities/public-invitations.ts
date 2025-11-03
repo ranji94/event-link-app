@@ -10,6 +10,7 @@ import type {
   PublicRsvpResponseDto
 } from './api.gen.schemas';
 
+import { orvalFetcher } from '../lib/orval-fetcher';
 
 
 /**
@@ -44,20 +45,14 @@ export const getPublicInvitationsControllerGetUrl = (code: string,) => {
 
 export const publicInvitationsControllerGet = async (code: string, options?: RequestInit): Promise<publicInvitationsControllerGetResponse> => {
   
-  const res = await fetch(getPublicInvitationsControllerGetUrl(code),
+  return orvalFetcher<publicInvitationsControllerGetResponse>(getPublicInvitationsControllerGetUrl(code),
   {      
     ...options,
     method: 'GET'
     
     
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: publicInvitationsControllerGetResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as publicInvitationsControllerGetResponse
-}
+);}
 
 
 /**
@@ -93,7 +88,7 @@ export const getPublicInvitationsControllerRsvpUrl = (code: string,) => {
 export const publicInvitationsControllerRsvp = async (code: string,
     publicRsvpDto: PublicRsvpDto, options?: RequestInit): Promise<publicInvitationsControllerRsvpResponse> => {
   
-  const res = await fetch(getPublicInvitationsControllerRsvpUrl(code),
+  return orvalFetcher<publicInvitationsControllerRsvpResponse>(getPublicInvitationsControllerRsvpUrl(code),
   {      
     ...options,
     method: 'POST',
@@ -101,12 +96,6 @@ export const publicInvitationsControllerRsvp = async (code: string,
     body: JSON.stringify(
       publicRsvpDto,)
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: publicInvitationsControllerRsvpResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as publicInvitationsControllerRsvpResponse
-}
+);}
 
 

@@ -1,3 +1,4 @@
+// orval.config.ts
 import { defineConfig } from "orval";
 
 export default defineConfig({
@@ -10,18 +11,13 @@ export default defineConfig({
       client: "fetch",
       mode: "tags",
       override: {
-        fetch: {
-          isBlob: false,
+        fetch: { isBlob: false },
+        // (opcjonalnie) również tu:
+        baseUrl: process.env.NEXT_PUBLIC_API_URL || "http://localhost:4010",
+        mutator: {
+          path: "./src/lib/orval-fetcher.ts",
+          name: "orvalFetcher",
         },
-      },
-    },
-    hooks: {
-      // optional hooks e.g. after generation
-    },
-    override: {
-      mutator: {
-        path: "./src/lib/orval-fetcher.ts",
-        name: "orvalFetcher",
       },
     },
   },

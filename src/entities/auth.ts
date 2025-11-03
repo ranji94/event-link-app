@@ -12,6 +12,7 @@ import type {
   ResetPasswordDto
 } from './api.gen.schemas';
 
+import { orvalFetcher } from '../lib/orval-fetcher';
 
 
 export type authControllerRegisterResponse201 = {
@@ -36,7 +37,7 @@ export const getAuthControllerRegisterUrl = () => {
 
 export const authControllerRegister = async (registerDto: RegisterDto, options?: RequestInit): Promise<authControllerRegisterResponse> => {
   
-  const res = await fetch(getAuthControllerRegisterUrl(),
+  return orvalFetcher<authControllerRegisterResponse>(getAuthControllerRegisterUrl(),
   {      
     ...options,
     method: 'POST',
@@ -44,13 +45,7 @@ export const authControllerRegister = async (registerDto: RegisterDto, options?:
     body: JSON.stringify(
       registerDto,)
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: authControllerRegisterResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as authControllerRegisterResponse
-}
+);}
 
 
 export type authControllerLoginResponse201 = {
@@ -75,7 +70,7 @@ export const getAuthControllerLoginUrl = () => {
 
 export const authControllerLogin = async (loginDto: LoginDto, options?: RequestInit): Promise<authControllerLoginResponse> => {
   
-  const res = await fetch(getAuthControllerLoginUrl(),
+  return orvalFetcher<authControllerLoginResponse>(getAuthControllerLoginUrl(),
   {      
     ...options,
     method: 'POST',
@@ -83,13 +78,7 @@ export const authControllerLogin = async (loginDto: LoginDto, options?: RequestI
     body: JSON.stringify(
       loginDto,)
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: authControllerLoginResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as authControllerLoginResponse
-}
+);}
 
 
 export type authControllerVerifyEmailResponse201 = {
@@ -121,20 +110,14 @@ export const getAuthControllerVerifyEmailUrl = (params: AuthControllerVerifyEmai
 
 export const authControllerVerifyEmail = async (params: AuthControllerVerifyEmailParams, options?: RequestInit): Promise<authControllerVerifyEmailResponse> => {
   
-  const res = await fetch(getAuthControllerVerifyEmailUrl(params),
+  return orvalFetcher<authControllerVerifyEmailResponse>(getAuthControllerVerifyEmailUrl(params),
   {      
     ...options,
     method: 'POST'
     
     
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: authControllerVerifyEmailResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as authControllerVerifyEmailResponse
-}
+);}
 
 
 export type authControllerRefreshResponse201 = {
@@ -159,20 +142,14 @@ export const getAuthControllerRefreshUrl = () => {
 
 export const authControllerRefresh = async ( options?: RequestInit): Promise<authControllerRefreshResponse> => {
   
-  const res = await fetch(getAuthControllerRefreshUrl(),
+  return orvalFetcher<authControllerRefreshResponse>(getAuthControllerRefreshUrl(),
   {      
     ...options,
     method: 'POST'
     
     
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: authControllerRefreshResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as authControllerRefreshResponse
-}
+);}
 
 
 export type authControllerLogoutResponse201 = {
@@ -197,20 +174,14 @@ export const getAuthControllerLogoutUrl = () => {
 
 export const authControllerLogout = async ( options?: RequestInit): Promise<authControllerLogoutResponse> => {
   
-  const res = await fetch(getAuthControllerLogoutUrl(),
+  return orvalFetcher<authControllerLogoutResponse>(getAuthControllerLogoutUrl(),
   {      
     ...options,
     method: 'POST'
     
     
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: authControllerLogoutResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as authControllerLogoutResponse
-}
+);}
 
 
 export type authControllerRequestPasswordResetResponse201 = {
@@ -242,20 +213,14 @@ export const getAuthControllerRequestPasswordResetUrl = (params: AuthControllerR
 
 export const authControllerRequestPasswordReset = async (params: AuthControllerRequestPasswordResetParams, options?: RequestInit): Promise<authControllerRequestPasswordResetResponse> => {
   
-  const res = await fetch(getAuthControllerRequestPasswordResetUrl(params),
+  return orvalFetcher<authControllerRequestPasswordResetResponse>(getAuthControllerRequestPasswordResetUrl(params),
   {      
     ...options,
     method: 'POST'
     
     
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: authControllerRequestPasswordResetResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as authControllerRequestPasswordResetResponse
-}
+);}
 
 
 export type authControllerResetPasswordResponse201 = {
@@ -280,7 +245,7 @@ export const getAuthControllerResetPasswordUrl = () => {
 
 export const authControllerResetPassword = async (resetPasswordDto: ResetPasswordDto, options?: RequestInit): Promise<authControllerResetPasswordResponse> => {
   
-  const res = await fetch(getAuthControllerResetPasswordUrl(),
+  return orvalFetcher<authControllerResetPasswordResponse>(getAuthControllerResetPasswordUrl(),
   {      
     ...options,
     method: 'POST',
@@ -288,12 +253,6 @@ export const authControllerResetPassword = async (resetPasswordDto: ResetPasswor
     body: JSON.stringify(
       resetPasswordDto,)
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: authControllerResetPasswordResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as authControllerResetPasswordResponse
-}
+);}
 
 

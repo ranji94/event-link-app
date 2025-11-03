@@ -4,6 +4,7 @@
  * API
  * OpenAPI spec version: 1.0
  */
+import { orvalFetcher } from '../lib/orval-fetcher';
 
 
 export type appControllerGetHelloResponse200 = {
@@ -28,19 +29,13 @@ export const getAppControllerGetHelloUrl = () => {
 
 export const appControllerGetHello = async ( options?: RequestInit): Promise<appControllerGetHelloResponse> => {
   
-  const res = await fetch(getAppControllerGetHelloUrl(),
+  return orvalFetcher<appControllerGetHelloResponse>(getAppControllerGetHelloUrl(),
   {      
     ...options,
     method: 'GET'
     
     
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: appControllerGetHelloResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as appControllerGetHelloResponse
-}
+);}
 
 

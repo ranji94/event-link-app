@@ -9,6 +9,7 @@ import type {
   InvitationsStatsDto
 } from './api.gen.schemas';
 
+import { orvalFetcher } from '../lib/orval-fetcher';
 
 
 /**
@@ -56,7 +57,7 @@ export const invitationsControllerCreateForInvitee = async (eventId: string,
     inviteeId: string,
     createForInviteeDto: CreateForInviteeDto, options?: RequestInit): Promise<invitationsControllerCreateForInviteeResponse> => {
   
-  const res = await fetch(getInvitationsControllerCreateForInviteeUrl(eventId,inviteeId),
+  return orvalFetcher<invitationsControllerCreateForInviteeResponse>(getInvitationsControllerCreateForInviteeUrl(eventId,inviteeId),
   {      
     ...options,
     method: 'POST',
@@ -64,13 +65,7 @@ export const invitationsControllerCreateForInvitee = async (eventId: string,
     body: JSON.stringify(
       createForInviteeDto,)
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: invitationsControllerCreateForInviteeResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as invitationsControllerCreateForInviteeResponse
-}
+);}
 
 
 /**
@@ -110,20 +105,14 @@ export const getInvitationsControllerStatsUrl = (eventId: string,) => {
 
 export const invitationsControllerStats = async (eventId: string, options?: RequestInit): Promise<invitationsControllerStatsResponse> => {
   
-  const res = await fetch(getInvitationsControllerStatsUrl(eventId),
+  return orvalFetcher<invitationsControllerStatsResponse>(getInvitationsControllerStatsUrl(eventId),
   {      
     ...options,
     method: 'GET'
     
     
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: invitationsControllerStatsResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as invitationsControllerStatsResponse
-}
+);}
 
 
 /**
@@ -165,19 +154,13 @@ export const getInvitationsControllerSendEmailUrl = (eventId: string,
 export const invitationsControllerSendEmail = async (eventId: string,
     invitationId: string, options?: RequestInit): Promise<invitationsControllerSendEmailResponse> => {
   
-  const res = await fetch(getInvitationsControllerSendEmailUrl(eventId,invitationId),
+  return orvalFetcher<invitationsControllerSendEmailResponse>(getInvitationsControllerSendEmailUrl(eventId,invitationId),
   {      
     ...options,
     method: 'POST'
     
     
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: invitationsControllerSendEmailResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as invitationsControllerSendEmailResponse
-}
+);}
 
 

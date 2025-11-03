@@ -43,7 +43,7 @@ export interface CreateEventDto {
   date?: string;
   location?: string;
   kind?: CreateEventDtoKind;
-  templateId?: string;
+  templateKey?: string;
 }
 
 export type UpdateEventDtoKind = typeof UpdateEventDtoKind[keyof typeof UpdateEventDtoKind];
@@ -68,7 +68,33 @@ export interface UpdateEventDto {
   date?: string;
   location?: string;
   kind?: UpdateEventDtoKind;
-  templateId?: string;
+  templateKey?: string;
+}
+
+export interface CreateProgramItemDto {
+  /** Indeks dnia (0 = główny dzień) */
+  dayIndex: number;
+  /** Godzina w formacie HH:mm */
+  time: string;
+  /** Nazwa ikony z lucide-react */
+  icon?: string;
+  header: string;
+  subheader?: string;
+  /** Pozycja w obrębie dnia/godziny */
+  position?: number;
+}
+
+export interface UpdateProgramItemDto {
+  /** Indeks dnia (0 = główny dzień) */
+  dayIndex?: number;
+  /** Godzina w formacie HH:mm */
+  time?: string;
+  /** Nazwa ikony z lucide-react */
+  icon?: string;
+  header?: string;
+  subheader?: string;
+  /** Pozycja w obrębie dnia/godziny */
+  position?: number;
 }
 
 export interface CreateForInviteeDto {
@@ -192,5 +218,20 @@ token: string;
 
 export type AuthControllerRequestPasswordResetParams = {
 email: string;
+};
+
+export type ProgramControllerList200Item = { [key: string]: unknown };
+
+export type ProgramControllerBulkBody = {
+  items?: CreateProgramItemDto[];
+};
+
+export type ProgramControllerReorderBodyOrderItem = {
+  id?: string;
+  position?: number;
+};
+
+export type ProgramControllerReorderBody = {
+  order?: ProgramControllerReorderBodyOrderItem[];
 };
 

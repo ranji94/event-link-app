@@ -4,11 +4,10 @@ import { useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useProgramBuilder } from "@/lib/events/program/use-program-builder";
+import type { CreateProgramItemDto } from "@/entities/api.gen.schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type {
-  CreateEventDto,
-  CreateEventDtoKind,
-} from "@/entities/api.gen.schemas";
+import type { CreateEventDto } from "@/entities/api.gen.schemas";
 import {
   TemplatePicker,
   getTemplateById,
@@ -18,11 +17,9 @@ import { translate } from "@/locales";
 import { useEvents } from "@/lib/events/use-events";
 import { FullscreenPreview } from "@/components/templates/FullScreenPreview";
 import { useConfirm } from "@/components/common/confirm/confirm-provider";
-import {
-  getNewEventTexts,
-  getTitlePlaceholder,
-} from "@/lib/events/title-placeholder";
+import { getNewEventTexts } from "@/lib/events/title-placeholder";
 import { EventKind } from "@/common/enum";
+import { ScheduleBuilder } from "@/components/event/ScheduleBuilder";
 
 const schema = z.object({
   title: z
@@ -33,7 +30,7 @@ const schema = z.object({
     .string()
     .min(1, { message: translate("events.new.errors.date_required") }),
   location: z.string().optional(),
-  templateId: z.string().optional(),
+  templateKey: z.string(),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -54,6 +51,11 @@ export default function NewEventPage() {
   const { create, isCreating, createError } = useEvents();
   const confirm = useConfirm();
 
+  const program = useProgramBuilder([
+    // opcjonalnie startowa próbka, usuń jeśli nie chcesz:
+    // { dayIndex: 0, time: "14:00", icon: "Church", header: "Ceremonia", subheader: "Kościół św. Anny", position: 0 },
+  ] as CreateProgramItemDto[]);
+
   const { titlePlaceholder, pageTitle } = getNewEventTexts(kindParam);
 
   const {
@@ -69,7 +71,7 @@ export default function NewEventPage() {
       description: "",
       datetime: "",
       location: "",
-      templateId: templates[0]?.id,
+      templateKey: templates[0]?.id,
     },
   });
 
@@ -82,14 +84,21 @@ export default function NewEventPage() {
       date: toIsoFromDatetimeLocal(values.datetime),
       location: values.location?.trim() || undefined,
       kind: kindParam,
-      templateId: values.templateId,
+      templateKey: values.templateKey,
     };
 
     const res = await create(payload);
     if (res.ok) {
       // Jeśli API zwraca ID, warto przenieść użytkownika od razu na szczegóły:
       const id = (res.data as any)?.id;
-      router.push(id ? `/events/${id}` : "/events");
+
+      if (id) {
+        await program.saveBulk(id);
+        router.replace(`/events/${id}`);
+        return;
+      }
+
+      router.replace("/events");
     } else {
       alert(res.message);
     }
@@ -101,7 +110,7 @@ export default function NewEventPage() {
       title: translate("events.new.exit_dialog.warning") ?? "Uwaga",
       description: (
         <div>
-          <p>{translate("events.new.exit_dialog.description")}</p>
+          <div>{translate("events.new.exit_dialog.description")}</div>
         </div>
       ),
       confirmText: translate("button.delete") ?? "Usuń",
@@ -118,8 +127,8 @@ export default function NewEventPage() {
 
   const SelectedPreview =
     useMemo(
-      () => getTemplateById(current.templateId)?.Preview,
-      [current.templateId]
+      () => getTemplateById(current.templateKey)?.Preview,
+      [current.templateKey]
     ) ?? templates[0].Preview;
 
   return (
@@ -195,12 +204,14 @@ export default function NewEventPage() {
               {translate("events.fields.template")}
             </label>
             <TemplatePicker
-              value={current.templateId}
+              value={current.templateKey}
               onChange={(id) =>
-                setValue("templateId", id, { shouldDirty: true })
+                setValue("templateKey", id, { shouldDirty: true })
               }
             />
           </div>
+
+          <ScheduleBuilder builder={program} />
 
           {createError && (
             <div className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 ring-1 ring-red-200">
@@ -279,6 +290,7 @@ export default function NewEventPage() {
               description={current.description}
               date={toIsoFromDatetimeLocal(current.datetime)}
               location={current.location}
+              program={program.items}
             />
           </div>
         </div>
@@ -291,6 +303,7 @@ export default function NewEventPage() {
           description={current.description}
           date={toIsoFromDatetimeLocal(current.datetime)}
           location={current.location}
+          program={program.items}
         />
       </FullscreenPreview>
     </div>

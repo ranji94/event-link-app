@@ -4,6 +4,7 @@
  * API
  * OpenAPI spec version: 1.0
  */
+import { orvalFetcher } from '../lib/orval-fetcher';
 
 
 export type usersControllerGetMeResponse200 = {
@@ -28,19 +29,13 @@ export const getUsersControllerGetMeUrl = () => {
 
 export const usersControllerGetMe = async ( options?: RequestInit): Promise<usersControllerGetMeResponse> => {
   
-  const res = await fetch(getUsersControllerGetMeUrl(),
+  return orvalFetcher<usersControllerGetMeResponse>(getUsersControllerGetMeUrl(),
   {      
     ...options,
     method: 'GET'
     
     
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: usersControllerGetMeResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as usersControllerGetMeResponse
-}
+);}
 
 

@@ -9,6 +9,7 @@ import type {
   UpdateEventDto
 } from './api.gen.schemas';
 
+import { orvalFetcher } from '../lib/orval-fetcher';
 
 
 /**
@@ -48,7 +49,7 @@ export const getEventsControllerCreateUrl = () => {
 
 export const eventsControllerCreate = async (createEventDto: CreateEventDto, options?: RequestInit): Promise<eventsControllerCreateResponse> => {
   
-  const res = await fetch(getEventsControllerCreateUrl(),
+  return orvalFetcher<eventsControllerCreateResponse>(getEventsControllerCreateUrl(),
   {      
     ...options,
     method: 'POST',
@@ -56,13 +57,7 @@ export const eventsControllerCreate = async (createEventDto: CreateEventDto, opt
     body: JSON.stringify(
       createEventDto,)
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: eventsControllerCreateResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as eventsControllerCreateResponse
-}
+);}
 
 
 /**
@@ -97,20 +92,14 @@ export const getEventsControllerListUrl = () => {
 
 export const eventsControllerList = async ( options?: RequestInit): Promise<eventsControllerListResponse> => {
   
-  const res = await fetch(getEventsControllerListUrl(),
+  return orvalFetcher<eventsControllerListResponse>(getEventsControllerListUrl(),
   {      
     ...options,
     method: 'GET'
     
     
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: eventsControllerListResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as eventsControllerListResponse
-}
+);}
 
 
 /**
@@ -150,20 +139,14 @@ export const getEventsControllerGetOneUrl = (id: string,) => {
 
 export const eventsControllerGetOne = async (id: string, options?: RequestInit): Promise<eventsControllerGetOneResponse> => {
   
-  const res = await fetch(getEventsControllerGetOneUrl(id),
+  return orvalFetcher<eventsControllerGetOneResponse>(getEventsControllerGetOneUrl(id),
   {      
     ...options,
     method: 'GET'
     
     
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: eventsControllerGetOneResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as eventsControllerGetOneResponse
-}
+);}
 
 
 /**
@@ -209,7 +192,7 @@ export const getEventsControllerUpdateUrl = (id: string,) => {
 export const eventsControllerUpdate = async (id: string,
     updateEventDto: UpdateEventDto, options?: RequestInit): Promise<eventsControllerUpdateResponse> => {
   
-  const res = await fetch(getEventsControllerUpdateUrl(id),
+  return orvalFetcher<eventsControllerUpdateResponse>(getEventsControllerUpdateUrl(id),
   {      
     ...options,
     method: 'PATCH',
@@ -217,13 +200,7 @@ export const eventsControllerUpdate = async (id: string,
     body: JSON.stringify(
       updateEventDto,)
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: eventsControllerUpdateResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as eventsControllerUpdateResponse
-}
+);}
 
 
 /**
@@ -263,19 +240,13 @@ export const getEventsControllerRemoveUrl = (id: string,) => {
 
 export const eventsControllerRemove = async (id: string, options?: RequestInit): Promise<eventsControllerRemoveResponse> => {
   
-  const res = await fetch(getEventsControllerRemoveUrl(id),
+  return orvalFetcher<eventsControllerRemoveResponse>(getEventsControllerRemoveUrl(id),
   {      
     ...options,
     method: 'DELETE'
     
     
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: eventsControllerRemoveResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as eventsControllerRemoveResponse
-}
+);}
 
 

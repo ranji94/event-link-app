@@ -8,6 +8,7 @@ import type {
   BulkCreateInviteesDto
 } from './api.gen.schemas';
 
+import { orvalFetcher } from '../lib/orval-fetcher';
 
 
 /**
@@ -53,7 +54,7 @@ export const getInviteesControllerBulkUrl = (eventId: string,) => {
 export const inviteesControllerBulk = async (eventId: string,
     bulkCreateInviteesDto: BulkCreateInviteesDto, options?: RequestInit): Promise<inviteesControllerBulkResponse> => {
   
-  const res = await fetch(getInviteesControllerBulkUrl(eventId),
+  return orvalFetcher<inviteesControllerBulkResponse>(getInviteesControllerBulkUrl(eventId),
   {      
     ...options,
     method: 'POST',
@@ -61,13 +62,7 @@ export const inviteesControllerBulk = async (eventId: string,
     body: JSON.stringify(
       bulkCreateInviteesDto,)
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: inviteesControllerBulkResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as inviteesControllerBulkResponse
-}
+);}
 
 
 /**
@@ -107,19 +102,13 @@ export const getInviteesControllerListUrl = (eventId: string,) => {
 
 export const inviteesControllerList = async (eventId: string, options?: RequestInit): Promise<inviteesControllerListResponse> => {
   
-  const res = await fetch(getInviteesControllerListUrl(eventId),
+  return orvalFetcher<inviteesControllerListResponse>(getInviteesControllerListUrl(eventId),
   {      
     ...options,
     method: 'GET'
     
     
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  
-  const data: inviteesControllerListResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as inviteesControllerListResponse
-}
+);}
 
 

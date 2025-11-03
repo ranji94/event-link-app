@@ -1,5 +1,6 @@
 import * as React from "react";
 import type { TemplateDef } from "../types";
+import * as Lucide from "lucide-react";
 
 /**
  * WEDDING – Botanical & Gold
@@ -11,48 +12,19 @@ export const weddingBotanicalGold: TemplateDef = {
   id: "wedding-botanical-gold",
   name: "Wedding — Botanical & Gold",
   accent: "emerald",
-  Preview: ({ title, description, date, location }) => {
+  Preview: ({ title, description, date, location, program }) => {
     const titleText = title || "Ślub Ani & Pawła";
     const locationText = location || "Warszawa — Kościół św. Anny";
     const dateText = date ? new Date(date).toLocaleString() : "Sobota, 14:30";
 
     return (
       <div className="relative min-h-[80vh] w-full overflow-hidden bg-gradient-to-br from-emerald-50 via-white to-amber-50">
-        {/* Dekor: złote kropki */}
-        <div className="pointer-events-none absolute inset-0 opacity-30 [mask-image:radial-gradient(ellipse_at_center,black,transparent_60%)]">
-          <svg
-            aria-hidden
-            className="h-full w-full"
-            viewBox="0 0 1200 800"
-            preserveAspectRatio="none"
-          >
-            <defs>
-              <radialGradient id="goldDot" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="#f59e0b" />
-                <stop offset="100%" stopColor="#facc15" />
-              </radialGradient>
-            </defs>
-            {Array.from({ length: 120 }).map((_, i) => (
-              <circle
-                key={i}
-                cx={(i * 97) % 1200}
-                cy={(i * 53) % 800}
-                r={Math.max(0.6, (i % 5) * 0.6)}
-                fill="url(#goldDot)"
-                opacity={0.5}
-              />
-            ))}
-          </svg>
-        </div>
-
-        {/* Dekor: zielone liście (rogi) */}
-        <LeafDecor position="top-left" />
         <LeafDecor position="bottom-right" />
+        <LeafDecor position="top-left" />
 
-        {/* Centralna karta zaproszenia */}
-        <div className="relative z-10 mx-auto max-w-3xl px-4 py-10 sm:py-14">
+        <div className="relative z-10 mx-auto max-w-4xl px-4 py-10 sm:py-14">
           <div className="rounded-2xl bg-white/90 p-8 shadow-xl ring-1 ring-black/5 backdrop-blur">
-            {/* Nagłówek / imiona */}
+            {/* HEADER */}
             <div className="text-center">
               <div className="mx-auto mb-4 h-1 w-24 rounded-full bg-gradient-to-r from-amber-300 via-amber-500 to-amber-300" />
               <h1 className="font-serif text-3xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">
@@ -62,25 +34,89 @@ export const weddingBotanicalGold: TemplateDef = {
                 {locationText}
               </p>
               <p className="text-xs text-gray-500">{dateText}</p>
-
-              {/* Złoty separator „ornament” */}
-              <Ornament />
             </div>
 
-            {/* Treść zaproszenia */}
-            <div className="prose prose-emerald mx-auto mt-6 max-w-none text-gray-700 prose-p:leading-relaxed">
+            {/* TREŚĆ */}
+            <div className="prose prose-emerald mx-auto mt-6 max-w-2xl text-gray-700 prose-p:leading-relaxed">
               <p className="whitespace-pre-wrap">
                 {description ||
                   "Mamy zaszczyt zaprosić Was do wspólnego świętowania naszego ślubu. Po ceremonii zapraszamy na przyjęcie weselne w ogrodach Dworu Konstancja. Prosimy o potwierdzenie obecności do 10 czerwca."}
               </p>
             </div>
 
-            {/* Stopka / drobne informacje */}
-            <div className="mt-8 text-center text-xs text-gray-500">
-              <span>Dress code: koktajlowy</span>
-              <span className="mx-2">•</span>
-              <span>RSVP do 10.06</span>
-            </div>
+            {/* HARMONOGRAM */}
+            {program && program.length > 0 && (
+              <div className="mx-auto mt-10 max-w-3xl">
+                <h3 className="mb-4 text-center text-sm font-semibold uppercase tracking-widest text-gray-600">
+                  Harmonogram Wydarzenia
+                </h3>
+
+                <ol className="relative ">
+                  {program
+                    .slice()
+                    .map((it, idx) => ({
+                      ...it,
+                      _pos: typeof it.position === "number" ? it.position : idx,
+                    }))
+                    .sort((a, b) => a._pos - b._pos)
+                    .map((it, idx, arr) => {
+                      const Icon =
+                        (it.icon && (Lucide as any)[it.icon]) || Lucide.Dot;
+                      const isFirst = idx === 0;
+                      const isLast = idx === arr.length - 1;
+
+                      return (
+                        <li
+                          key={idx}
+                          className="relative grid grid-cols-[1fr_auto] gap-4 pl-12 py-2"
+                        >
+                          {/* Górny odcinek (do środka kropki) – ukryj dla pierwszego */}
+                          {!isFirst && (
+                            <span
+                              aria-hidden
+                              className="pointer-events-none absolute left-[18px] w-px bg-amber-300"
+                              style={{ top: 0, bottom: "50%" }}
+                            />
+                          )}
+
+                          {/* Dolny odcinek (od środka kropki) – ukryj dla ostatniego */}
+                          {!isLast && (
+                            <span
+                              aria-hidden
+                              className="pointer-events-none absolute left-[18px] w-px bg-amber-300"
+                              style={{ top: "50%", bottom: 0 }}
+                            />
+                          )}
+
+                          {/* Kropka z ikoną – zawsze idealnie w środku elementu */}
+                          <span className="absolute left-[18px] top-1/2 -translate-y-1/2 -translate-x-1/2 inline-flex h-7 w-7 items-center justify-center rounded-full bg-amber-100 ring-1 ring-amber-300">
+                            <Icon className="h-4 w-4 text-amber-700" />
+                          </span>
+
+                          {/* Treść */}
+                          <div>
+                            <div className="font-semibold text-gray-900">
+                              {it.header}
+                            </div>
+                            {it.subheader && (
+                              <div className="text-sm text-gray-500">
+                                {it.subheader}
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Godzina */}
+                          <div className="text-right text-sm font-semibold text-gray-700">
+                            {it.time}
+                          </div>
+                        </li>
+                      );
+                    })}
+                </ol>
+              </div>
+            )}
+
+            <Ornament />
           </div>
         </div>
       </div>

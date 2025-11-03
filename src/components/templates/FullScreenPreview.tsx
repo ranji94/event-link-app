@@ -18,9 +18,9 @@ export function FullscreenPreview({
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-0 z-[100] flex items-stretch justify-stretch bg-black/60"
+      className="fixed inset-0 z-20 lex items-stretch justify-stretch bg-black/60"
     >
-      <div className="relative h-full w-full overflow-auto bg-white">
+      <div className="relative h-full w-full overflow-auto bg-white z-100">
         {/* Top bar */}
         <div className="sticky top-0 z-10 flex items-center justify-between border-b border-black/10 bg-white/90 px-4 py-3 backdrop-blur">
           <span className="text-sm font-medium text-gray-700">
@@ -35,7 +35,9 @@ export function FullscreenPreview({
         </div>
 
         {/* Pełna strona zaproszenia */}
-        <div className="mx-auto w-full max-w-5xl px-4 py-6">{children}</div>
+        <div className="mx-auto w-full max-w-5xl px-4 py-6 z-100">
+          {children}
+        </div>
       </div>
     </div>,
     document.body

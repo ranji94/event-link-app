@@ -50,6 +50,21 @@
   "not_found_go_home": "Przejdź do strony powitalnej",
   "events": {
     "new": {
+      "schedule": {
+        "title": "Harmonogram",
+        "add_item": "Dodaj punkt",
+        "empty": "Brak punktów programu.",
+        "time": "Godzina",
+        "header": "Nagłówek",
+        "subheader": "Podnagłówek",
+        "header_ph": "Np. Ceremonia zaślubin",
+        "subheader_ph": "Np. Kościół św. Anny",
+        "icon": "Ikona",
+        "icon_presets": "Z listy",
+        "icon_custom": "Własna nazwa…",
+        "icon_title": "Nazwa ikony z lucide-react (np. Church, PartyPopper)",
+        "icon_pick": "Wybierz ikonę"
+      },
       "fullscreen": "Pełny ekran",
       "title": "Nowe wydarzenie",
       "subtitle": "Uzupełnij dane i wybierz szablon zaproszenia.",
@@ -96,11 +111,14 @@
     },
     "placeholders": {
       "title": "Np. Ślub Ani i Pawła",
-      "description": "Tu wpisz treść zaproszenia…"
+      "description": "Tu wpisz treść zaproszenia…",
+      "select": "— wybierz —"
     }
   },
   "common": {
-    "saving": "Zapisywanie…"
+    "saving": "Zapisywanie…",
+    "move_up": "Przenieś wyżej",
+    "move_down": "Przenieś niżej"
   },
   "button": {
     "close": "Zamknij",
