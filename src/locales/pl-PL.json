@@ -77,7 +77,8 @@
       "errors": {
         "title_min": "Tytuł powinien mieć co najmniej 3 znaki.",
         "date_required": "Podaj datę i godzinę wydarzenia.",
-        "create_failed": "Nie udało się utworzyć wydarzenia."
+        "create_failed": "Nie udało się utworzyć wydarzenia.",
+        "unknown": "Wystąpił nieoczekiwany błąd po stronie serwera. Spróbuj później."
       },
       "header": {
         "WEDDING": "Nowe wydarzenie — Ślub/Wesele",
@@ -102,6 +103,25 @@
         }
       }
     },
+    "list": {
+      "card": {
+        "manage": "Zarządzaj",
+        "openAria": "Otwórz wydarzenie „{{title}}”"
+      },
+      "delete": {
+        "title": "Usunąć?",
+        "description": "Operacji nie można cofnąć. Zaproszenia i program wydarzeń zostanie usunięty."
+      }
+    },
+    "details": {
+      "back": "Wróć do listy",
+      "not_found": "Nie znaleziono wydarzenia lub brak uprawnień.",
+      "description": "Opis wydarzenia",
+      "no_description": "Brak opisu.",
+      "preview": "Podgląd szablonu",
+      "schedule": "Harmonogram",
+      "no_program": "Brak pozycji programu."
+    },
     "fields": {
       "title": "Tytuł",
       "description": "Opis na zaproszeniu",
@@ -123,7 +143,10 @@
   "button": {
     "close": "Zamknij",
     "cancel": "Anuluj",
-    "delete": "Usuń"
+    "delete": "Usuń",
+    "more": "Więcej opcji",
+    "open": "Otwórz",
+    "edit": "Edytuj"
   },
   "templates": {
     "preview": "Podgląd"

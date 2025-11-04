@@ -178,32 +178,24 @@ export function useEvents(initialParams: ListParams = {}) {
     []
   );
 
-  const remove = useCallback(
-    async (id: string): Promise<Ok<true> | Err> => {
-      setIsRemoving(id);
-      setRemoveError(null);
-      const snapshot = items;
-      try {
-        // optymistycznie wytnij z listy
-        setItems((prev) => (prev ? prev.filter((x) => x.id !== id) : prev));
-        cacheRef.current.delete(id);
+  const remove = useCallback(async (id: string): Promise<Ok<true> | Err> => {
+    setIsRemoving(id);
+    setRemoveError(null);
+    try {
+      await eventsControllerRemove(id, { credentials: "include" });
+      cacheRef.current.delete(id);
+      setItems((prev) => prev?.filter((x) => x.id !== id) ?? []);
+      return { ok: true, data: true };
+    } catch (e) {
+      const msg = errMessage(e);
+      setRemoveError(msg);
+      return { ok: false, message: msg };
+    } finally {
+      setIsRemoving(null);
+    }
+  }, []);
 
-        await eventsControllerRemove(id, { credentials: "include" });
-        return { ok: true, data: true };
-      } catch (e) {
-        // rollback
-        setItems(snapshot ?? null);
-        const msg = errMessage(e);
-        setRemoveError(msg);
-        return { ok: false, message: msg };
-      } finally {
-        setIsRemoving(null);
-      }
-    },
-    [items]
-  );
-
-  const refresh = useCallback(() => void list(), [list]);
+  const refresh = useCallback(() => list(), [list]);
 
   // ===== client-side filters/sort (do użycia na stronie) =====
   const select = useCallback(
