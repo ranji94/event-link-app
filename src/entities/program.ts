@@ -5,6 +5,7 @@
  * OpenAPI spec version: 1.0
  */
 import type {
+  BulkUpsertProgramDto,
   CreateProgramItemDto,
   ProgramControllerBulkBody,
   ProgramControllerList200Item,
@@ -224,6 +225,43 @@ export const programControllerBulk = async (eventId: string,
     headers: { 'Content-Type': 'application/json', ...options?.headers },
     body: JSON.stringify(
       programControllerBulkBody,)
+  }
+);}
+
+
+/**
+ * @summary Masowa aktualizacja lub dodanie punktów programu
+ */
+export type programControllerBulkUpsertResponse200 = {
+  data: void
+  status: 200
+}
+    
+export type programControllerBulkUpsertResponseSuccess = (programControllerBulkUpsertResponse200) & {
+  headers: Headers;
+};
+;
+
+export type programControllerBulkUpsertResponse = (programControllerBulkUpsertResponseSuccess)
+
+export const getProgramControllerBulkUpsertUrl = (eventId: string,) => {
+
+
+  
+
+  return `/events/${eventId}/program/bulk`
+}
+
+export const programControllerBulkUpsert = async (eventId: string,
+    bulkUpsertProgramDto: BulkUpsertProgramDto, options?: RequestInit): Promise<programControllerBulkUpsertResponse> => {
+  
+  return orvalFetcher<programControllerBulkUpsertResponse>(getProgramControllerBulkUpsertUrl(eventId),
+  {      
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      bulkUpsertProgramDto,)
   }
 );}
 

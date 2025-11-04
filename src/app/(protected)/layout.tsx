@@ -12,7 +12,7 @@ export default function ProtectedLayout({
 }) {
   return (
     <div className="min-h-dvh bg-gray-50">
-      <header className="sticky top-0 z-10 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+      <header className="sticky top-0 z-800 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
         <Container className="flex items-center justify-between py-3">
           <Link href="/events" className="text-lg font-semibold tracking-tight">
             <AppLogo />

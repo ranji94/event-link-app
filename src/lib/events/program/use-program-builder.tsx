@@ -5,12 +5,15 @@ import type { CreateProgramItemDto } from "@/entities/api.gen.schemas";
 import {
   programControllerBulk,
   programControllerReorder,
+  programControllerBulkUpsert,
+  programControllerList,
 } from "@/entities/program";
 
-type ProgramItem = CreateProgramItemDto;
+type ProgramItem = CreateProgramItemDto & { id?: string };
 
 export function useProgramBuilder(initial: ProgramItem[] = []) {
   const [items, setItems] = useState<ProgramItem[]>(initial);
+  const [removedIds, setRemovedIds] = useState<string[]>([]);
 
   const addItem = useCallback((item?: Partial<ProgramItem>) => {
     setItems((prev) => [
@@ -36,7 +39,16 @@ export function useProgramBuilder(initial: ProgramItem[] = []) {
   );
 
   const removeItem = useCallback((index: number) => {
-    setItems((prev) => prev.filter((_, i) => i !== index));
+    setItems((prevItems) => {
+      const next = [...prevItems];
+      const [removed] = next.splice(index, 1);
+      if (removed?.id) {
+        setRemovedIds((prev) =>
+          prev.includes(removed.id!) ? prev : [...prev, removed.id!]
+        );
+      }
+      return next;
+    });
   }, []);
 
   const moveItem = useCallback((from: number, to: number) => {
@@ -48,7 +60,7 @@ export function useProgramBuilder(initial: ProgramItem[] = []) {
     });
   }, []);
 
-  /** Zapis do API po utworzeniu eventu */
+  /** Zapis po UTWORZENIU eventu (tworzenie wszystkich naraz) */
   const saveBulk = useCallback(
     async (eventId: string) => {
       if (!items.length) return { ok: true as const };
@@ -57,16 +69,37 @@ export function useProgramBuilder(initial: ProgramItem[] = []) {
         { items },
         { credentials: "include" }
       );
-      return { ok: res.status === (201 as const) };
+      return { ok: res.status === 201 };
     },
     [items]
   );
 
-  /** Opcjonalnie: zapis samych pozycji (reorder) */
+  /** 🔥 Nowy zapis do API po EDYCJI eventu */
+  const saveBulkUpsert = useCallback(
+    async (eventId: string) => {
+      const payload = { items, deletedIds: removedIds };
+      const res = await programControllerBulkUpsert(eventId, payload, {
+        credentials: "include",
+      });
+
+      if (res.status >= 200 && res.status < 300) {
+        const updated = await programControllerList(eventId, {
+          credentials: "include",
+        });
+        setItems(updated);
+        setRemovedIds([]);
+        return { ok: true as const };
+      }
+      return { ok: false as const };
+    },
+    [items, removedIds]
+  );
+
+  /** (opcjonalny) zapis tylko kolejności — zostaje do innych celów */
   const saveOrder = useCallback(
     async (eventId: string) => {
       const order = items
-        .map((it: any, i) => ({ id: it.id, position: i }))
+        .map((it, i) => ({ id: it.id, position: i }))
         .filter((x) => !!x.id);
       if (!order.length) return { ok: true as const };
       const res = await programControllerReorder(
@@ -74,7 +107,7 @@ export function useProgramBuilder(initial: ProgramItem[] = []) {
         { order },
         { credentials: "include" }
       );
-      return { ok: res.status === (200 as const) };
+      return { ok: res.status === 200 };
     },
     [items]
   );
@@ -88,5 +121,6 @@ export function useProgramBuilder(initial: ProgramItem[] = []) {
     moveItem,
     saveBulk,
     saveOrder,
+    saveBulkUpsert,
   };
 }

@@ -103,6 +103,15 @@
         }
       }
     },
+    "edit": {
+      "title": "Edycja wydarzenia",
+      "subtitle": "Zaktualizuj dane wydarzenia i harmonogram.",
+      "submit": "Zapisz zmiany",
+      "exit_dialog": {
+        "warning": "Odrzucić zmiany?",
+        "description": "Wprowadzone dane nie zostaną zapisane."
+      }
+    },
     "list": {
       "card": {
         "manage": "Zarządzaj",
@@ -136,11 +145,13 @@
     }
   },
   "common": {
-    "saving": "Zapisywanie…",
+    "loading": "Ładowanie",
+    "saving": "Zapisywanie...",
     "move_up": "Przenieś wyżej",
     "move_down": "Przenieś niżej"
   },
   "button": {
+    "discard": "Odrzuć",
     "close": "Zamknij",
     "cancel": "Anuluj",
     "delete": "Usuń",

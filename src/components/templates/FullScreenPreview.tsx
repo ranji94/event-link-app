@@ -18,7 +18,7 @@ export function FullscreenPreview({
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-0 z-20 lex items-stretch justify-stretch bg-black/60"
+      className="fixed inset-0 z-900 lex items-stretch justify-stretch bg-black/60"
     >
       <div className="relative h-full w-full overflow-auto bg-white z-100">
         {/* Top bar */}

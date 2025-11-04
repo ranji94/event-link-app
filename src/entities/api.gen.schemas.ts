@@ -72,29 +72,28 @@ export interface UpdateEventDto {
 }
 
 export interface CreateProgramItemDto {
-  /** Indeks dnia (0 = główny dzień) */
   dayIndex: number;
-  /** Godzina w formacie HH:mm */
   time: string;
-  /** Nazwa ikony z lucide-react */
-  icon?: string;
+  icon: string;
   header: string;
-  subheader?: string;
-  /** Pozycja w obrębie dnia/godziny */
-  position?: number;
+  subheader: string;
+  position: number;
 }
 
 export interface UpdateProgramItemDto {
-  /** Indeks dnia (0 = główny dzień) */
   dayIndex?: number;
-  /** Godzina w formacie HH:mm */
   time?: string;
-  /** Nazwa ikony z lucide-react */
   icon?: string;
   header?: string;
   subheader?: string;
-  /** Pozycja w obrębie dnia/godziny */
   position?: number;
+}
+
+export interface BulkUpsertProgramDto {
+  /** Lista elementów do utworzenia lub aktualizacji */
+  items: CreateProgramItemDto[];
+  /** Opcjonalna lista ID elementów do usunięcia */
+  deletedIds?: string[];
 }
 
 export interface CreateForInviteeDto {

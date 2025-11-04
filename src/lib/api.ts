@@ -48,7 +48,6 @@ export class ApiError extends Error {
 let refreshingPromise: Promise<void> | null = null;
 
 async function refreshTokens() {
-  // jeden refresh naraz (single-flight)
   if (!refreshingPromise) {
     refreshingPromise = axios
       .post(`${env.apiUrl}/auth/refresh`, {}, { withCredentials: true })
@@ -70,21 +69,25 @@ http.interceptors.response.use(
   async (error: AxiosError<ApiErrorPayload>) => {
     const original = error.config as any;
 
-    // Jeśli 401 i jeszcze nie próbowaliśmy refreshu dla tego requestu
+    // tylko dla 401 i gdy jeszcze nie retryowano
     if (error.response?.status === 401 && !original?._retry) {
       try {
         original._retry = true;
         await refreshTokens();
-        // ponów oryginalny request
+
+        // upewnij się, że ciasteczka będą dołączone
+        original.withCredentials = true;
+
+        // ponów oryginalny request (zaktualizowanym kontekstem cookies)
         return http(original);
       } catch {
-        // refresh nieudany → wyloguj
+        // refresh nieudany → logout
         useAuthStore.getState().clear?.();
         throw new ApiError(401, { errorCode: "TOKEN_EXPIRED" });
       }
     }
 
-    // Inne błędy → normalizacja i rzut ApiError
+    // Inne błędy
     const status = error.response?.status ?? 0;
     const data = error.response?.data;
     throw new ApiError(status, data);
