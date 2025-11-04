@@ -39,7 +39,7 @@ export function EventCard({
   e: EventListItem;
   onDelete: (id: string) => void;
 }) {
-  const { Icon, label } = KIND_MAP[e.kind] ?? KIND_MAP.OTHER;
+  const { Icon, label, bg, fg } = KIND_MAP[e.kind] ?? KIND_MAP.OTHER;
 
   const confirm = useConfirm();
 
@@ -62,12 +62,17 @@ export function EventCard({
   };
 
   return (
-    <Card className="hover:shadow-md transition-shadow">
+    <Card
+      className={`hover:shadow-md transition-shadow border-t-4 ${fg.replace(
+        "text-",
+        "border-"
+      )}`}
+    >
       <CardHeader className="pb-2">
         <div className="flex items-start justify-between gap-2">
           <div className="flex items-center gap-2">
-            <span className="rounded-xl bg-muted p-2">
-              <Icon className="h-5 w-5" />
+            <span className={`rounded-xl p-2 ${bg}`}>
+              <Icon className={`h-5 w-5 ${fg}`} />
             </span>
             <CardTitle className="text-base leading-tight">{e.title}</CardTitle>
           </div>
@@ -126,7 +131,12 @@ export function EventCard({
       <CardContent className="pt-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Badge variant="secondary">{label}</Badge>
+            <Badge
+              variant="secondary"
+              className={`${bg} ${fg} border-0 font-medium shadow-none`}
+            >
+              {label}
+            </Badge>
           </div>
           <Button asChild size="sm" variant="secondary">
             <Link href={`/events/${e.id}`}>

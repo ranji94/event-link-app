@@ -1,45 +1,61 @@
-"use client";
-
-import * as React from "react";
-
 import {
-  Heart,
   Baby,
-  PartyPopper,
-  GlassWater,
   Cake,
-  BabyIcon,
-  Church,
   HelpCircle,
+  PartyPopper,
+  Wine,
+  Heart,
+  Church,
 } from "lucide-react";
 import { EventKind } from "@/common/enum";
 
-export const KIND_MAP: Record<
-  EventKind,
-  { label: string; Icon: React.ComponentType<any>; badge: string }
-> = {
-  [EventKind.WEDDING]: { label: "Ślub/Wesele", Icon: Heart, badge: "love" },
-  [EventKind.BAPTISM]: { label: "Chrzest", Icon: Baby, badge: "baby" },
+export const KIND_MAP = {
+  [EventKind.WEDDING]: {
+    label: "Ślub/Wesele",
+    Icon: Heart,
+    bg: "bg-rose-100",
+    fg: "text-rose-600",
+  },
+  [EventKind.BAPTISM]: {
+    label: "Chrzciny",
+    Icon: Baby,
+    bg: "bg-sky-100",
+    fg: "text-sky-600",
+  },
   [EventKind.BIRTHDAY_18]: {
     label: "Osiemnastka",
     Icon: PartyPopper,
-    badge: "b-day",
+    bg: "bg-violet-100",
+    fg: "text-violet-600",
   },
   [EventKind.BIRTHDAY_30]: {
     label: "Trzydziestka",
-    Icon: GlassWater,
-    badge: "30",
+    Icon: Wine,
+    bg: "bg-green-100",
+    fg: "text-green-700",
   },
-  [EventKind.BIRTHDAY_50]: { label: "Pięćdziesiątka", Icon: Cake, badge: "50" },
+  [EventKind.BIRTHDAY_50]: {
+    label: "Pięćdziesiątka",
+    Icon: Cake,
+    bg: "bg-orange-100",
+    fg: "text-orange-700",
+  },
   [EventKind.BABY_SHOWER]: {
     label: "Baby Shower",
-    Icon: BabyIcon,
-    badge: "baby",
+    Icon: Baby,
+    bg: "bg-lime-100",
+    fg: "text-lime-700",
   },
   [EventKind.HOLY_COMMUNION]: {
-    label: "Pierwsza Komunia",
+    label: "Pierwsza komunia święta",
     Icon: Church,
-    badge: "komunia",
+    bg: "bg-amber-100",
+    fg: "text-amber-700",
   },
-  [EventKind.OTHER]: { label: "Inne", Icon: HelpCircle, badge: "inne" },
-};
+  [EventKind.OTHER]: {
+    label: "Inne",
+    Icon: HelpCircle,
+    bg: "bg-gray-200",
+    fg: "text-gray-700",
+  },
+} as const;
