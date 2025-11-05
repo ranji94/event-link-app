@@ -38,7 +38,7 @@ export default function PublicInvitationPage() {
         });
         setData(res as any);
       } catch (e: any) {
-        toast.error(e?.message ?? translate("errors.not_found"));
+        toast.error(e?.message ?? translate("invitation.errors.not_found"));
       } finally {
         setLoading(false);
       }
@@ -62,7 +62,7 @@ export default function PublicInvitationPage() {
           : translate("invitation.rsvp.declined") ?? "Dziękujemy za informację."
       );
     } catch (e: any) {
-      toast.error(e?.message ?? translate("errors.unknown"));
+      toast.error(e?.message ?? translate("invitation.errors.unknown"));
     } finally {
       setSending(false);
     }
@@ -138,7 +138,7 @@ export default function PublicInvitationPage() {
               disabled={sending}
               onClick={() => handleRsvp("ACCEPTED")}
             >
-              {translate("invitation.buttons.accept") ?? "Wezmę udział"}
+              {translate("button.accept") ?? "Wezmę udział"}
             </Button>
             <Button
               variant="outline"
@@ -146,8 +146,7 @@ export default function PublicInvitationPage() {
               disabled={sending}
               onClick={() => handleRsvp("DECLINED")}
             >
-              {translate("invitation.buttons.decline") ??
-                "Nie mogę uczestniczyć"}
+              {translate("button.decline") ?? "Nie mogę uczestniczyć"}
             </Button>
           </div>
         )}

@@ -216,14 +216,29 @@
   },
   "button": {
     "discard": "Odrzuć",
+    "decline": "Odrzuć",
     "close": "Zamknij",
     "cancel": "Anuluj",
     "delete": "Usuń",
     "more": "Więcej opcji",
     "open": "Otwórz",
-    "edit": "Edytuj"
+    "edit": "Edytuj",
+    "accept": "Zaakceptuj"
   },
   "templates": {
     "preview": "Podgląd"
+  },
+  "invitation": {
+    "thanks_accept": "Super! Cieszymy się że będziesz.",
+    "thanks_decline": "Szkoda, że się nie zobaczymy.",
+    "not_found": "Nie znaleziono zaproszenia",
+    "rsvp": {
+      "accepted": "Dziękujemy za potwierdzenie!",
+      "declined": "Dziękujemy za informację."
+    },
+    "errors": {
+      "not_found": "Nie znaleziono zaproszenia.",
+      "unknown": "Wystąpił nieoczekiwany błąd. Spróbuj ponownie później."
+    }
   }
 }
