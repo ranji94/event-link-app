@@ -5,7 +5,8 @@
  * OpenAPI spec version: 1.0
  */
 import type {
-  BulkCreateInviteesDto
+  BulkCreateInviteesDto,
+  InviteesControllerUpdateStatusBody
 } from './api.gen.schemas';
 
 import { orvalFetcher } from '../lib/orval-fetcher';
@@ -72,25 +73,13 @@ export type inviteesControllerListResponse200 = {
   data: void
   status: 200
 }
-
-export type inviteesControllerListResponse401 = {
-  data: void
-  status: 401
-}
-
-export type inviteesControllerListResponse404 = {
-  data: void
-  status: 404
-}
     
 export type inviteesControllerListResponseSuccess = (inviteesControllerListResponse200) & {
   headers: Headers;
 };
-export type inviteesControllerListResponseError = (inviteesControllerListResponse401 | inviteesControllerListResponse404) & {
-  headers: Headers;
-};
+;
 
-export type inviteesControllerListResponse = (inviteesControllerListResponseSuccess | inviteesControllerListResponseError)
+export type inviteesControllerListResponse = (inviteesControllerListResponseSuccess)
 
 export const getInviteesControllerListUrl = (eventId: string,) => {
 
@@ -103,6 +92,117 @@ export const getInviteesControllerListUrl = (eventId: string,) => {
 export const inviteesControllerList = async (eventId: string, options?: RequestInit): Promise<inviteesControllerListResponse> => {
   
   return orvalFetcher<inviteesControllerListResponse>(getInviteesControllerListUrl(eventId),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+/**
+ * @summary Usunięcie uczestnika z wydarzenia
+ */
+export type inviteesControllerDeleteResponse200 = {
+  data: void
+  status: 200
+}
+    
+export type inviteesControllerDeleteResponseSuccess = (inviteesControllerDeleteResponse200) & {
+  headers: Headers;
+};
+;
+
+export type inviteesControllerDeleteResponse = (inviteesControllerDeleteResponseSuccess)
+
+export const getInviteesControllerDeleteUrl = (eventId: string,
+    inviteeId: string,) => {
+
+
+  
+
+  return `/events/${eventId}/invitees/${inviteeId}`
+}
+
+export const inviteesControllerDelete = async (eventId: string,
+    inviteeId: string, options?: RequestInit): Promise<inviteesControllerDeleteResponse> => {
+  
+  return orvalFetcher<inviteesControllerDeleteResponse>(getInviteesControllerDeleteUrl(eventId,inviteeId),
+  {      
+    ...options,
+    method: 'DELETE'
+    
+    
+  }
+);}
+
+
+/**
+ * @summary Aktualizacja statusu RSVP uczestnika
+ */
+export type inviteesControllerUpdateStatusResponse200 = {
+  data: void
+  status: 200
+}
+    
+export type inviteesControllerUpdateStatusResponseSuccess = (inviteesControllerUpdateStatusResponse200) & {
+  headers: Headers;
+};
+;
+
+export type inviteesControllerUpdateStatusResponse = (inviteesControllerUpdateStatusResponseSuccess)
+
+export const getInviteesControllerUpdateStatusUrl = (eventId: string,
+    inviteeId: string,) => {
+
+
+  
+
+  return `/events/${eventId}/invitees/${inviteeId}/status`
+}
+
+export const inviteesControllerUpdateStatus = async (eventId: string,
+    inviteeId: string,
+    inviteesControllerUpdateStatusBody: InviteesControllerUpdateStatusBody, options?: RequestInit): Promise<inviteesControllerUpdateStatusResponse> => {
+  
+  return orvalFetcher<inviteesControllerUpdateStatusResponse>(getInviteesControllerUpdateStatusUrl(eventId,inviteeId),
+  {      
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      inviteesControllerUpdateStatusBody,)
+  }
+);}
+
+
+/**
+ * @summary Statystyki RSVP dla wydarzenia
+ */
+export type inviteesControllerStatsResponse200 = {
+  data: void
+  status: 200
+}
+    
+export type inviteesControllerStatsResponseSuccess = (inviteesControllerStatsResponse200) & {
+  headers: Headers;
+};
+;
+
+export type inviteesControllerStatsResponse = (inviteesControllerStatsResponseSuccess)
+
+export const getInviteesControllerStatsUrl = (eventId: string,) => {
+
+
+  
+
+  return `/events/${eventId}/invitees/stats`
+}
+
+export const inviteesControllerStats = async (eventId: string, options?: RequestInit): Promise<inviteesControllerStatsResponse> => {
+  
+  return orvalFetcher<inviteesControllerStatsResponse>(getInviteesControllerStatsUrl(eventId),
   {      
     ...options,
     method: 'GET'

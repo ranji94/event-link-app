@@ -72,21 +72,13 @@ export interface UpdateEventDto {
 }
 
 export interface CreateProgramItemDto {
+  id: string;
   dayIndex: number;
   time: string;
   icon: string;
   header: string;
   subheader: string;
   position: number;
-}
-
-export interface UpdateProgramItemDto {
-  dayIndex?: number;
-  time?: string;
-  icon?: string;
-  header?: string;
-  subheader?: string;
-  position?: number;
 }
 
 export interface BulkUpsertProgramDto {
@@ -96,9 +88,18 @@ export interface BulkUpsertProgramDto {
   deletedIds?: string[];
 }
 
-export interface CreateForInviteeDto {
-  /** Bazowy URL frontendu do zbudowania publicznego linku */
-  frontendBase?: string;
+export interface UpdateProgramItemDto {
+  id?: string;
+  dayIndex?: number;
+  time?: string;
+  icon?: string;
+  header?: string;
+  subheader?: string;
+  position?: number;
+}
+
+export interface CreateInvitationForInviteeDto {
+  frontendBase: string;
 }
 
 export interface InvitationsStatsDto {
@@ -109,51 +110,7 @@ export interface InvitationsStatsDto {
   viewed: number;
 }
 
-export type PublicEventDtoDate = { [key: string]: unknown };
-
-export type PublicEventDtoLocation = { [key: string]: unknown };
-
-export type PublicEventDtoDescription = { [key: string]: unknown };
-
-/**
- * Konfiguracja/metadata szablonu (jeśli przypisany)
- */
-export type PublicEventDtoTemplate = { [key: string]: unknown };
-
-export interface PublicEventDto {
-  title: string;
-  date?: PublicEventDtoDate;
-  location?: PublicEventDtoLocation;
-  description?: PublicEventDtoDescription;
-  /** Konfiguracja/metadata szablonu (jeśli przypisany) */
-  template?: PublicEventDtoTemplate;
-}
-
-export interface PublicInviteeDto {
-  fullName: string;
-  seats: number;
-}
-
-/**
- * Aktualny status RSVP
- */
-export type PublicInvitationGetResponseDtoStatus = typeof PublicInvitationGetResponseDtoStatus[keyof typeof PublicInvitationGetResponseDtoStatus];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const PublicInvitationGetResponseDtoStatus = {
-  ACCEPTED: 'ACCEPTED',
-  DECLINED: 'DECLINED',
-  TENTATIVE: 'TENTATIVE',
-  PENDING: 'PENDING',
-} as const;
-
-export interface PublicInvitationGetResponseDto {
-  event: PublicEventDto;
-  invitee: PublicInviteeDto;
-  /** Aktualny status RSVP */
-  status: PublicInvitationGetResponseDtoStatus;
-}
+export interface PublicInvitationGetResponseDto { [key: string]: unknown }
 
 export type PublicRsvpDtoStatus = typeof PublicRsvpDtoStatus[keyof typeof PublicRsvpDtoStatus];
 
@@ -232,5 +189,19 @@ export type ProgramControllerReorderBodyOrderItem = {
 
 export type ProgramControllerReorderBody = {
   order?: ProgramControllerReorderBodyOrderItem[];
+};
+
+export type InviteesControllerUpdateStatusBodyStatus = typeof InviteesControllerUpdateStatusBodyStatus[keyof typeof InviteesControllerUpdateStatusBodyStatus];
+
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const InviteesControllerUpdateStatusBodyStatus = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  DECLINED: 'DECLINED',
+} as const;
+
+export type InviteesControllerUpdateStatusBody = {
+  status?: InviteesControllerUpdateStatusBodyStatus;
 };
 

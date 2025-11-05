@@ -5,7 +5,7 @@
  * OpenAPI spec version: 1.0
  */
 import type {
-  CreateForInviteeDto,
+  CreateInvitationForInviteeDto,
   InvitationsStatsDto
 } from './api.gen.schemas';
 
@@ -55,7 +55,7 @@ export const getInvitationsControllerCreateForInviteeUrl = (eventId: string,
 
 export const invitationsControllerCreateForInvitee = async (eventId: string,
     inviteeId: string,
-    createForInviteeDto: CreateForInviteeDto, options?: RequestInit): Promise<invitationsControllerCreateForInviteeResponse> => {
+    createInvitationForInviteeDto: CreateInvitationForInviteeDto, options?: RequestInit): Promise<invitationsControllerCreateForInviteeResponse> => {
   
   return orvalFetcher<invitationsControllerCreateForInviteeResponse>(getInvitationsControllerCreateForInviteeUrl(eventId,inviteeId),
   {      
@@ -63,7 +63,7 @@ export const invitationsControllerCreateForInvitee = async (eventId: string,
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
     body: JSON.stringify(
-      createForInviteeDto,)
+      createInvitationForInviteeDto,)
   }
 );}
 

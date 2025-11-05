@@ -78,7 +78,8 @@
         "title_min": "Tytuł powinien mieć co najmniej 3 znaki.",
         "date_required": "Podaj datę i godzinę wydarzenia.",
         "create_failed": "Nie udało się utworzyć wydarzenia.",
-        "unknown": "Wystąpił nieoczekiwany błąd po stronie serwera. Spróbuj później."
+        "unknown": "Wystąpił nieoczekiwany błąd po stronie serwera. Spróbuj później.",
+        "no_response": "Brak odpowiedzi z serwera"
       },
       "header": {
         "WEDDING": "Nowe wydarzenie — Ślub/Wesele",
@@ -113,6 +114,7 @@
       }
     },
     "list": {
+      "no_location": "Brak lokalizacji",
       "card": {
         "manage": "Zarządzaj",
         "openAria": "Otwórz wydarzenie „{{title}}”"
@@ -143,6 +145,68 @@
       "description": "Tu wpisz treść zaproszenia…",
       "select": "— wybierz —"
     }
+  },
+  "guests": {
+    "header": {
+      "title": "Zaproszeni goście",
+      "subtitle": "Dodaj gości i wyślij im spersonalizowane linki do zaproszeń."
+    },
+    "notice": {
+      "public_name": "Link do zaproszenia jest publiczny. Na karcie zaproszenia będzie widoczna nazwa gościa dokładnie tak, jak ją wpiszesz (np. „Marta i Adrian z dziećmi”)."
+    },
+    "stats": {
+      "accepted": "Potwierdzeni",
+      "tentative": "Oczekujący",
+      "declined": "Odrzuceni"
+    },
+    "actions": {
+      "import": "Importuj wielu",
+      "add_one": "Dodaj gościa",
+      "copy_link": "Link",
+      "copy_link_tt": "Utwórz i skopiuj link",
+      "share": "Udostępnij",
+      "share_tt": "Utwórz i udostępnij",
+      "send_email": "E-mail",
+      "send_email_tt": "Wyślij e-mail",
+      "delete_tt": "Usuń gościa"
+    },
+    "form": {
+      "full_name": "Imię i nazwisko / opis",
+      "full_name_ph": "np. „Marta i Adrian z dziećmi”",
+      "group_name": "Grupa (opcjonalnie)",
+      "group_name_ph": "np. Rodzina, Przyjaciele",
+      "add_btn": "Dodaj"
+    },
+    "toasts": {
+      "loaded": "Załadowano listę gości",
+      "added": "Dodano {{count}} gości",
+      "link_copied": "Link do zaproszenia skopiowany",
+      "email_sent": "E-mail z zaproszeniem został wysłany",
+      "deleted": "Gość został usunięty",
+      "shared": "Zaproszenie udostępnione",
+      "status_updated": "Zaktualizowano"
+    },
+    "confirm": {
+      "delete": {
+        "title": "Usunąć gościa?",
+        "desc": "Czy na pewno chcesz usunąć zaproszenie dla {{name}}?"
+      }
+    },
+    "share": {
+      "title": "Zaproszenie na wydarzenie",
+      "text": "Hej {{name}}! Oto Twoje zaproszenie na wydarzenie. Potwierdź obecność w linku:"
+    },
+    "errors": {
+      "unknown": "Wystąpił nieoczekiwany błąd po stronie serwera. Spróbuj później.",
+      "no_response": "Brak odpowiedzi z serwera"
+    },
+    "status": {
+      "pending": "Oczekuje",
+      "accepted": "Zaakceptowaane",
+      "declined": "Odrzucone"
+    },
+    "empty": "Brak gości. Dodaj pierwszego powyżej.",
+    "unknown": "Gość"
   },
   "common": {
     "loading": "Ładowanie",

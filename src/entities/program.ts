@@ -103,6 +103,80 @@ export const programControllerCreate = async (eventId: string,
 
 
 /**
+ * @summary Masowy upsert programu
+ */
+export type programControllerBulkUpsertResponse200 = {
+  data: void
+  status: 200
+}
+    
+export type programControllerBulkUpsertResponseSuccess = (programControllerBulkUpsertResponse200) & {
+  headers: Headers;
+};
+;
+
+export type programControllerBulkUpsertResponse = (programControllerBulkUpsertResponseSuccess)
+
+export const getProgramControllerBulkUpsertUrl = (eventId: string,) => {
+
+
+  
+
+  return `/events/${eventId}/program/bulk`
+}
+
+export const programControllerBulkUpsert = async (eventId: string,
+    bulkUpsertProgramDto: BulkUpsertProgramDto, options?: RequestInit): Promise<programControllerBulkUpsertResponse> => {
+  
+  return orvalFetcher<programControllerBulkUpsertResponse>(getProgramControllerBulkUpsertUrl(eventId),
+  {      
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      bulkUpsertProgramDto,)
+  }
+);}
+
+
+/**
+ * @summary Masowe dodanie punktów programu
+ */
+export type programControllerBulkResponse201 = {
+  data: void
+  status: 201
+}
+    
+export type programControllerBulkResponseSuccess = (programControllerBulkResponse201) & {
+  headers: Headers;
+};
+;
+
+export type programControllerBulkResponse = (programControllerBulkResponseSuccess)
+
+export const getProgramControllerBulkUrl = (eventId: string,) => {
+
+
+  
+
+  return `/events/${eventId}/program/bulk`
+}
+
+export const programControllerBulk = async (eventId: string,
+    programControllerBulkBody: ProgramControllerBulkBody, options?: RequestInit): Promise<programControllerBulkResponse> => {
+  
+  return orvalFetcher<programControllerBulkResponse>(getProgramControllerBulkUrl(eventId),
+  {      
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      programControllerBulkBody,)
+  }
+);}
+
+
+/**
  * @summary Aktualizuj punkt programu
  */
 export type programControllerUpdateResponse200 = {
@@ -188,80 +262,6 @@ export const programControllerRemove = async (eventId: string,
     method: 'DELETE'
     
     
-  }
-);}
-
-
-/**
- * @summary Masowe dodanie punktów programu
- */
-export type programControllerBulkResponse201 = {
-  data: void
-  status: 201
-}
-    
-export type programControllerBulkResponseSuccess = (programControllerBulkResponse201) & {
-  headers: Headers;
-};
-;
-
-export type programControllerBulkResponse = (programControllerBulkResponseSuccess)
-
-export const getProgramControllerBulkUrl = (eventId: string,) => {
-
-
-  
-
-  return `/events/${eventId}/program/bulk`
-}
-
-export const programControllerBulk = async (eventId: string,
-    programControllerBulkBody: ProgramControllerBulkBody, options?: RequestInit): Promise<programControllerBulkResponse> => {
-  
-  return orvalFetcher<programControllerBulkResponse>(getProgramControllerBulkUrl(eventId),
-  {      
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      programControllerBulkBody,)
-  }
-);}
-
-
-/**
- * @summary Masowa aktualizacja lub dodanie punktów programu
- */
-export type programControllerBulkUpsertResponse200 = {
-  data: void
-  status: 200
-}
-    
-export type programControllerBulkUpsertResponseSuccess = (programControllerBulkUpsertResponse200) & {
-  headers: Headers;
-};
-;
-
-export type programControllerBulkUpsertResponse = (programControllerBulkUpsertResponseSuccess)
-
-export const getProgramControllerBulkUpsertUrl = (eventId: string,) => {
-
-
-  
-
-  return `/events/${eventId}/program/bulk`
-}
-
-export const programControllerBulkUpsert = async (eventId: string,
-    bulkUpsertProgramDto: BulkUpsertProgramDto, options?: RequestInit): Promise<programControllerBulkUpsertResponse> => {
-  
-  return orvalFetcher<programControllerBulkUpsertResponse>(getProgramControllerBulkUpsertUrl(eventId),
-  {      
-    ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      bulkUpsertProgramDto,)
   }
 );}
 

@@ -6,8 +6,20 @@ import { useParams, useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { CalendarDays, MapPin, ArrowLeft, Info } from "lucide-react";
+import {
+  CalendarDays,
+  MapPin,
+  ArrowLeft,
+  Info,
+  Share2,
+  Link2,
+  Plus,
+  Users,
+  Trash2,
+  Mail,
+} from "lucide-react";
 
 import { useEvents, type EventListItem } from "@/lib/events/use-events";
 import { programControllerList } from "@/entities/program";
@@ -18,7 +30,10 @@ import { formatDate } from "@/common/utils";
 import { getTemplateById } from "@/components/templates/TemplatePicker";
 import { templates } from "@/templates/registry";
 
-// Prostokątne, pastelowe tła jak w kafelkach listy:
+// ✅ nowy hook – zarządzanie gośćmi (jak w poprzedniej wiadomości)
+import { useGuests } from "@/lib/events/guests/use-guests";
+
+// Pastelowe badge dla typu wydarzenia
 const KIND_BADGE_CLASS: Record<string, string> = {
   WEDDING: "bg-rose-100 text-rose-900",
   BAPTISM: "bg-sky-100 text-sky-900",
@@ -34,10 +49,29 @@ export default function EventDetailsPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const { getOne } = useEvents();
+
   const [item, setItem] = React.useState<EventListItem | null>(null);
   const [program, setProgram] = React.useState<CreateProgramItemDto[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
+
+  // Guests hook
+  const {
+    guests,
+    stats,
+    loading: guestsLoading,
+    listGuests,
+    bulkAddGuests,
+    createInvitation,
+    sendInvitationEmail,
+    shareInvitation,
+    deleteGuest,
+    loadStats,
+  } = useGuests(params.id);
+
+  // Formularz „szybkiego dodania” jednego gościa
+  const [fullName, setFullName] = React.useState("");
+  const [groupName, setGroupName] = React.useState("");
 
   React.useEffect(() => {
     let mounted = true;
@@ -48,14 +82,10 @@ export default function EventDetailsPage() {
         if (ev.ok) setItem(ev.data);
         else setError(ev.message);
 
-        // program (best-effort)
         const body = await programControllerList(params.id, {
           credentials: "include",
         });
 
-        // API zwraca tablicę; typ w orvalu jest ogólny -> rzut typów
-        // Jeżeli backend ma inne właściwości, pokażemy to co mamy.
-        // :contentReference[oaicite:2]{index=2}
         // @ts-expect-error – orval typuje elementy jako unknown
         setProgram(
           (body ?? []).map((x, i) => ({
@@ -75,10 +105,43 @@ export default function EventDetailsPage() {
       }
     }
     void load();
+
+    // załaduj gości + statystyki RSVP
+    void listGuests();
+    void loadStats();
+
     return () => {
       mounted = false;
     };
-  }, [getOne, params.id]);
+  }, [getOne, params.id, listGuests, loadStats]);
+
+  // Handlery UI gości
+  async function onQuickAddGuest(e: React.FormEvent) {
+    e.preventDefault();
+    const name = fullName.trim();
+    const group = groupName.trim();
+    if (!name) return;
+
+    await bulkAddGuests([{ fullName: name, groupName: group || undefined }]);
+    setFullName("");
+    setGroupName("");
+  }
+
+  async function onGenerateAndShare(inviteeId: string, displayName: string) {
+    const res = await createInvitation(inviteeId);
+    if (res.ok && res.url) {
+      await shareInvitation(res.url, displayName);
+      await loadStats();
+    }
+  }
+
+  async function onCopyLink(inviteeId: string) {
+    const res = await createInvitation(inviteeId);
+    // samo createInvitation kopiuje link do schowka w hooku
+    if (res.ok) {
+      await loadStats();
+    }
+  }
 
   if (loading) {
     return (
@@ -170,6 +233,215 @@ export default function EventDetailsPage() {
         </Button>
       </div>
 
+      {/* 🔥 Sekcja GOŚCIE – bardzo wyeksponowana, mobile-first */}
+      <Card className="ring-1 ring-black/5">
+        <CardContent className="p-6 space-y-5">
+          {/* Pasek nagłówka z call-to-action */}
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-2">
+              <span className="rounded-xl bg-emerald-100 p-2">
+                <Users className="h-5 w-5 text-emerald-700" />
+              </span>
+              <div>
+                <h2 className="text-base font-semibold tracking-tight">
+                  {translate("guests.header.title") ?? "Zaproszeni goście"}
+                </h2>
+                <p className="text-sm text-gray-600">
+                  {translate("guests.header.subtitle") ??
+                    "Dodaj gości i wyślij im spersonalizowane linki do zaproszeń."}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() =>
+                  bulkAddGuests([
+                    // PRZYKŁAD IMPORTU – docelowo z CSV/textarea
+                    // { fullName: "Marta i Adrian z dziećmi" },
+                  ])
+                }
+                disabled={guestsLoading}
+              >
+                {translate("guests.actions.import") ?? "Importuj wielu"}
+              </Button>
+            </div>
+          </div>
+
+          {/* Informacja o prywatności / personalizacji */}
+          <div className="rounded-xl bg-amber-50 p-3 text-sm ring-1 ring-amber-200">
+            <div className="flex items-start gap-2 text-amber-800">
+              <Info className="mt-0.5 h-4 w-4" />
+              <p>
+                {translate("guests.notice.public_name") ??
+                  "Link do zaproszenia jest publiczny. Na karcie zaproszenia będzie widoczna nazwa gościa dokładnie tak, jak ją wpiszesz (np. „Marta i Adrian z dziećmi”)."}
+              </p>
+            </div>
+          </div>
+
+          {/* Statystyki RSVP */}
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <StatPill
+              label={translate("guests.stats.accepted") ?? "Potwierdzeni"}
+              value={String(stats?.accepted ?? 0)}
+              tone="success"
+            />
+            <StatPill
+              label={translate("guests.stats.tentative") ?? "Oczekujący"}
+              value={String(stats?.tentative ?? 0)}
+              tone="muted"
+            />
+            <StatPill
+              label={translate("guests.stats.declined") ?? "Odrzuceni"}
+              value={String(stats?.declined ?? 0)}
+              tone="danger"
+            />
+          </div>
+
+          <Separator />
+
+          {/* Szybkie dodanie pojedynczego gościa */}
+          <form
+            id="quick-add"
+            onSubmit={onQuickAddGuest}
+            className="grid grid-cols-1 gap-3 sm:grid-cols-6"
+          >
+            <div className="sm:col-span-3">
+              <label className="mb-1 block text-xs font-medium text-gray-600">
+                {translate("guests.form.full_name") ?? "Imię i nazwisko / opis"}
+              </label>
+              <Input
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                placeholder={
+                  translate("guests.form.full_name_ph") ??
+                  "np. „Marta i Adrian z dziećmi”"
+                }
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <label className="mb-1 block text-xs font-medium text-gray-600">
+                {translate("guests.form.group_name") ?? "Grupa (opcjonalnie)"}
+              </label>
+              <Input
+                value={groupName}
+                onChange={(e) => setGroupName(e.target.value)}
+                placeholder={
+                  translate("guests.form.group_name_ph") ??
+                  "Rodzina, Przyjaciele..."
+                }
+              />
+            </div>
+            <div className="sm:col-span-1 flex items-end">
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={guestsLoading || !fullName.trim()}
+              >
+                <Plus className="mr-2 h-4 w-4" />
+                {translate("guests.form.add_btn") ?? "Dodaj"}
+              </Button>
+            </div>
+          </form>
+
+          {/* Lista gości */}
+          <div className="rounded-2xl border">
+            {guests.length === 0 ? (
+              <div className="p-4 text-sm text-gray-600">
+                {translate("guests.empty") ??
+                  "Brak gości. Dodaj pierwszego powyżej."}
+              </div>
+            ) : (
+              <ul className="divide-y">
+                {guests.map((g) => {
+                  const display =
+                    g.fullName || translate("guests.unknown") || "Gość";
+                  return (
+                    <li
+                      key={g.id ?? display}
+                      className="flex flex-col gap-3 p-3 sm:flex-row sm:items-center sm:justify-between"
+                    >
+                      <div className="min-w-0">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <div className="truncate font-medium">{display}</div>
+                          {/* ⇩ status obok nazwy, widoczny na mobile */}
+                          <StatusPill status={g.status} />
+                        </div>
+                        {g.groupName && (
+                          <div className="truncate text-sm text-gray-600">
+                            {g.groupName}
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-2">
+                        <Button
+                          size="sm"
+                          variant="secondary"
+                          onClick={() => onCopyLink(g.id!)}
+                          disabled={guestsLoading || !g.id}
+                          title={
+                            translate("guests.actions.copy_link_tt") ??
+                            "Utwórz i skopiuj link"
+                          }
+                        >
+                          <Link2 className="mr-2 h-4 w-4" />
+                          {translate("guests.actions.copy_link") ?? "Link"}
+                        </Button>
+
+                        <Button
+                          size="sm"
+                          variant="secondary"
+                          onClick={() => onGenerateAndShare(g.id!, display)}
+                          disabled={guestsLoading || !g.id}
+                          title={
+                            translate("guests.actions.share_tt") ??
+                            "Utwórz i udostępnij"
+                          }
+                        >
+                          <Share2 className="mr-2 h-4 w-4" />
+                          {translate("guests.actions.share") ?? "Udostępnij"}
+                        </Button>
+
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => sendInvitationEmail(g.id!)}
+                          disabled={guestsLoading || !g.id}
+                          title={
+                            translate("guests.actions.send_email_tt") ??
+                            "Wyślij e-mail"
+                          }
+                        >
+                          <Mail className="mr-2 h-4 w-4" />
+                          {translate("guests.actions.send_email") ?? "E-mail"}
+                        </Button>
+
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => deleteGuest(g.id!, display)}
+                          disabled={guestsLoading || !g.id}
+                          title={
+                            translate("guests.actions.delete_tt") ??
+                            "Usuń gościa"
+                          }
+                        >
+                          <Trash2 className="mr-2 h-4 w-4" />
+                          {translate("button.delete")}
+                        </Button>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Opis + Preview */}
       <div className="grid gap-6 lg:grid-cols-2">
         <Card className="ring-1 ring-black/5">
@@ -251,5 +523,64 @@ function SkeletonHeader() {
       <div className="h-7 w-80 animate-pulse rounded bg-muted" />
       <div className="h-5 w-64 animate-pulse rounded bg-muted" />
     </div>
+  );
+}
+
+/* ======= Mały, wielorazowy komponent statystyki ======= */
+function StatPill({
+  label,
+  value,
+  tone = "muted",
+}: {
+  label: string;
+  value: string;
+  tone?: "success" | "danger" | "muted";
+}) {
+  const tones: Record<typeof tone, string> = {
+    success: "bg-emerald-50 text-emerald-800 ring-emerald-200",
+    danger: "bg-red-50 text-red-800 ring-red-200",
+    muted: "bg-gray-50 text-gray-800 ring-gray-200",
+  };
+  return (
+    <div
+      className={`rounded-xl px-3 py-2 text-sm ring-1 ${tones[tone]} flex items-center justify-between`}
+    >
+      <span className="font-medium">{label}</span>
+      <span className="font-semibold">{value}</span>
+    </div>
+  );
+}
+
+function StatusPill({
+  status,
+}: {
+  status: "PENDING" | "ACCEPTED" | "DECLINED" | undefined;
+}) {
+  const s = status ?? "PENDING";
+
+  const map: Record<
+    "PENDING" | "ACCEPTED" | "DECLINED",
+    { label: string; cls: string }
+  > = {
+    PENDING: {
+      label: translate("guests.status.pending") ?? "Oczekujące",
+      cls: "bg-gray-50 text-gray-800 ring-1 ring-gray-200",
+    },
+    ACCEPTED: {
+      label: translate("guests.status.accepted") ?? "Potwierdzone",
+      cls: "bg-emerald-50 text-emerald-800 ring-1 ring-emerald-200",
+    },
+    DECLINED: {
+      label: translate("guests.status.declined") ?? "Odrzucone",
+      cls: "bg-red-50 text-red-800 ring-1 ring-red-200",
+    },
+  };
+
+  return (
+    <span
+      className={`inline-flex items-center rounded-xl px-2.5 py-1 text-xs font-medium ${map[s].cls}`}
+    >
+      {map[s].label}
+    </span>
   );
 }
