@@ -2,9 +2,10 @@ import "./globals.css";
 import type { Metadata } from "next";
 import Providers from "./providers";
 import { GlobalOverlay } from "@/components/common/global-overlay";
+import { translate } from "@/locales";
 
 export const metadata: Metadata = {
-  title: "EventSpot",
+  title: `EventSpot | ${translate("meta.title")}`,
 };
 
 export default function RootLayout({

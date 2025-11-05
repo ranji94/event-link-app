@@ -1,8 +1,9 @@
 export const AppLogo = () => {
   return (
     <div className="text-center">
-      <span className="text-gray-900">Event</span>
-      <span className="text-indigo-600">Spot</span>
+      <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-indigo-600">
+        EventSpot
+      </h1>
     </div>
   );
 };

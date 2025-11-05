@@ -1,4 +1,7 @@
 {
+  "meta": {
+    "title": "To będzie wspaniała impreza!"
+  },
   "error": {
     "auth": {
       "USER_CREATE_EMAIL_ALREADY_IN_USE": "Taki adres e-mail jest już używany.",
