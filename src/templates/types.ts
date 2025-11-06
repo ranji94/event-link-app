@@ -13,6 +13,12 @@ export type PreviewProps = {
     subheader?: string;
     position?: number;
   }[];
+  inviteeName?: string;
+  rsvpStatus?: "ACCEPTED" | "DECLINED" | null;
+  sending?: boolean;
+  onAccept?: () => void;
+  onDecline?: () => void;
+  layout?: "embedded" | "fullscreen";
 };
 
 export type TemplateDef = {

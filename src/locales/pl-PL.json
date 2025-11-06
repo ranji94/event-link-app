@@ -192,7 +192,7 @@
     "confirm": {
       "delete": {
         "title": "Usunąć gościa?",
-        "desc": "Czy na pewno chcesz usunąć zaproszenie dla {{name}}?"
+        "desc": "Czy na pewno chcesz usunąć zaproszenie dla {name}?"
       }
     },
     "share": {

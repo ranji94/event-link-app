@@ -1,6 +1,8 @@
 import * as React from "react";
 import type { TemplateDef } from "../types";
 import * as Lucide from "lucide-react";
+import { format } from "date-fns";
+import { pl } from "date-fns/locale";
 
 /**
  * WEDDING – Botanical & Gold
@@ -12,10 +14,28 @@ export const weddingBotanicalGold: TemplateDef = {
   id: "wedding-botanical-gold",
   name: "Wedding — Botanical & Gold",
   accent: "emerald",
-  Preview: ({ title, description, date, location, program }) => {
-    const titleText = title || "Ślub Ani & Pawła";
-    const locationText = location || "Warszawa — Kościół św. Anny";
-    const dateText = date ? new Date(date).toLocaleString() : "Sobota, 14:30";
+  Preview: ({
+    title,
+    description,
+    date,
+    location,
+    program,
+    rsvpStatus,
+    sending,
+    onAccept,
+    onDecline,
+    inviteeName,
+  }) => {
+    const titleText = title || "Ślub";
+    const locationText = location || "Kościół";
+    const dateText = date
+      ? format(new Date(date), "d MMMM yyyy, 'godzina' HH:mm", { locale: pl })
+      : "Sobota, 14:30";
+
+    // Personalizowany nagłówek dla gościa
+    const personalizedGreeting = inviteeName
+      ? `${inviteeName}, zapraszamy serdecznie!`
+      : "Serdecznie zapraszamy";
 
     return (
       <div className="relative min-h-[80vh] w-full overflow-hidden bg-gradient-to-br from-emerald-50 via-white to-amber-50">
@@ -37,8 +57,11 @@ export const weddingBotanicalGold: TemplateDef = {
             </div>
 
             {/* TREŚĆ */}
-            <div className="prose prose-emerald mx-auto mt-6 max-w-2xl text-gray-700 prose-p:leading-relaxed">
-              <p className="whitespace-pre-wrap">
+            <div className="prose prose-emerald mx-auto mt-8 max-w-2xl text-gray-700 prose-p:leading-relaxed">
+              <p className="text-center italic text-emerald-700 font-medium">
+                {personalizedGreeting}
+              </p>
+              <p className="whitespace-pre-wrap mt-3">
                 {description ||
                   "Mamy zaszczyt zaprosić Was do wspólnego świętowania naszego ślubu. Po ceremonii zapraszamy na przyjęcie weselne w ogrodach Dworu Konstancja. Prosimy o potwierdzenie obecności do 10 czerwca."}
               </p>
@@ -70,7 +93,6 @@ export const weddingBotanicalGold: TemplateDef = {
                           key={idx}
                           className="relative grid grid-cols-[1fr_auto] gap-4 pl-12 py-2"
                         >
-                          {/* Górny odcinek (do środka kropki) – ukryj dla pierwszego */}
                           {!isFirst && (
                             <span
                               aria-hidden
@@ -78,8 +100,6 @@ export const weddingBotanicalGold: TemplateDef = {
                               style={{ top: 0, bottom: "50%" }}
                             />
                           )}
-
-                          {/* Dolny odcinek (od środka kropki) – ukryj dla ostatniego */}
                           {!isLast && (
                             <span
                               aria-hidden
@@ -87,13 +107,10 @@ export const weddingBotanicalGold: TemplateDef = {
                               style={{ top: "50%", bottom: 0 }}
                             />
                           )}
-
-                          {/* Kropka z ikoną – zawsze idealnie w środku elementu */}
                           <span className="absolute left-[18px] top-1/2 -translate-y-1/2 -translate-x-1/2 inline-flex h-7 w-7 items-center justify-center rounded-full bg-amber-100 ring-1 ring-amber-300">
                             <Icon className="h-4 w-4 text-amber-700" />
                           </span>
 
-                          {/* Treść */}
                           <div>
                             <div className="font-semibold text-gray-900">
                               {it.header}
@@ -105,7 +122,6 @@ export const weddingBotanicalGold: TemplateDef = {
                             )}
                           </div>
 
-                          {/* Godzina */}
                           <div className="text-right text-sm font-semibold text-gray-700">
                             {it.time}
                           </div>
@@ -113,6 +129,36 @@ export const weddingBotanicalGold: TemplateDef = {
                       );
                     })}
                 </ol>
+              </div>
+            )}
+
+            {/* RSVP */}
+            {!rsvpStatus ? (
+              <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
+                <button
+                  disabled={sending}
+                  onClick={onAccept}
+                  className="cursor-pointer rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 font-semibold transition"
+                >
+                  Wezmę udział
+                </button>
+                <button
+                  disabled={sending}
+                  onClick={onDecline}
+                  className="cursor-pointer rounded-xl border border-amber-400 text-amber-700 hover:bg-amber-50 px-6 py-3 font-semibold transition"
+                >
+                  Nie mogę uczestniczyć
+                </button>
+              </div>
+            ) : rsvpStatus === "ACCEPTED" ? (
+              <div className="mt-10 text-center text-emerald-700 font-medium">
+                <Lucide.CheckCircle2 className="mx-auto mb-2 h-8 w-8" />
+                Cieszymy się, że będziesz!
+              </div>
+            ) : (
+              <div className="mt-10 text-center text-amber-700 font-medium">
+                <Lucide.XCircle className="mx-auto mb-2 h-8 w-8" />
+                Szkoda, że się nie zobaczymy.
               </div>
             )}
 
@@ -183,7 +229,6 @@ function LeafDecor({ position }: { position: "top-left" | "bottom-right" }) {
         <path d="M30 150 C 60 130, 85 110, 95 70" />
         <path d="M55 165 C 85 145, 105 120, 120 85" />
         <path d="M85 180 C 110 160, 130 135, 145 100" />
-        {/* listki */}
         {[
           [68, 75],
           [98, 90],

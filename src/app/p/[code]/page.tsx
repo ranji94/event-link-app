@@ -2,9 +2,6 @@
 
 import * as React from "react";
 import { useParams } from "next/navigation";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import {
   publicInvitationsControllerGet,
@@ -15,7 +12,7 @@ import type {
   PublicRsvpDto,
 } from "@/entities/api.gen.schemas";
 import { translate } from "@/locales";
-import { CheckCircle2, XCircle, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { getTemplateById } from "@/components/templates/TemplatePicker";
 import { templates } from "@/templates/registry";
 
@@ -90,67 +87,19 @@ export default function PublicInvitationPage() {
     templates[0].Preview;
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white p-6">
-      <div className="mx-auto max-w-3xl space-y-6">
-        {/* 🔥 Wybrany szablon z programem */}
-        <Card className="ring-1 ring-black/5">
-          <CardContent className="p-0">
-            <SelectedPreview
-              title={event.title}
-              description={event.description ?? undefined}
-              date={event.date}
-              location={event.location ?? undefined}
-              program={event.program ?? []}
-              inviteeName={invitee.fullName}
-            />
-          </CardContent>
-        </Card>
-
-        <Separator />
-
-        {/* Akcje RSVP */}
-        {rsvpStatus ? (
-          <Card className="ring-1 ring-black/5">
-            <CardContent className="p-6 text-center">
-              {rsvpStatus === "ACCEPTED" ? (
-                <div className="flex flex-col items-center gap-2 text-emerald-700">
-                  <CheckCircle2 className="h-8 w-8" />
-                  <p>
-                    {translate("invitation.thanks_accept") ??
-                      "Cieszymy się, że będziesz!"}
-                  </p>
-                </div>
-              ) : (
-                <div className="flex flex-col items-center gap-2 text-red-600">
-                  <XCircle className="h-8 w-8" />
-                  <p>
-                    {translate("invitation.thanks_decline") ??
-                      "Szkoda, że się nie zobaczymy."}
-                  </p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        ) : (
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button
-              className="bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer"
-              disabled={sending}
-              onClick={() => handleRsvp("ACCEPTED")}
-            >
-              {translate("button.accept") ?? "Wezmę udział"}
-            </Button>
-            <Button
-              variant="outline"
-              className="border-red-500 text-red-600 hover:bg-red-50 cursor-pointer"
-              disabled={sending}
-              onClick={() => handleRsvp("DECLINED")}
-            >
-              {translate("button.decline") ?? "Nie mogę uczestniczyć"}
-            </Button>
-          </div>
-        )}
-      </div>
+    <main className="min-h-screen">
+      <SelectedPreview
+        title={event.title}
+        description={event.description ?? undefined}
+        date={event.date}
+        location={event.location ?? undefined}
+        program={event.program ?? []}
+        inviteeName={invitee.fullName}
+        rsvpStatus={rsvpStatus}
+        sending={sending}
+        onAccept={() => handleRsvp("ACCEPTED")}
+        onDecline={() => handleRsvp("DECLINED")}
+      />
     </main>
   );
 }

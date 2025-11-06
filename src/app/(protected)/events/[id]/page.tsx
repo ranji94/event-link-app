@@ -459,6 +459,7 @@ export default function EventDetailsPage() {
                 date={item.date}
                 location={item.location ?? undefined}
                 program={program}
+                inviteeName="Helena Goździkowa"
               />
             </div>
           </CardContent>
