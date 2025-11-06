@@ -12,13 +12,17 @@ export default function ProtectedLayout({
 }) {
   return (
     <div className="min-h-dvh bg-gray-50">
-      <header className="sticky top-0 z-800 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+      <header className="sticky top-0 z-[800] bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 border-b border-gray-100">
         <Container className="flex items-center justify-between py-3">
-          <Link href="/events" className="text-lg font-semibold tracking-tight">
+          <Link
+            href="/events"
+            className="flex items-center gap-2 text-lg font-semibold tracking-tight text-gray-900 hover:opacity-80"
+          >
             <AppLogo />
           </Link>
 
-          <nav className="hidden items-center gap-6 text-sm text-gray-700 md:flex">
+          {/* desktop nav */}
+          <nav className="hidden md:flex items-center gap-6 text-sm text-gray-700">
             <Link href="/events" className="hover:text-gray-900">
               {translate("nav.my_events")}
             </Link>
@@ -28,14 +32,7 @@ export default function ProtectedLayout({
           </nav>
 
           <div className="flex items-center gap-3">
-            {/* Notifications - to be implemented in the future
-            <button
-              aria-label={translate("aria.notifications")}
-              className="rounded-full p-2 hover:bg-gray-100"
-            >
-              <span className="inline-block h-2 w-2 rounded-full bg-red-500" />
-            </button> */}
-            <ProfileMenu initials="A.P" />
+            <ProfileMenu />
           </div>
         </Container>
       </header>

@@ -40,38 +40,6 @@ export type EventListItem = {
   templateKey?: string | null;
   createdAt?: string;
   updatedAt?: string;
-
-  /** Lista uczestników (gości) wydarzenia */
-  invitees: {
-    id: string;
-    eventId: string;
-    fullName: string;
-    email?: string | null;
-    phone?: string | null;
-    seats?: number | null;
-    groupName?: string | null;
-    notes?: string | null;
-    createdAt: string;
-    updatedAt: string;
-
-    /** Powiązane zaproszenie (może nie istnieć, więc optional) */
-    invitation?: {
-      id: string;
-      eventId: string;
-      inviteeId: string;
-      code: string;
-      publicUrl: string;
-      status: "PENDING" | "ACCEPTED" | "DECLINED" | "TENTATIVE";
-      rsvpAt?: string | null;
-      rsvpCount?: number | null;
-      rsvpNote?: string | null;
-      sentAt?: string | null;
-      lastViewAt?: string | null;
-      views: number;
-      createdAt: string;
-      updatedAt: string;
-    } | null;
-  }[];
 };
 
 function errMessage(e: unknown): string {

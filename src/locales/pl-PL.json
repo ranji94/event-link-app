@@ -159,7 +159,7 @@
     },
     "stats": {
       "accepted": "Potwierdzeni",
-      "tentative": "Oczekujący",
+      "viewed": "Wyświetlono",
       "declined": "Odrzuceni"
     },
     "actions": {

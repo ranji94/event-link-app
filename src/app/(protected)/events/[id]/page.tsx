@@ -47,12 +47,21 @@ export default function EventDetailsPage() {
   const router = useRouter();
   const { getOne } = useEvents();
 
+  const refreshEvent = React.useCallback(async () => {
+    if (!params.id) return;
+    const ev = await getOne(params.id);
+    if (ev.ok) {
+      setItem(ev.data);
+    }
+  }, [getOne, params.id]);
+
   const [item, setItem] = React.useState<EventListItem | null>(null);
   const [program, setProgram] = React.useState<CreateProgramItemDto[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
 
   const {
+    guests,
     stats,
     loading: guestsLoading,
     listGuests,
@@ -63,7 +72,6 @@ export default function EventDetailsPage() {
     loadStats,
   } = useGuests(params.id);
 
-  // Formularz „szybkiego dodania” jednego gościa
   const [fullName, setFullName] = React.useState("");
   const [groupName, setGroupName] = React.useState("");
 
@@ -71,16 +79,12 @@ export default function EventDetailsPage() {
     let mounted = true;
     async function load() {
       try {
-        const ev = await getOne(params.id);
-        if (!mounted) return;
-        if (ev.ok) setItem(ev.data);
-        else setError(ev.message);
+        await refreshEvent();
 
         const body = await programControllerList(params.id, {
           credentials: "include",
         });
 
-        // @ts-expect-error – orval typuje elementy jako unknown
         setProgram(
           (body ?? []).map((x, i) => ({
             dayIndex: x.dayIndex ?? 0,
@@ -98,16 +102,17 @@ export default function EventDetailsPage() {
         if (mounted) setLoading(false);
       }
     }
+
     void load();
 
-    // załaduj gości + statystyki RSVP
+    // załaduj statystyki RSVP
     void listGuests();
     void loadStats();
 
     return () => {
       mounted = false;
     };
-  }, [getOne, params.id, listGuests, loadStats]);
+  }, [refreshEvent, params.id, listGuests, loadStats]);
 
   // Handlery UI gości
   async function onQuickAddGuest(e: React.FormEvent) {
@@ -279,14 +284,14 @@ export default function EventDetailsPage() {
           {/* Statystyki RSVP */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <StatPill
+              label={translate("guests.stats.viewed") ?? "Wyświetlenia"}
+              value={String(stats?.viewed ?? 0)}
+              tone="muted"
+            />
+            <StatPill
               label={translate("guests.stats.accepted") ?? "Potwierdzeni"}
               value={String(stats?.accepted ?? 0)}
               tone="success"
-            />
-            <StatPill
-              label={translate("guests.stats.tentative") ?? "Oczekujący"}
-              value={String(stats?.tentative ?? 0)}
-              tone="muted"
             />
             <StatPill
               label={translate("guests.stats.declined") ?? "Odrzuceni"}
@@ -343,14 +348,14 @@ export default function EventDetailsPage() {
 
           {/* Lista gości */}
           <div className="rounded-2xl border">
-            {item.invitees.length === 0 ? (
+            {guests.length === 0 ? (
               <div className="p-4 text-sm text-gray-600">
                 {translate("guests.empty") ??
                   "Brak gości. Dodaj pierwszego powyżej."}
               </div>
             ) : (
               <ul className="divide-y">
-                {item.invitees.map((g) => {
+                {guests.map((g) => {
                   console.log("GUETS: ", g);
                   const display =
                     g.fullName || translate("guests.unknown") || "Gość";
@@ -363,7 +368,7 @@ export default function EventDetailsPage() {
                         <div className="flex flex-wrap items-center gap-2">
                           <div className="truncate font-medium">{display}</div>
                           {/* ⇩ status obok nazwy, widoczny na mobile */}
-                          <StatusPill status={g.invitation?.status} />
+                          <StatusPill status={g.status} />
                         </div>
                         {g.groupName && (
                           <div className="truncate text-sm text-gray-600">

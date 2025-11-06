@@ -17,7 +17,7 @@ export function EmptyState() {
           Utwórz pierwsze wydarzenie, aby rozpocząć planowanie.
         </p>
         <Button asChild className="mt-4">
-          <Link href="/events/new">Stwórz nowe</Link>
+          <Link href="/">Stwórz nowe</Link>
         </Button>
       </CardContent>
     </Card>

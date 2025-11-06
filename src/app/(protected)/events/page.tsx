@@ -57,7 +57,7 @@ export default function EventsPage() {
             </p>
           </div>
           <Button asChild>
-            <Link href="/events/new">Stwórz nowe</Link>
+            <Link href="/">Stwórz nowe</Link>
           </Button>
         </div>
         <div className="mt-4">
