@@ -2,15 +2,60 @@
 
 import * as React from "react";
 import { translate } from "@/locales";
-import { Church, PartyPopper, GlassWater, Music, Cake } from "lucide-react";
-
-/** 5 startowych ikon do wyboru */
-export const ICONS = {
+import {
   Church,
   PartyPopper,
   GlassWater,
   Music,
   Cake,
+  Heart,
+  Baby,
+  Gift,
+  Sparkles,
+  Star,
+  Crown,
+  Cross,
+  Flower2,
+  Wine,
+  HandHeart,
+  Sun,
+} from "lucide-react";
+
+/**
+ * 🎨 Zestaw ikon do wyboru w zaproszeniach
+ * Obejmuje motywy: ślub, chrzciny, urodziny (18 / 30 / 50), baby shower, komunia
+ */
+export const ICONS = {
+  // klasyczne (pozostają)
+  Church,
+  PartyPopper,
+  GlassWater,
+  Music,
+  Cake,
+
+  // 🕊️ Ślub
+  Heart, // symbol miłości
+  Flower2, // dekoracje, bukiet
+
+  // 👶 Chrzciny
+  Baby, // motyw niemowlęcia
+  Cross, // symbol religijny (delikatny)
+  HandHeart, // rodzicielska opieka / błogosławieństwo
+
+  // 🎂 Urodziny (18 / 30 / 50)
+  Gift, // prezent
+  Crown, // „królewski” akcent dla okrągłych rocznic
+  Sparkles, // radość / świętowanie
+  Wine, // toast dla dorosłych
+
+  // 👼 Baby Shower
+  Star, // gwiazdka / delikatny motyw nieba
+  Sun, // ciepły, pozytywny klimat
+
+  // ✝️ Pierwsza Komunia Święta
+  Cross, // symbol sakramentu (można używać ponownie)
+  Flower2, // symbol czystości, białe lilie itp.
+  GlassWater, // symboliczny kielich (już w zestawie)
 } as const;
 
 export type IconKey = keyof typeof ICONS;

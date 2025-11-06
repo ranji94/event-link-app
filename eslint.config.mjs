@@ -14,7 +14,7 @@ const eslintConfig = defineConfig([
       // 🔥 Usuń automatycznie nieużywane importy
       "unused-imports/no-unused-imports": "error",
 
-      // Opcjonalnie: tylko ostrzeżenie dla nieużywanych zmiennych, ale ignoruj zmienne zaczynające się od _
+      // ⚠️ Ostrzeżenie dla nieużywanych zmiennych (ignoruj zmienne z _)
       "unused-imports/no-unused-vars": [
         "warn",
         {
@@ -24,16 +24,22 @@ const eslintConfig = defineConfig([
           argsIgnorePattern: "^_",
         },
       ],
+
+      // 🚫 Nigdy nie stawiaj średników
+      semi: "off",
+      "@typescript-eslint/semi": ["error", "never"],
+
+      // (opcjonalnie) wyłącz auto-dodawanie średników przez prettier
+      "prettier/prettier": [
+        "error",
+        {
+          semi: false,
+        },
+      ],
     },
   },
-  // Override default ignores of eslint-config-next.
-  globalIgnores([
-    // Default ignores of eslint-config-next:
-    ".next/**",
-    "out/**",
-    "build/**",
-    "next-env.d.ts",
-  ]),
+  // 📦 Ignoruj buildy
+  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts"]),
 ]);
 
 export default eslintConfig;

@@ -1,4 +1,3 @@
-import * as React from "react";
 import type { TemplateDef } from "../types";
 import * as Lucide from "lucide-react";
 import { format } from "date-fns";

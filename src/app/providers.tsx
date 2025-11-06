@@ -9,7 +9,7 @@ export default function Providers({ children }: PropsWithChildren) {
   return (
     <>
       <Toaster richColors position="top-center" />
-      <ConfirmProvider>{children}</ConfirmProvider>;
+      <ConfirmProvider>{children}</ConfirmProvider>
     </>
   );
 }

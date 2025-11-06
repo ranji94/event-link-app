@@ -52,12 +52,12 @@ export default function PublicInvitationPage() {
         credentials: "include",
       });
       setRsvpStatus(status);
-      toast.success(
-        status === "ACCEPTED"
-          ? translate("invitation.rsvp.accepted") ??
-              "Dziękujemy za potwierdzenie!"
-          : translate("invitation.rsvp.declined") ?? "Dziękujemy za informację."
-      );
+      // toast.success(
+      //   status === "ACCEPTED"
+      //     ? translate("invitation.rsvp.accepted") ??
+      //         "Dziękujemy za potwierdzenie!"
+      //     : translate("invitation.rsvp.declined") ?? "Dziękujemy za informację."
+      // );
     } catch (e: any) {
       toast.error(e?.message ?? translate("invitation.errors.unknown"));
     } finally {
