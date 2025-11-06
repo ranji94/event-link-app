@@ -18,7 +18,6 @@ import {
   Plus,
   Users,
   Trash2,
-  Mail,
 } from "lucide-react";
 
 import { useEvents, type EventListItem } from "@/lib/events/use-events";
@@ -29,8 +28,6 @@ import { translate } from "@/locales";
 import { formatDate } from "@/common/utils";
 import { getTemplateById } from "@/components/templates/TemplatePicker";
 import { templates } from "@/templates/registry";
-
-// ✅ nowy hook – zarządzanie gośćmi (jak w poprzedniej wiadomości)
 import { useGuests } from "@/lib/events/guests/use-guests";
 
 // Pastelowe badge dla typu wydarzenia
@@ -55,15 +52,12 @@ export default function EventDetailsPage() {
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
 
-  // Guests hook
   const {
-    guests,
     stats,
     loading: guestsLoading,
     listGuests,
     bulkAddGuests,
     createInvitation,
-    sendInvitationEmail,
     shareInvitation,
     deleteGuest,
     loadStats,
@@ -253,8 +247,9 @@ export default function EventDetailsPage() {
               </div>
             </div>
 
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+            {/* <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
               <Button
+                className="cursor-pointer"
                 variant="secondary"
                 size="sm"
                 onClick={() =>
@@ -267,7 +262,7 @@ export default function EventDetailsPage() {
               >
                 {translate("guests.actions.import") ?? "Importuj wielu"}
               </Button>
-            </div>
+            </div> */}
           </div>
 
           {/* Informacja o prywatności / personalizacji */}
@@ -337,7 +332,7 @@ export default function EventDetailsPage() {
             <div className="sm:col-span-1 flex items-end">
               <Button
                 type="submit"
-                className="w-full"
+                className="w-full cursor-pointer"
                 disabled={guestsLoading || !fullName.trim()}
               >
                 <Plus className="mr-2 h-4 w-4" />
@@ -348,14 +343,15 @@ export default function EventDetailsPage() {
 
           {/* Lista gości */}
           <div className="rounded-2xl border">
-            {guests.length === 0 ? (
+            {item.invitees.length === 0 ? (
               <div className="p-4 text-sm text-gray-600">
                 {translate("guests.empty") ??
                   "Brak gości. Dodaj pierwszego powyżej."}
               </div>
             ) : (
               <ul className="divide-y">
-                {guests.map((g) => {
+                {item.invitees.map((g) => {
+                  console.log("GUETS: ", g);
                   const display =
                     g.fullName || translate("guests.unknown") || "Gość";
                   return (
@@ -367,7 +363,7 @@ export default function EventDetailsPage() {
                         <div className="flex flex-wrap items-center gap-2">
                           <div className="truncate font-medium">{display}</div>
                           {/* ⇩ status obok nazwy, widoczny na mobile */}
-                          <StatusPill status={g.status} />
+                          <StatusPill status={g.invitation?.status} />
                         </div>
                         {g.groupName && (
                           <div className="truncate text-sm text-gray-600">
@@ -378,6 +374,7 @@ export default function EventDetailsPage() {
 
                       <div className="flex flex-wrap items-center gap-2">
                         <Button
+                          className="cursor-pointer"
                           size="sm"
                           variant="secondary"
                           onClick={() => onCopyLink(g.id!)}
@@ -392,6 +389,7 @@ export default function EventDetailsPage() {
                         </Button>
 
                         <Button
+                          className="cursor-pointer"
                           size="sm"
                           variant="secondary"
                           onClick={() => onGenerateAndShare(g.id!, display)}
@@ -406,20 +404,7 @@ export default function EventDetailsPage() {
                         </Button>
 
                         <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => sendInvitationEmail(g.id!)}
-                          disabled={guestsLoading || !g.id}
-                          title={
-                            translate("guests.actions.send_email_tt") ??
-                            "Wyślij e-mail"
-                          }
-                        >
-                          <Mail className="mr-2 h-4 w-4" />
-                          {translate("guests.actions.send_email") ?? "E-mail"}
-                        </Button>
-
-                        <Button
+                          className="cursor-pointer"
                           size="sm"
                           variant="destructive"
                           onClick={() => deleteGuest(g.id!, display)}

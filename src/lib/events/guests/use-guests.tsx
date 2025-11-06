@@ -14,7 +14,6 @@ import {
 import {
   inviteesControllerList,
   inviteesControllerBulk,
-  inviteesControllerUpdateStatus,
   inviteesControllerDelete,
 } from "@/entities/invitees";
 
@@ -26,7 +25,7 @@ import type {
 export type Guest = CreateInviteeDto & {
   id?: string;
   invitationUrl?: string;
-  status?: "PENDING" | "ACCEPTED" | "DECLINED";
+  status?: "PENDING" | "ACCEPTED" | "DECLINED" | "TENTATIVE";
   rsvpCount?: number;
 };
 
@@ -37,7 +36,7 @@ export function useGuests(eventId: string) {
   const [stats, setStats] = React.useState<InvitationsStatsDto | null>(null);
   const [loading, setLoading] = React.useState(false);
 
-  /** Pobiera listę gości */
+  /** 🔹 Pobiera listę gości (z powiązanym statusem zaproszenia) */
   const listGuests = React.useCallback(async () => {
     try {
       setLoading(true);
@@ -46,7 +45,9 @@ export function useGuests(eventId: string) {
       });
       if (!res) throw new Error(translate("guests.errors.no_response"));
 
-      // Zakładamy, że BE może zwracać przy każdym gościu np. { invitation: { code, publicUrl } }
+      console.log("RES DATA:", res);
+
+      // Zakładamy, że backend zwraca: invitee + invitation { publicUrl, status, rsvpCount }
       const normalized = (res as any[]).map((g) => ({
         id: g.id,
         fullName: g.fullName,
@@ -55,9 +56,9 @@ export function useGuests(eventId: string) {
         seats: g.seats ?? undefined,
         groupName: g.groupName ?? undefined,
         notes: g.notes ?? undefined,
-        status: g.status ?? "PENDING",
+        status: g.invitation?.status ?? "PENDING",
         invitationUrl: g.invitation?.publicUrl ?? undefined,
-        rsvpCount: g.rsvpCount ?? undefined,
+        rsvpCount: g.invitation?.rsvpCount ?? undefined,
       })) as Guest[];
 
       setGuests(normalized);
@@ -68,7 +69,7 @@ export function useGuests(eventId: string) {
     }
   }, [eventId]);
 
-  /** Dodaje wielu gości naraz */
+  /** 🔹 Dodaje wielu gości naraz */
   const bulkAddGuests = React.useCallback(
     async (items: CreateInviteeDto[]) => {
       if (!items.length) return;
@@ -92,7 +93,7 @@ export function useGuests(eventId: string) {
     [eventId, listGuests]
   );
 
-  /** Tworzy zaproszenie i zwraca jego publiczny link */
+  /** 🔹 Tworzy (lub zwraca istniejące) zaproszenie i kopiuje link */
   const createInvitation = React.useCallback(
     async (inviteeId: string) => {
       try {
@@ -122,7 +123,7 @@ export function useGuests(eventId: string) {
     [eventId, listGuests]
   );
 
-  /** Wysyła e-mail z zaproszeniem (jeśli obsługujesz na BE) */
+  /** 🔹 Wysyła e-mail z zaproszeniem */
   const sendInvitationEmail = React.useCallback(
     async (invitationId: string) => {
       try {
@@ -140,7 +141,7 @@ export function useGuests(eventId: string) {
     [eventId]
   );
 
-  /** Statystyki RSVP (globalne dla wydarzenia) */
+  /** 🔹 Statystyki RSVP */
   const loadStats = React.useCallback(async () => {
     try {
       const res = await invitationsControllerStats(eventId, {
@@ -152,31 +153,7 @@ export function useGuests(eventId: string) {
     }
   }, [eventId]);
 
-  /** Zmiana statusu RSVP gościa */
-  const updateGuestStatus = React.useCallback(
-    async (inviteeId: string, status: "PENDING" | "ACCEPTED" | "DECLINED") => {
-      try {
-        setLoading(true);
-        await inviteesControllerUpdateStatus(
-          eventId,
-          inviteeId,
-          { status },
-          { credentials: "include" }
-        );
-        setGuests((prev) =>
-          prev.map((g) => (g.id === inviteeId ? { ...g, status } : g))
-        );
-        toast.success(translate("guests.toasts.status_updated"));
-      } catch (e: any) {
-        toast.error(e?.message ?? translate("guests.errors.unknown"));
-      } finally {
-        setLoading(false);
-      }
-    },
-    [eventId]
-  );
-
-  /** Usuwa gościa (API) */
+  /** 🔹 Usuwa gościa */
   const deleteGuest = React.useCallback(
     async (id: string, fullName: string) => {
       const yes = await confirm({
@@ -204,7 +181,7 @@ export function useGuests(eventId: string) {
     [confirm, eventId]
   );
 
-  /** Udostępnianie (Web Share API / clipboard fallback) */
+  /** 🔹 Udostępnianie linku */
   const shareInvitation = React.useCallback(
     async (url: string, fullName: string) => {
       const shareText = translate("guests.share.text", { name: fullName, url });
@@ -239,7 +216,6 @@ export function useGuests(eventId: string) {
     sendInvitationEmail,
 
     loadStats,
-    updateGuestStatus,
     deleteGuest,
 
     shareInvitation,

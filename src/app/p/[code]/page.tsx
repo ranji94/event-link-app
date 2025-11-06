@@ -134,7 +134,7 @@ export default function PublicInvitationPage() {
         ) : (
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Button
-              className="bg-emerald-600 hover:bg-emerald-700 text-white"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer"
               disabled={sending}
               onClick={() => handleRsvp("ACCEPTED")}
             >
@@ -142,7 +142,7 @@ export default function PublicInvitationPage() {
             </Button>
             <Button
               variant="outline"
-              className="border-red-500 text-red-600 hover:bg-red-50"
+              className="border-red-500 text-red-600 hover:bg-red-50 cursor-pointer"
               disabled={sending}
               onClick={() => handleRsvp("DECLINED")}
             >
