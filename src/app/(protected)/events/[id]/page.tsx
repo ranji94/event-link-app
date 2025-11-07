@@ -18,6 +18,7 @@ import {
   Plus,
   Users,
   Trash2,
+  Pencil,
 } from "lucide-react";
 
 import { useEvents, type EventListItem } from "@/lib/events/use-events";
@@ -224,15 +225,8 @@ export default function EventDetailsPage() {
             </Badge>
           </div>
         </div>
-
-        <Button asChild variant="secondary" className="self-start">
-          <Link href={`/events/${item.id}/edit`}>
-            {translate("button.edit")}
-          </Link>
-        </Button>
       </div>
 
-      {/* 🔥 Sekcja GOŚCIE – bardzo wyeksponowana, mobile-first */}
       <Card className="ring-1 ring-black/5">
         <CardContent className="p-6 space-y-5">
           {/* Pasek nagłówka z call-to-action */}
@@ -251,26 +245,8 @@ export default function EventDetailsPage() {
                 </p>
               </div>
             </div>
-
-            {/* <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-              <Button
-                className="cursor-pointer"
-                variant="secondary"
-                size="sm"
-                onClick={() =>
-                  bulkAddGuests([
-                    // PRZYKŁAD IMPORTU – docelowo z CSV/textarea
-                    // { fullName: "Marta i Adrian z dziećmi" },
-                  ])
-                }
-                disabled={guestsLoading}
-              >
-                {translate("guests.actions.import") ?? "Importuj wielu"}
-              </Button>
-            </div> */}
           </div>
 
-          {/* Informacja o prywatności / personalizacji */}
           <div className="rounded-xl bg-amber-50 p-3 text-sm ring-1 ring-amber-200">
             <div className="flex items-start gap-2 text-amber-800">
               <Info className="mt-0.5 h-4 w-4" />
@@ -281,7 +257,6 @@ export default function EventDetailsPage() {
             </div>
           </div>
 
-          {/* Statystyki RSVP */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <StatPill
               label={translate("guests.stats.viewed") ?? "Wyświetlenia"}
@@ -302,7 +277,6 @@ export default function EventDetailsPage() {
 
           <Separator />
 
-          {/* Szybkie dodanie pojedynczego gościa */}
           <form
             id="quick-add"
             onSubmit={onQuickAddGuest}
@@ -346,7 +320,6 @@ export default function EventDetailsPage() {
             </div>
           </form>
 
-          {/* Lista gości */}
           <div className="rounded-2xl border">
             {guests.length === 0 ? (
               <div className="p-4 text-sm text-gray-600">
@@ -432,77 +405,45 @@ export default function EventDetailsPage() {
         </CardContent>
       </Card>
 
-      {/* Opis + Preview */}
-      <div className="grid gap-6 lg:grid-cols-2">
-        <Card className="ring-1 ring-black/5">
-          <CardContent className="p-6">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-600">
-              {translate("events.details.description")}
-            </h2>
-            {item.description ? (
-              <p className="mt-2 whitespace-pre-line text-sm leading-6 text-gray-800">
-                {item.description}
-              </p>
-            ) : (
-              <p className="mt-2 text-sm text-gray-500">
-                {translate("events.details.no_description")}
-              </p>
-            )}
-            <Separator className="my-6" />
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-600">
-              {translate("events.details.preview")}
-            </h3>
-            <div className="mt-3 rounded-2xl border border-black/5 p-4">
-              <Preview
-                title={item.title}
-                description={item.description ?? undefined}
-                date={item.date}
-                location={item.location ?? undefined}
-                program={program}
-                inviteeName="Helena Goździkowa"
-              />
-            </div>
-          </CardContent>
-        </Card>
+      <section className="group relative -mx-[calc(50vw-50%)] w-screen">
+        {/* Pasek akcji (glass, centralny, dostępny klawiaturą) */}
+        <div className="pointer-events-none absolute inset-x-0 top-3 z-20 flex justify-center">
+          <div
+            className="
+        pointer-events-auto flex items-center gap-2 rounded-full
+        bg-background/70 px-2 py-1.5 shadow-sm ring-1 ring-black/10
+        backdrop-blur supports-[backdrop-filter]:bg-background/60
+      "
+          >
+            <Button
+              asChild
+              size="sm"
+              variant="secondary"
+              className="cursor-pointer rounded-full"
+            >
+              <Link
+                href={`/events/${item.id}/edit`}
+                title={translate("button.edit")}
+              >
+                <Pencil className="mr-2 h-4 w-4" />
+                <span className="hidden sm:inline">
+                  {translate("button.edit")}
+                </span>
+              </Link>
+            </Button>
+          </div>
+        </div>
 
-        {/* Program */}
-        <Card className="ring-1 ring-black/5">
-          <CardContent className="p-6">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-600">
-              {translate("events.details.schedule")}
-            </h2>
-            {program.length ? (
-              <ul className="mt-3 space-y-3">
-                {program
-                  .slice()
-                  .sort((a, b) => (a.position ?? 0) - (b.position ?? 0))
-                  .map((p, i) => (
-                    <li
-                      key={`${p.dayIndex}-${p.time}-${i}`}
-                      className="flex items-start gap-3 rounded-xl bg-muted/40 p-3"
-                    >
-                      <span className="mt-1 text-xs font-semibold text-gray-600">
-                        {p.time}
-                      </span>
-                      <div className="min-w-0">
-                        <div className="truncate font-medium">{p.header}</div>
-                        {p.subheader && (
-                          <div className="truncate text-sm text-gray-600">
-                            {p.subheader}
-                          </div>
-                        )}
-                      </div>
-                    </li>
-                  ))}
-              </ul>
-            ) : (
-              <p className="mt-2 text-sm text-gray-500">
-                {translate("events.details.no_program")}
-              </p>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+        {/* Sam podgląd bez ramek/paddingu */}
+        <Preview
+          title={item.title}
+          description={item.description ?? undefined}
+          date={item.date}
+          location={item.location ?? undefined}
+          program={program}
+          inviteeName="Helena Goździkowa"
+        />
+      </section>
     </div>
   );
 }
