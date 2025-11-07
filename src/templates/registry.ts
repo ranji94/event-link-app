@@ -9,6 +9,7 @@ import { minimalistNavy } from "./variants/minimalist-navy";
 import { babyShowerDreams } from "./variants/baby-shower-teddy";
 import { newYearGlamour } from "./variants/new-year-glamour";
 import { baptistGoldenPigeon } from "./variants/baptist-golden-pigeon";
+import { baptismBlessing } from "./variants/baptism-blessing";
 
 export const templates: TemplateDef[] = [
   weddingBotanicalGold,
@@ -19,4 +20,5 @@ export const templates: TemplateDef[] = [
   babyShowerDreams,
   newYearGlamour,
   baptistGoldenPigeon,
+  baptismBlessing,
 ];
