@@ -229,7 +229,20 @@
     "accept": "Zaakceptuj"
   },
   "templates": {
-    "preview": "Podgląd"
+    "preview": "Podgląd",
+    "new_year_glamour": {
+      "greeting_personalized": "powitajmy razem nowy rok!",
+      "greeting": "Powitajmy razem nowy rok!",
+      "undertitle": "Noc pełna magii i zabawy",
+      "program_of_the_night": "Harmonogram Nocy",
+      "presence_agreement": "Potwierdź swoją obecność i baw się z nami!",
+      "accepted": "Będę świętować!",
+      "declined": "Nie mogę przyjść",
+      "declined_description": "Szkoda, będzie nam Cię brakowało!",
+      "wonderful": "Wspaniale!",
+      "see_you": "Do zobaczenia na parkiecie!",
+      "footer_countdown_description": "Happy New Year!"
+    }
   },
   "invitation": {
     "thanks_accept": "Super! Cieszymy się że będziesz.",
