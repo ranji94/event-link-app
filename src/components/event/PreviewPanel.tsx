@@ -14,6 +14,7 @@ export function PreviewPanel({
   date,
   location,
   program,
+  className,
 }: {
   templateKey: string;
   title?: string;
@@ -21,37 +22,37 @@ export function PreviewPanel({
   date?: string;
   location?: string;
   program?: CreateProgramItemDto[];
+  className?: string;
 }) {
   const [fsOpen, setFsOpen] = useState(false);
+
   const SelectedPreview =
     useMemo(() => getTemplateById(templateKey)?.Preview, [templateKey]) ??
     templates[0].Preview;
 
   return (
-    <aside className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-black/5">
-      <div className="flex items-center justify-between">
-        <h2 className="text-sm font-medium uppercase tracking-wide text-gray-600">
-          {translate("events.new.live_preview")}
-        </h2>
+    <div className="-mx-[calc(50vw-50%)] w-screen overflow-hidden">
+      <div className="flex items-center justify-between px-4 py-2">
+        <span className="text-xs uppercase tracking-wide text-gray-600">
+          Podgląd na żywo
+        </span>
         <button
-          type="button"
           onClick={() => setFsOpen(true)}
-          className="cursor-pointer rounded-lg px-3 py-1.5 text-sm font-medium text-indigo-700 ring-1 ring-indigo-200 hover:bg-indigo-50"
+          className="rounded-lg px-3 py-1.5 text-sm font-medium text-indigo-700 ring-1 ring-indigo-200 hover:bg-indigo-50"
         >
-          {translate("events.new.fullscreen")}
+          Pełny ekran
         </button>
       </div>
 
-      <div className="mt-4">
-        <div className="rounded-2xl border border-black/5 p-4">
-          <SelectedPreview
-            title={title}
-            description={description}
-            date={date}
-            location={location}
-            program={program}
-          />
-        </div>
+      {/* Właściwy szablon — zero ramek, zero paddingu */}
+      <div className="w-full">
+        <SelectedPreview
+          title={title}
+          description={description}
+          date={date}
+          location={location}
+          program={program}
+        />
       </div>
 
       <FullscreenPreview open={fsOpen} onClose={() => setFsOpen(false)}>
@@ -63,6 +64,6 @@ export function PreviewPanel({
           program={program}
         />
       </FullscreenPreview>
-    </aside>
+    </div>
   );
 }

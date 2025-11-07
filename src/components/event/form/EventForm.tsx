@@ -55,7 +55,7 @@ export function EventForm({
   const current = useWatch({ control });
 
   return (
-    <div className="grid gap-8 lg:grid-cols-2">
+    <div className="space-y-8">
       <section className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-black/5">
         <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
         <p className="mt-1 text-sm text-gray-600">{subtitle}</p>
@@ -133,7 +133,6 @@ export function EventForm({
             />
           </div>
 
-          {/* Harmonogram jako slot, żeby nie wiązać komponentu z konkretną implementacją */}
           {renderSchedule(<ScheduleBuilder builder={builder} />)}
 
           {errorMessage && (
