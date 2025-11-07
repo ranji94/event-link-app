@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  web:
+    image: event-link-app:latest
+    container_name: event-link-app
+    ports:
+      - "4020:4020"
+    env_file: .env
+    environment:
+      - PORT=4020
+      # UWAGA: NEXT_PUBLIC_API_URL w prod musi trafić w build-arg przy budowie obrazu,
+      # to ustawienie tutaj nie zmieni już kodu frontu.
+    restart: unless-stopped
+    networks:
+      - web_network
+
+networks:
+  web_network:
+    external: true

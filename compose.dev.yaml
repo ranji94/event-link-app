@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  web:
+    build:
+      context: .
+      target: dev
+    container_name: event-link-app
+    ports:
+      - "4020:4020"
+    env_file: .env
+    environment:
+      # na wszelki wypadek, dev i tak bierze z env
+      - NEXT_PUBLIC_API_URL
+      - PORT=4020
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    restart: unless-stopped
+    networks:
+      - web_network
+    # (Opcjonalnie – automatyczny rebuild/watch w Compose v2.22+)
+    # develop:
+    #   watch:
+    #     - action: sync
+    #       path: .
+    #       target: /app
+    #       ignore:
+    #         - node_modules/
+    #         - .next/
+    #     - action: rebuild
+    #       path: package.json
+
+networks:
+  web_network:
+    external: true
