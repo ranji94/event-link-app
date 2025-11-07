@@ -15,6 +15,9 @@ import { programControllerList } from "@/entities/program";
 import { translate } from "@/locales";
 import { toDatetimeLocalFromIso, toIsoFromDatetimeLocal } from "@/common/utils";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default function EditEventPage() {
   const router = useRouter();
   const params = useParams<{ id: string }>();

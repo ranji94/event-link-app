@@ -16,6 +16,9 @@ import { EventListItem } from "@/lib/types";
 import { EventCard } from "@/components/event/list/EventCard";
 import { EventRow } from "@/components/event/list/EventRow";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default function EventsPage() {
   const [search, setSearch] = React.useState("");
   const [kind, setKind] = React.useState<"ALL" | EventKind>("ALL");

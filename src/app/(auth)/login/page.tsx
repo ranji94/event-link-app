@@ -16,6 +16,9 @@ import { translate } from "@/locales";
 import { AuthCode } from "@/common/enum/auth-code.enum";
 import { login } from "@/lib/auth-store";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default function Page() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);

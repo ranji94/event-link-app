@@ -10,6 +10,9 @@ import { translate } from "@/locales";
 
 type ViewState = "loading" | "success" | "error" | "missing";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default function Page() {
   const sp = useSearchParams();
   const token = sp.get("token") || "";

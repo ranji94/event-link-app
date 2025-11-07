@@ -15,6 +15,9 @@ import { Eye, EyeOff } from "lucide-react";
 import { AuthCode } from "@/common/enum/auth-code.enum";
 import { translate } from "@/locales";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default function Page() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
