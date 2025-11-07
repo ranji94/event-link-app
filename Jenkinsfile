@@ -39,8 +39,7 @@ pipeline {
         checkout([
           $class: 'GitSCM',
           userRemoteConfigs: [[
-            // PODMIEŃ jeśli inny URL repo frontu:
-            url: 'https://github.com/ranji94/event-link-frontend.git',
+            url: 'https://github.com/ranji94/event-link-app.git',
             credentialsId: 'github-token'
           ]],
           branches: [[name: '*/develop']],
