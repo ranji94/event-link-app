@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.6
-FROM node:22-alpine AS base
+FROM node:20-alpine AS base
 WORKDIR /app
 
 # pnpm jak w Twoim Nest.js
@@ -44,7 +44,7 @@ RUN pnpm build \
  && pnpm prune --prod
 
 # ---------- runner (PROD) ----------
-FROM node:22-alpine AS runner
+FROM node:20-alpine AS runner
 WORKDIR /app
 RUN apk add --no-cache libc6-compat openssl
 ENV NODE_ENV=production \
