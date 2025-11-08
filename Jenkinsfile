@@ -14,6 +14,17 @@ pipeline {
       defaultValue: 'http://192.168.0.254:4010',
       description: 'Adres API wstrzykiwany do builda (NEXT_PUBLIC_API_URL)'
     )
+    string(
+      name: 'ORVAL_API_URL',
+      defaultValue: 'http://192.168.0.254:4010',
+      description: 'Adres API wstrzykiwany do builda (NEXT_PUBLIC_API_URL)'
+    )
+    choice(
+      name: 'NEXT_PUBLIC_USE_PROXY',
+      choices: ['true', 'false'],
+      defaultValue: 'true',
+      description: 'Czy frontend ma używać lokalnego proxy /api → backend (true=tak, false=bezpośrednie połączenie)'
+    )
   }
 
   environment {
@@ -61,6 +72,8 @@ pipeline {
             # Build obrazu produkcyjnego (target: runner) z wstrzykniętym NEXT_PUBLIC_API_URL
             docker build \
               --build-arg NEXT_PUBLIC_API_URL="${NEXT_PUBLIC_API_URL}" \
+              --build-arg ORVAL_API_URL="${ORVAL_API_URL}" \
+              --build-arg NEXT_PUBLIC_USE_PROXY="${NEXT_PUBLIC_USE_PROXY}" \
               --target runner \
               -t ${IMAGE_NAME}:${IMAGE_TAG} \
               .
