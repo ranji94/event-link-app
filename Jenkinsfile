@@ -22,7 +22,6 @@ pipeline {
     choice(
       name: 'NEXT_PUBLIC_USE_PROXY',
       choices: ['true', 'false'],
-      defaultValue: 'true',
       description: 'Czy frontend ma używać lokalnego proxy /api → backend (true=tak, false=bezpośrednie połączenie)'
     )
   }
