@@ -1,5 +1,6 @@
 "use client";
-import { useMemo } from "react";
+
+import { Suspense, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import type {
   CreateEventDto,
@@ -14,17 +15,30 @@ import { EventForm } from "@/components/event/form/EventForm";
 import { useEventForm } from "@/components/event/form/useEventForm";
 import { PreviewPanel } from "@/components/event/PreviewPanel";
 import { toIsoFromDatetimeLocal } from "@/common/utils";
+import { translate } from "@/locales";
 
 export default function NewEventPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="p-6 text-sm text-muted-foreground">
+          {translate("common.loading")}
+        </div>
+      }
+    >
+      <NewEventPageInner />
+    </Suspense>
+  );
+}
+
+function NewEventPageInner() {
   const router = useRouter();
   const params = useSearchParams();
   const kindParam = (params.get("kind") as EventKind) || EventKind.WEDDING;
 
   const { create, isCreating, createError } = useEvents();
   const confirm = useConfirm();
-
   const program = useProgramBuilder([] as CreateProgramItemDto[]);
-
   const form = useEventForm({ templateKey: undefined as any });
   const current = form.watch();
 
@@ -59,10 +73,10 @@ export default function NewEventPage() {
 
   async function onCancel() {
     const yes = await confirm({
-      title: "Uwaga",
-      description: <div>Utracisz wprowadzone dane.</div>,
-      confirmText: "Usuń",
-      cancelText: "Anuluj",
+      title: translate("common.warning"),
+      description: <div>{translate("common.all_data_will_be_lost")}</div>,
+      confirmText: translate("button.delete"),
+      cancelText: translate("button.cancel"),
       danger: true,
     });
     if (yes) router.replace("/");
@@ -76,8 +90,8 @@ export default function NewEventPage() {
       onSubmit={onSubmit}
       onCancel={onCancel}
       title={pageTitle}
-      subtitle={"Wprowadź podstawowe informacje o wydarzeniu"}
-      submitLabel={"Utwórz wydarzenie"}
+      subtitle={translate("events.new.subtitle")}
+      submitLabel={translate("events.new.submit")}
       isSubmitting={isCreating}
       errorMessage={createError}
       placeholderTitle={titlePlaceholder}

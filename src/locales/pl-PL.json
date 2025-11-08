@@ -215,7 +215,9 @@
     "loading": "Ładowanie",
     "saving": "Zapisywanie...",
     "move_up": "Przenieś wyżej",
-    "move_down": "Przenieś niżej"
+    "move_down": "Przenieś niżej",
+    "warning": "Uwaga",
+    "all_data_will_be_lost": "Utracisz wprowadzone dane."
   },
   "button": {
     "discard": "Odrzuć",
