@@ -43,9 +43,6 @@ const KIND_BADGE_CLASS: Record<string, string> = {
   OTHER: "bg-zinc-100 text-zinc-900",
 };
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
 export default function EventDetailsPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();

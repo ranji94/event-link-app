@@ -1,6 +1,11 @@
-export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, "") ||
-  "http://localhost:4010";
+export const API_BASE_URL = (() => {
+  const useProxy = process.env.NEXT_PUBLIC_USE_PROXY === "true";
+  if (useProxy) return "/api"; // dev: idziemy przez rewrites w Next.js
+  return (process.env.NEXT_PUBLIC_API_URL || "http://localhost:4010").replace(
+    /\/+$/,
+    ""
+  );
+})();
 
 export const orvalFetcher = async <T>(
   url: string,

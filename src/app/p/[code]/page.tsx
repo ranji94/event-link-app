@@ -16,9 +16,6 @@ import { Loader2 } from "lucide-react";
 import { getTemplateById } from "@/components/templates/TemplatePicker";
 import { templates } from "@/templates/registry";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
 export default function PublicInvitationPage() {
   const { code } = useParams<{ code: string }>();
   const [data, setData] = React.useState<PublicInvitationGetResponseDto | null>(

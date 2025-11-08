@@ -9,9 +9,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { apiFetch } from "@/lib/api";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
 export default function Page() {
   const form = useForm<z.infer<typeof requestResetSchema>>({
     resolver: zodResolver(requestResetSchema),

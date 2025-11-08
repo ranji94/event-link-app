@@ -10,9 +10,6 @@ import { Label } from "@/components/ui/label";
 import { apiFetch } from "@/lib/api";
 import { useSearchParams, useRouter } from "next/navigation";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
 export default function Page() {
   const sp = useSearchParams();
   const token = sp.get("token") || "";

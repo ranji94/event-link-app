@@ -15,9 +15,6 @@ import { useEventForm } from "@/components/event/form/useEventForm";
 import { PreviewPanel } from "@/components/event/PreviewPanel";
 import { toIsoFromDatetimeLocal } from "@/common/utils";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
 export default function NewEventPage() {
   const router = useRouter();
   const params = useSearchParams();
