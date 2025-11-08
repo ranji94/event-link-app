@@ -27,8 +27,7 @@ pipeline {
   }
 
   environment {
-    // nazwa obrazu frontendu
-    IMAGE_NAME = 'event-link-frontend'
+    IMAGE_NAME = 'event-link-app'
   }
 
   stages {
