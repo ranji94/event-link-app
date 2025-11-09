@@ -1,6 +1,63 @@
 {
   "meta": {
-    "title": "To będzie wspaniała impreza!"
+    "title": "To będzie wspaniała impreza!",
+    "description": "EventSpot — Twój kompleksowy planer wydarzeń. Twórz, zarządzaj i zapraszaj gości w prosty sposób."
+  },
+  "legal": {
+    "about": {
+      "title": "O nas",
+      "p1": "EventSpot to nowoczesna platforma stworzona z myślą o organizatorach wydarzeń prywatnych i publicznych. Umożliwia wygodne tworzenie zaproszeń, zarządzanie listą gości, potwierdzeniami RSVP oraz statystykami wydarzeń.",
+      "p2": "Naszym celem jest dostarczenie narzędzia, które pozwoli Ci w prosty i bezpieczny sposób zorganizować każde wydarzenie – od kameralnych spotkań po duże uroczystości. Kładziemy nacisk na prywatność, prostotę obsługi oraz zgodność z europejskimi przepisami o ochronie danych (RODO).",
+      "p3": "Platforma jest rozwijana i utrzymywana prywatnie, z wykorzystaniem infrastruktury własnego serwera oraz nowoczesnych rozwiązań chmurowych zapewniających wysokie bezpieczeństwo i dostępność."
+    },
+    "terms": {
+      "title": "Regulamin korzystania z serwisu EventSpot",
+      "intro": "Niniejszy Regulamin określa zasady korzystania z serwisu internetowego EventSpot, zwanego dalej 'Serwisem'. Korzystając z Serwisu, Użytkownik akceptuje postanowienia niniejszego Regulaminu.",
+      "scope": {
+        "title": "Zakres działania Serwisu",
+        "text": "Serwis EventSpot umożliwia Użytkownikom tworzenie i zarządzanie wydarzeniami oraz zaproszeniami online. Serwis nie jest organizatorem wydarzeń, a jedynie udostępnia infrastrukturę techniczną umożliwiającą ich planowanie i obsługę komunikacji z gośćmi."
+      },
+      "liability": {
+        "title": "Odpowiedzialność za wydarzenia",
+        "text": "Cała odpowiedzialność za charakter, przebieg oraz zgodność wydarzenia z obowiązującym prawem spoczywa wyłącznie na Organizatorze. Administrator Serwisu nie ponosi odpowiedzialności za treści, cel ani skutki wydarzeń tworzonych przez Użytkowników, w tym za ewentualne naruszenia prawa, porządku publicznego lub dóbr osób trzecich. Organizator zobowiązuje się nie wykorzystywać Serwisu do organizacji zgromadzeń nielegalnych lub sprzecznych z przepisami prawa."
+      },
+      "security": {
+        "title": "Bezpieczeństwo i technologia",
+        "text": "Serwis jest hostowany na prywatnym serwerze zlokalizowanym w Polsce, chronionym certyfikatem SSL dostarczanym przez Let's Encrypt. Dostęp do Serwisu realizowany jest przez tunele Cloudflare, a dane osobowe przechowywane są w zaszyfrowanej formie w bazie danych. Wdrożono zabezpieczenia mające na celu ochronę danych przed nieuprawnionym dostępem, utratą lub modyfikacją."
+      },
+      "payments": {
+        "title": "Usługi płatne i system tokenów",
+        "text": "W przyszłości Serwis może oferować funkcje płatne w modelu tokenowym, w którym jeden token odpowiada jednemu zaproszeniu dla gościa. Płatności będą realizowane z zachowaniem najwyższych standardów bezpieczeństwa i zgodnie z przepisami Unii Europejskiej dotyczącymi ochrony konsumenta oraz usług cyfrowych."
+      },
+      "final": {
+        "title": "Postanowienia końcowe",
+        "text": "Administrator zastrzega sobie prawo do wprowadzania zmian w Regulaminie. O istotnych zmianach Użytkownicy będą informowani z wyprzedzeniem. W sprawach nieuregulowanych niniejszym Regulaminem zastosowanie mają przepisy prawa polskiego i unijnego."
+      }
+    },
+    "privacy": {
+      "title": "Polityka prywatności i ochrony danych osobowych",
+      "intro": "Niniejsza Polityka prywatności opisuje zasady przetwarzania danych osobowych w serwisie EventSpot oraz prawa przysługujące Użytkownikom zgodnie z Rozporządzeniem Parlamentu Europejskiego i Rady (UE) 2016/679 (RODO).",
+      "data_processing": {
+        "title": "Przetwarzanie danych osobowych",
+        "text": "Dane osobowe, takie jak imię, nazwisko czy adres e-mail, są przetwarzane wyłącznie w celu umożliwienia korzystania z funkcji Serwisu. Dane przechowywane są w zaszyfrowanej formie w bazie danych zlokalizowanej na prywatnym serwerze w Polsce. Administratorem danych jest właściciel Serwisu. Dane nie są przekazywane poza Europejski Obszar Gospodarczy (EOG), z wyjątkiem infrastruktury technicznej Cloudflare, która działa w zgodzie z zasadami RODO."
+      },
+      "cookies": {
+        "title": "Pliki cookies i dane techniczne",
+        "text": "Serwis wykorzystuje pliki cookies wyłącznie w celach autoryzacji sesji oraz poprawnego działania mechanizmu logowania. Pliki cookies nie są używane do profilowania użytkowników ani działań marketingowych. Użytkownik może w każdej chwili usunąć lub zablokować pliki cookies w ustawieniach przeglądarki."
+      },
+      "rights": {
+        "title": "Prawa Użytkowników",
+        "text": "Każdy Użytkownik ma prawo do wglądu w swoje dane, ich poprawiania, usunięcia oraz ograniczenia przetwarzania. W sprawach dotyczących danych osobowych można kontaktować się z Administratorem za pomocą formularza kontaktowego lub adresu e-mail podanego w Serwisie."
+      },
+      "security": {
+        "title": "Bezpieczeństwo danych",
+        "text": "Dane przesyłane między przeglądarką a serwerem są chronione szyfrowaniem SSL (Let's Encrypt). System autoryzacji oparty jest o bezpieczne tokeny sesyjne przechowywane w cookies. Regularnie monitorowane są logi systemowe w celu wykrywania nieautoryzowanych prób dostępu."
+      },
+      "final": {
+        "title": "Postanowienia końcowe",
+        "text": "Korzystając z Serwisu, Użytkownik akceptuje niniejszą Politykę prywatności. Administrator może wprowadzać zmiany wynikające z rozwoju technologicznego lub wymogów prawnych. Zaktualizowana wersja dokumentu będzie publikowana w niniejszym miejscu."
+      }
+    }
   },
   "error": {
     "auth": {
@@ -32,7 +89,107 @@
     "incorrect_password": "Sprawdź hasło."
   },
   "auth": {
-    "logging_out": "Wylogowywanie w toku."
+    "logging_out": "Wylogowywanie w toku.",
+    "marketing": {
+      "headline": "Organizuj wydarzenia, twórz wspomnienia!",
+      "subheadline": "EventSpot to kompleksowe narzędzie do planowania każdej uroczystości – od kameralnych spotkań po duże wydarzenia. Zapraszaj gości, zarządzaj listą RSVP i miej wszystko w jednym miejscu."
+    },
+    "features": {
+      "plan": {
+        "title": "Łatwe planowanie",
+        "desc": "Twórz wydarzenia i kontroluj harmonogramy bez chaosu."
+      },
+      "invites": {
+        "title": "Zaproszenia online",
+        "desc": "Wysyłaj zaproszenia e-mailem i śledź statusy w czasie rzeczywistym."
+      },
+      "guests": {
+        "title": "Zarządzanie gośćmi",
+        "desc": "Lista gości, grupy, miejsca siedzące i odpowiedzi RSVP."
+      }
+    },
+    "login": {
+      "section_label": "Formularz logowania",
+      "title": "Logowanie",
+      "caption": "Zaloguj się, aby kontynuować",
+      "google": "Zaloguj przez Google",
+      "facebook": "Zaloguj przez Facebook",
+      "divider": "lub",
+      "form": {
+        "email": {
+          "label": "Email",
+          "placeholder": "Adres e-mail"
+        },
+        "password": {
+          "label": "Hasło",
+          "placeholder": "Hasło",
+          "show": "Pokaż hasło",
+          "hide": "Ukryj hasło"
+        }
+      },
+      "help": {
+        "forgot": "Zapomniałeś hasła?",
+        "register": "Nie masz konta? Zarejestruj się"
+      },
+      "cta": {
+        "primary": "Zaloguj",
+        "loading": "Logowanie…"
+      },
+      "legal": "Korzystając z serwisu akceptujesz regulamin i politykę prywatności.",
+      "errors": {
+        "INVALID_CREDENTIALS": "Nieprawidłowy email lub hasło.",
+        "ACCOUNT_LOCKED": "Konto zostało tymczasowo zablokowane.",
+        "EMAIL_NOT_CONFIRMED": "Potwierdź adres e-mail, aby się zalogować.",
+        "UNKNOWN": "Wystąpił nieznany błąd. Spróbuj ponownie później."
+      }
+    },
+    "register": {
+      "section_label": "Formularz rejestracji",
+      "title": "Rejestracja",
+      "caption": "Utwórz nowe konto, aby rozpocząć",
+      "google": "Załóż konto przez Google",
+      "facebook": "Załóż konto przez Facebook",
+      "divider": "lub",
+      "form": {
+        "name": {
+          "label": "Imię i nazwisko",
+          "placeholder": "Imię i nazwisko"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "Adres e-mail"
+        },
+        "password": {
+          "label": "Hasło",
+          "placeholder": "Hasło",
+          "show": "Pokaż hasło",
+          "hide": "Ukryj hasło",
+          "hint": "Hasło powinno mieć min. 8 znaków, zawierać małą i wielką literę, cyfrę i znak specjalny."
+        }
+      },
+      "help": {
+        "have_account": "Masz już konto?",
+        "login_link": "Zaloguj się"
+      },
+      "cta": {
+        "primary": "Zarejestruj",
+        "loading": "Rejestrowanie…"
+      },
+      "legal_prefix": "Rejestrując się, akceptujesz",
+      "legal_terms": "Regulamin",
+      "legal_and": "oraz",
+      "legal_privacy": "Politykę prywatności",
+      "success": "Konto utworzone. Sprawdź skrzynkę pocztową, aby potwierdzić e-mail."
+    }
+  },
+  "footer": {
+    "nav_label": "Nawigacja w stopce",
+    "links": {
+      "about": "O nas",
+      "terms": "Regulamin",
+      "privacy": "Polityka prywatności"
+    },
+    "copyright": "Wszelkie prawa zastrzeżone."
   },
   "nav": {
     "my_events": "Moje Wydarzenia",
@@ -187,7 +344,8 @@
       "email_sent": "E-mail z zaproszeniem został wysłany",
       "deleted": "Gość został usunięty",
       "shared": "Zaproszenie udostępnione",
-      "status_updated": "Zaktualizowano"
+      "status_updated": "Zaktualizowano",
+      "copy_fallback": "Nie udało się skopiować linku. Skopiuj go ręcznie: "
     },
     "confirm": {
       "delete": {

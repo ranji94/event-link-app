@@ -10,7 +10,6 @@ import {
   invitationsControllerSendEmail,
   invitationsControllerStats,
 } from "@/entities/invitations";
-
 import {
   inviteesControllerList,
   inviteesControllerBulk,
@@ -29,6 +28,72 @@ export type Guest = CreateInviteeDto & {
   rsvpCount?: number;
 };
 
+/** ————— UTILS ————— */
+
+const isBrowser =
+  typeof window !== "undefined" && typeof document !== "undefined";
+
+async function safeCopyToClipboard(text: string) {
+  try {
+    if (
+      isBrowser &&
+      typeof navigator !== "undefined" &&
+      navigator.clipboard &&
+      // writeText wymaga secure context (https / localhost)
+      (window.isSecureContext ?? false)
+    ) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch {
+    // spróbujemy fallback poniżej
+  }
+
+  // Fallback: ukryte textarea + execCommand
+  try {
+    if (!isBrowser) throw new Error("No DOM");
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    ta.style.pointerEvents = "none";
+    document.body.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand("copy");
+    document.body.removeChild(ta);
+    if (!ok) throw new Error("execCommand copy failed");
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function safeShare(params: {
+  title?: string;
+  text?: string;
+  url?: string;
+}) {
+  if (
+    isBrowser &&
+    typeof navigator !== "undefined" &&
+    (navigator as any).share
+  ) {
+    try {
+      await (navigator as any).share(params);
+      return { shared: true };
+    } catch {
+      // anulowano lub błąd – spadamy do kopiowania
+    }
+  }
+  const assembled =
+    [params.text, params.url].filter(Boolean).join("\n") || params.url || "";
+  const copied = await safeCopyToClipboard(assembled);
+  return { shared: false, copied };
+}
+
+/** ————— HOOK ————— */
+
 export function useGuests(eventId: string) {
   const confirm = useConfirm();
 
@@ -45,9 +110,6 @@ export function useGuests(eventId: string) {
       });
       if (!res) throw new Error(translate("guests.errors.no_response"));
 
-      console.log("RES DATA:", res);
-
-      // Zakładamy, że backend zwraca: invitee + invitation { publicUrl, status, rsvpCount }
       const normalized = (res as any[]).map((g) => ({
         id: g.id,
         fullName: g.fullName,
@@ -101,16 +163,26 @@ export function useGuests(eventId: string) {
         const res = await invitationsControllerCreateForInvitee(
           eventId,
           inviteeId,
-          { frontendBase: window.location.origin },
+          { frontendBase: isBrowser ? window.location.origin : "" },
           { credentials: "include" }
         );
 
         const code = (res as any)?.code ?? "unknown";
         const url =
-          (res as any)?.publicUrl ?? `${window.location.origin}/p/${code}`;
+          (res as any)?.publicUrl ??
+          (isBrowser ? `${window.location.origin}/p/${code}` : `/p/${code}`);
 
-        await navigator.clipboard.writeText(url);
-        toast.success(translate("guests.toasts.link_copied"));
+        const copied = await safeCopyToClipboard(url);
+        if (copied) {
+          toast.success(translate("guests.toasts.link_copied"));
+        } else {
+          toast.message(
+            translate("guests.toasts.copy_fallback") ??
+              "Skopiuj ręcznie poniższy link.",
+            { description: url }
+          );
+        }
+
         await listGuests();
         return { ok: true as const, url };
       } catch (e: any) {
@@ -185,21 +257,22 @@ export function useGuests(eventId: string) {
   const shareInvitation = React.useCallback(
     async (url: string, fullName: string) => {
       const shareText = translate("guests.share.text", { name: fullName, url });
-      if (navigator.share) {
-        try {
-          await navigator.share({
-            title: translate("guests.share.title"),
-            text: shareText,
-            url,
-          });
-          toast.success(translate("guests.toasts.shared"));
-          return;
-        } catch {
-          /* anulowano */
-        }
+      const res = await safeShare({
+        title: translate("guests.share.title"),
+        text: shareText,
+        url,
+      });
+      if (res.shared) {
+        toast.success(translate("guests.toasts.shared"));
+      } else if (res.copied) {
+        toast.success(translate("guests.toasts.link_copied"));
+      } else {
+        toast.message(
+          translate("guests.toasts.copy_fallback") ??
+            "Skopiuj ręcznie poniższy link.",
+          { description: `${shareText}\n${url}` }
+        );
       }
-      await navigator.clipboard.writeText(`${shareText}\n${url}`);
-      toast.success(translate("guests.toasts.link_copied"));
     },
     []
   );
