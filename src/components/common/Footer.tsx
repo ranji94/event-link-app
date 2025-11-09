@@ -3,14 +3,14 @@ import Link from "next/link";
 
 export const Footer = () => {
   return (
-    <footer className="border-t bg-muted/30">
+    <footer className="border-t bg-inherit">
       <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
           {/* Copyright */}
-          <p className="text-center text-xs text-muted-foreground">
+          <Link href="/" className="text-center text-xs text-muted-foreground">
             © {new Date().getFullYear()} EventSpot.{" "}
             {translate("footer.copyright")}
-          </p>
+          </Link>
 
           {/* Linki */}
           <nav

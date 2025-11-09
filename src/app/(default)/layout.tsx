@@ -1,6 +1,6 @@
-import "./globals.css";
+import "../globals.css";
 import type { Metadata } from "next";
-import Providers from "./providers";
+import Providers from "../providers";
 import { GlobalOverlay } from "@/components/common/global-overlay";
 import { translate } from "@/locales";
 import { Inter } from "next/font/google";

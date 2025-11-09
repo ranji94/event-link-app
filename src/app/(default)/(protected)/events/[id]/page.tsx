@@ -329,7 +329,6 @@ export default function EventDetailsPage() {
             ) : (
               <ul className="divide-y">
                 {guests.map((g) => {
-                  console.log("GUETS: ", g);
                   const display =
                     g.fullName || translate("guests.unknown") || "Gość";
                   return (
@@ -405,8 +404,15 @@ export default function EventDetailsPage() {
         </CardContent>
       </Card>
 
-      <section className="group relative -mx-[calc(50vw-50%)] w-screen">
-        {/* Pasek akcji (glass, centralny, dostępny klawiaturą) */}
+      <div className="flex items-center gap-4 py-4">
+        <Separator className="flex-1" />
+        <span className="text-sm font-medium text-muted-foreground">
+          {translate("events.new.live_preview") ?? "Podgląd zaproszenia"}
+        </span>
+        <Separator className="flex-1" />
+      </div>
+
+      <section className="group relative -mx-[calc(50vw-50%)] w-screen -mb-6">
         <div className="pointer-events-none absolute inset-x-0 top-3 z-20 flex justify-center">
           <div
             className="

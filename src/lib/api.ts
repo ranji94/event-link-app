@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosInstance } from "axios";
 import { env } from "./env";
-import { useAuthStore } from "./auth-store";
+import { logout, useAuthStore } from "./auth-store";
 
 export type ApiErrorPayload = {
   errorCode?: string;
@@ -57,6 +57,19 @@ async function refreshTokens() {
   return refreshingPromise;
 }
 
+async function safeLogout() {
+  try {
+    await logout();
+
+    if (typeof window !== "undefined") {
+      const from = window.location.pathname + window.location.search;
+      window.location.href = `/login?from=${encodeURIComponent(from)}`;
+    }
+  } catch {
+    useAuthStore.getState().clear?.();
+  }
+}
+
 export const http: AxiosInstance = axios.create({
   baseURL: env.apiUrl,
   withCredentials: true,
@@ -82,7 +95,7 @@ http.interceptors.response.use(
         return http(original);
       } catch {
         // refresh nieudany → logout
-        useAuthStore.getState().clear?.();
+        await safeLogout();
         throw new ApiError(401, { errorCode: "TOKEN_EXPIRED" });
       }
     }
