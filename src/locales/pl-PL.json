@@ -165,6 +165,14 @@
           "show": "Pokaż hasło",
           "hide": "Ukryj hasło",
           "hint": "Hasło powinno mieć min. 8 znaków, zawierać małą i wielką literę, cyfrę i znak specjalny."
+        },
+        "confirm": {
+          "label": "Potwierdź hasło",
+          "placeholder": "Powtórz hasło",
+          "show": "Pokaż potwierdzenie",
+          "hide": "Ukryj potwierdzenie",
+          "required": "Potwierdź hasło.",
+          "match_error": "Hasła muszą być identyczne."
         }
       },
       "help": {
@@ -179,7 +187,54 @@
       "legal_terms": "Regulamin",
       "legal_and": "oraz",
       "legal_privacy": "Politykę prywatności",
-      "success": "Konto utworzone. Sprawdź skrzynkę pocztową, aby potwierdzić e-mail."
+      "success": "Konto utworzone. Sprawdź skrzynkę pocztową, aby potwierdzić e-mail.",
+      "password_strength": {
+        "label": "Siła hasła:",
+        "very_weak": "bardzo słabe",
+        "weak": "słabe",
+        "medium": "średnie",
+        "strong": "silne",
+        "very_strong": "bardzo silne"
+      }
+    },
+    "verify": {
+      "title": "Weryfikacja e-mail",
+      "caption": "Potwierdzenie adresu e-mail",
+      "loading": "Weryfikuję token…",
+      "success": "Adres e-mail potwierdzony.",
+      "success_long": "Adres e-mail został pomyślnie potwierdzony.",
+      "failed": "Weryfikacja nie powiodła się",
+      "error_unknown": "Nieprawidłowy lub wygasły token.",
+      "retry": "Spróbuj ponownie",
+      "to_login": "Przejdź do logowania",
+      "missing_token": "Brakuje parametru token w adresie. Upewnij się, że otwierasz link z wiadomości e-mail.",
+      "register_again": "Zarejestruj ponownie"
+    },
+    "reset": {
+      "request": {
+        "title": "Reset hasła",
+        "caption": "Podaj e-mail, aby otrzymać instrukcje",
+        "form": {
+          "email": {
+            "label": "Email",
+            "placeholder": "jan.kowalski@example.com"
+          }
+        },
+        "cta": "Wyślij instrukcje",
+        "back_to_login": "Wróć do logowania",
+        "success": "Jeśli konto istnieje, wysłaliśmy e-mail z instrukcjami resetu."
+      },
+      "confirm": {
+        "title": "Ustaw nowe hasło",
+        "caption": "Wprowadź nowe hasło i potwierdź",
+        "form": {
+          "password": {
+            "label": "Nowe hasło"
+          }
+        },
+        "cta": "Zapisz nowe hasło",
+        "success": "Hasło zostało zmienione. Zaloguj się nowym hasłem."
+      }
     }
   },
   "footer": {

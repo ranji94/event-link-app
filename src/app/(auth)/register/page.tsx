@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Eye, EyeOff, Loader2, CalendarDays, Mail, Users } from "lucide-react";
 
-import { registerSchema } from "@/lib/form";
+import { registerSchema as baseRegisterSchema } from "@/lib/form";
 import { translate } from "@/locales";
 import { AuthCode } from "@/common/enum/auth-code.enum";
 import { apiFetch } from "@/lib/api";
@@ -20,24 +20,87 @@ import { Label } from "@/components/ui/label";
 import { GoogleIcon } from "@/common/assets/google-icon";
 import { HeaderNotAuthenticated } from "@/components/common/HeaderNotAuthenticated";
 
+/** ——— Password strength ——— */
+function getPasswordScore(pw: string) {
+  let score = 0;
+  if (pw.length >= 8) score++;
+  if (/[a-z]/.test(pw)) score++;
+  if (/[A-Z]/.test(pw)) score++;
+  if (/\d/.test(pw)) score++;
+  if (/[^A-Za-z0-9]/.test(pw)) score++;
+  // 0..5
+  return Math.min(score, 5);
+}
+
+function PasswordStrengthBar({ password }: { password: string }) {
+  const score = getPasswordScore(password);
+  const labelKey =
+    score <= 1
+      ? "auth.register.password_strength.very_weak"
+      : score === 2
+      ? "auth.register.password_strength.weak"
+      : score === 3
+      ? "auth.register.password_strength.medium"
+      : score === 4
+      ? "auth.register.password_strength.strong"
+      : "auth.register.password_strength.very_strong";
+
+  return (
+    <div className="space-y-1" aria-live="polite">
+      <div className="flex h-1.5 w-full overflow-hidden rounded-full bg-muted">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div
+            key={i}
+            className={`h-full flex-1 transition-all ${
+              i < score ? "bg-primary" : "bg-transparent"
+            }`}
+          />
+        ))}
+      </div>
+      <p className="text-xs text-muted-foreground">
+        {translate("auth.register.password_strength.label")}{" "}
+        <span className="font-medium">{translate(labelKey)}</span>
+      </p>
+    </div>
+  );
+}
+
+/** ——— Schema z potwierdzeniem hasła ——— */
+const schema = baseRegisterSchema
+  .extend({
+    confirmPassword: z
+      .string()
+      .min(1, { message: translate("auth.register.form.confirm.required") }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    path: ["confirmPassword"],
+    message: translate("auth.register.form.confirm.match_error"),
+  });
+
 export default function Page() {
   const router = useRouter();
   const [showPassword, setShowPassword] = React.useState(false);
+  const [showConfirm, setShowConfirm] = React.useState(false);
 
-  const form = useForm<z.infer<typeof registerSchema>>({
-    resolver: zodResolver(registerSchema),
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
     mode: "onSubmit",
   });
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
   } = form;
 
-  async function onSubmit(values: z.infer<typeof registerSchema>) {
+  const currentPassword = watch("password") || "";
+
+  async function onSubmit(values: z.infer<typeof schema>) {
     try {
-      await apiFetch("/auth/register", { method: "POST", body: values });
+      // Usuń confirmPassword przed wysyłką (backend go nie potrzebuje)
+      const { confirmPassword, ...payload } = values;
+      await apiFetch("/auth/register", { method: "POST", body: payload });
       toast.success(translate("auth.register.success"));
       router.push("/login?registered=1");
     } catch (e) {
@@ -121,12 +184,13 @@ export default function Page() {
               <Button
                 type="button"
                 variant="outline"
-                className="cursor-pointer w-full"
+                className="w-full cursor-pointer"
                 onClick={() => console.log("Google sign-up clicked")}
               >
                 <GoogleIcon />
                 {translate("auth.register.google")}
               </Button>
+              {/* Jeśli chcesz włączyć FB, odkomentuj i podłącz swoją ikonę */}
               {/* <Button
                 type="button"
                 variant="outline"
@@ -192,7 +256,7 @@ export default function Page() {
                 )}
               </div>
 
-              {/* Hasło z przełącznikiem widoczności */}
+              {/* Hasło */}
               <div className="space-y-1.5">
                 <Label htmlFor="password">
                   {translate("auth.register.form.password.label")}
@@ -231,6 +295,10 @@ export default function Page() {
                 <p className="text-xs text-muted-foreground">
                   {translate("auth.register.form.password.hint")}
                 </p>
+
+                {/* Pasek złożoności */}
+                <PasswordStrengthBar password={currentPassword} />
+
                 {errors.password && (
                   <p className="text-xs text-destructive">
                     {String(errors.password.message)}
@@ -238,7 +306,50 @@ export default function Page() {
                 )}
               </div>
 
-              {/* Link pomocniczy: masz konto? Zaloguj się */}
+              {/* Potwierdź hasło */}
+              <div className="space-y-1.5">
+                <Label htmlFor="confirmPassword">
+                  {translate("auth.register.form.confirm.label")}
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="confirmPassword"
+                    type={showConfirm ? "text" : "password"}
+                    autoComplete="new-password"
+                    placeholder={translate(
+                      "auth.register.form.confirm.placeholder"
+                    )}
+                    aria-invalid={!!errors.confirmPassword}
+                    {...register("confirmPassword")}
+                    disabled={isSubmitting}
+                    className="pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirm((v) => !v)}
+                    className="cursor-pointer absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    aria-label={
+                      showConfirm
+                        ? translate("auth.register.form.confirm.hide")
+                        : translate("auth.register.form.confirm.show")
+                    }
+                    tabIndex={-1}
+                  >
+                    {showConfirm ? (
+                      <EyeOff size={18} strokeWidth={1.75} />
+                    ) : (
+                      <Eye size={18} strokeWidth={1.75} />
+                    )}
+                  </button>
+                </div>
+                {errors.confirmPassword && (
+                  <p className="text-xs text-destructive">
+                    {String(errors.confirmPassword.message)}
+                  </p>
+                )}
+              </div>
+
+              {/* Link pomocniczy */}
               <div className="flex flex-col gap-1 text-sm sm:flex-row sm:items-center sm:justify-between">
                 <span className="text-muted-foreground">
                   {translate("auth.register.help.have_account")}
@@ -250,7 +361,7 @@ export default function Page() {
 
               {/* CTA */}
               <Button
-                className="w-full cursor-pointer"
+                className="cursor-pointer w-full"
                 type="submit"
                 disabled={isSubmitting}
               >
@@ -265,7 +376,7 @@ export default function Page() {
               </Button>
             </form>
 
-            {/* Zgody / informacja prawna */}
+            {/* Informacja prawna */}
             <p className="mt-6 text-center text-xs text-muted-foreground">
               {translate("auth.register.legal_prefix")}{" "}
               <Link href="/terms" className="underline underline-offset-4">

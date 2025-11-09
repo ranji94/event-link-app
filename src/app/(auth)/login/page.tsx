@@ -194,7 +194,7 @@ export default function Page() {
                   <button
                     type="button"
                     onClick={() => setShowPassword((v) => !v)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    className="cursor-pointer absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                     aria-label={
                       showPassword
                         ? translate("auth.login.form.password.hide")
@@ -230,7 +230,11 @@ export default function Page() {
               </div>
 
               {/* Submit */}
-              <Button className="w-full" type="submit" disabled={isSubmitting}>
+              <Button
+                className="cursor-pointer w-full"
+                type="submit"
+                disabled={isSubmitting}
+              >
                 {isSubmitting ? (
                   <span className="inline-flex items-center gap-2">
                     <Loader2 className="animate-spin" size={16} />
