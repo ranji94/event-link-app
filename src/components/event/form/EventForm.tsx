@@ -24,10 +24,81 @@ export type EventFormProps = {
   submitLabel: string;
   isSubmitting?: boolean;
   errorMessage?: string | null;
-  renderSchedule: (children: React.ReactNode) => React.ReactNode; // pozwala wstrzyknąć ScheduleBuilder z zewnątrz
-  right?: React.ReactNode; // np. preview panel
+  renderSchedule: (children: React.ReactNode) => React.ReactNode;
+  right?: React.ReactNode;
   placeholderTitle?: string;
 };
+
+function laterNative(a?: string, b?: string): string {
+  const da = a ? new Date(a) : null;
+  const db = b ? new Date(b) : null;
+  if (!da && !db) return "";
+  if (da && !db) return a!;
+  if (!da && db) return b!;
+  return da!.getTime() >= db!.getTime() ? a! : b!;
+}
+
+function parseDisplayToDate(value: string): Date | null {
+  const m = value.match(/^(\d{2})\.(\d{2})\.(\d{4})\s(\d{2}):(\d{2})$/);
+  if (!m) return null;
+  const [, d, mo, y, h, mi] = m;
+  const date = new Date(
+    Number(y),
+    Number(mo) - 1,
+    Number(d),
+    Number(h),
+    Number(mi),
+    0,
+    0
+  );
+  // sanity check
+  if (
+    date.getFullYear() !== Number(y) ||
+    date.getMonth() !== Number(mo) - 1 ||
+    date.getDate() !== Number(d) ||
+    date.getHours() !== Number(h) ||
+    date.getMinutes() !== Number(mi)
+  )
+    return null;
+  return date;
+}
+
+// Date -> 'dd.MM.yyyy hh:mm'
+function formatDisplay(date: Date): string {
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${pad(date.getDate())}.${pad(
+    date.getMonth() + 1
+  )}.${date.getFullYear()} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
+// 'dd.MM.yyyy hh:mm' -> 'YYYY-MM-DDTHH:mm' (native input)
+function displayToNative(value?: string): string {
+  if (!value) return "";
+  const d = parseDisplayToDate(value);
+  if (!d) return "";
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(
+    d.getHours()
+  )}:${pad(d.getMinutes())}`;
+}
+
+// 'YYYY-MM-DDTHH:mm' -> 'dd.MM.yyyy hh:mm'
+function nativeToDisplay(value?: string): string {
+  if (!value) return "";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return "";
+  return formatDisplay(d);
+}
+
+// teraz (zaokrąglony do minuty) w formacie 'YYYY-MM-DDTHH:mm'
+function nowNative(): string {
+  const d = new Date();
+  d.setSeconds(0, 0);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(
+    d.getHours()
+  )}:${pad(d.getMinutes())}`;
+}
 
 export function EventForm({
   form,
@@ -91,15 +162,50 @@ export function EventForm({
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
+            {/* DATA GŁÓWNA */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 {translate("events.fields.datetime")}
+                <span className="ml-1 text-gray-400">*</span>
               </label>
+
               <input
                 type="datetime-local"
-                className="cursor-pointer mt-1 w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
-                {...register("datetime")}
+                className="mt-1 w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+                value={displayToNative(current?.datetime)}
+                // min = max(now, rsvpDeadline)
+                min={laterNative(
+                  nowNative(),
+                  displayToNative(current?.rsvpDeadline)
+                )}
+                onChange={(e) => {
+                  const native = e.target.value;
+                  const display = nativeToDisplay(native);
+                  // Ustaw nową datę wydarzenia
+                  setValue("datetime", display, {
+                    shouldDirty: true,
+                    shouldValidate: true,
+                  });
+
+                  // Jeśli istniejący RSVP > nowa data wydarzenia → skoryguj RSVP do nowej daty
+                  const rsvpNative = displayToNative(current?.rsvpDeadline);
+                  if (rsvpNative) {
+                    const newEvent = new Date(native);
+                    const currentRsvp = new Date(rsvpNative);
+                    if (currentRsvp.getTime() > newEvent.getTime()) {
+                      setValue("rsvpDeadline", display, {
+                        shouldDirty: true,
+                        shouldValidate: true,
+                      });
+                    }
+                  }
+                }}
               />
+
+              <p className="mt-1 text-xs text-gray-500">
+                {translate("events.hint.format")}
+              </p>
+
               {errors.datetime && (
                 <p className="mt-1 text-xs text-red-600">
                   {errors.datetime.message}
@@ -117,6 +223,85 @@ export function EventForm({
                 {...register("location")}
                 placeholder="Warszawa – Kościół św. Anny"
               />
+            </div>
+          </div>
+
+          {/* 🆕 dodatkowe pola */}
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                {translate("events.fields.dressCode") /* dodaj w locales */}
+                <span className="ml-1 text-gray-400">
+                  ({translate("common.optional")})
+                </span>
+              </label>
+              <input
+                type="text"
+                className="mt-1 w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+                {...register("dressCode")}
+                placeholder={
+                  translate("events.placeholders.dressCode") ??
+                  "Np. formalny, smart casual"
+                }
+              />
+              {errors.dressCode && (
+                <p className="mt-1 text-xs text-red-600">
+                  {errors.dressCode.message}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                {translate("events.fields.rsvpDeadline")}
+                <span className="ml-1 text-gray-400">
+                  ({translate("common.optional")})
+                </span>
+              </label>
+
+              <input
+                type="datetime-local"
+                className="mt-1 w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+                value={displayToNative(current?.rsvpDeadline)}
+                min={nowNative()}
+                max={displayToNative(current?.datetime) || undefined}
+                onChange={(e) =>
+                  setValue("rsvpDeadline", nativeToDisplay(e.target.value), {
+                    shouldDirty: true,
+                    shouldValidate: true,
+                  })
+                }
+              />
+
+              <div className="mt-1 text-xs text-gray-500">
+                <span className="block">
+                  {
+                    translate(
+                      "events.hint.optional"
+                    ) /* np. „Pole opcjonalne” */
+                  }
+                </span>
+                <span className="block">
+                  {
+                    translate(
+                      "events.hint.format"
+                    ) /* „Format: dd.MM.yyyy hh:mm” */
+                  }
+                </span>
+                <span className="block">
+                  {
+                    translate(
+                      "events.hint.rsvp_leq_date"
+                    ) /* np. „RSVP nie może być później niż data wydarzenia” */
+                  }
+                </span>
+              </div>
+
+              {errors.rsvpDeadline && (
+                <p className="mt-1 text-xs text-red-600">
+                  {errors.rsvpDeadline.message}
+                </p>
+              )}
             </div>
           </div>
 
@@ -175,7 +360,7 @@ export function EventForm({
                     <path
                       className="opacity-75"
                       fill="currentColor"
-                      d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                      d="M4 12a 8 8 0 018-8v4a4 4 0 00-4 4H4z"
                     />
                   </svg>
                 )}

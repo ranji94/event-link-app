@@ -37,6 +37,8 @@ export type EventListItem = {
   location?: string | null;
   kind: EventKind;
   slug: string;
+  dressCode?: string | null;
+  rsvpDeadline?: string | null;
   templateKey?: string | null;
   createdAt?: string;
   updatedAt?: string;

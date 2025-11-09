@@ -264,6 +264,11 @@
   "not_found_go_back": "Wróć",
   "not_found_go_home": "Przejdź do strony powitalnej",
   "events": {
+    "hint": {
+      "format": "Format: dd.MM.yyyy hh:mm",
+      "optional": "Pole opcjonalne",
+      "rsvp_leq_date": "RSVP nie może być później niż data wydarzenia"
+    },
     "new": {
       "schedule": {
         "title": "Harmonogram",
@@ -294,7 +299,10 @@
         "date_required": "Podaj datę i godzinę wydarzenia.",
         "create_failed": "Nie udało się utworzyć wydarzenia.",
         "unknown": "Wystąpił nieoczekiwany błąd po stronie serwera. Spróbuj później.",
-        "no_response": "Brak odpowiedzi z serwera"
+        "no_response": "Brak odpowiedzi z serwera",
+        "date_format": "Nieprawidłowy format daty. Użyj formatu dd.MM.yyyy hh:mm",
+        "date_in_past": "Data nie może być wcześniejsza niż obecna",
+        "rsvp_after_event": "Termin RSVP nie może być późniejszy niż data wydarzenia"
       },
       "header": {
         "WEDDING": "Nowe wydarzenie — Ślub/Wesele",
@@ -351,14 +359,17 @@
     "fields": {
       "title": "Tytuł",
       "description": "Opis na zaproszeniu",
-      "datetime": "Data i godzina",
       "location": "Lokalizacja",
-      "template": "Szablon"
+      "template": "Szablon",
+      "dressCode": "Strój",
+      "rsvpDeadline": "Termin potwierdzenia udziału",
+      "datetime": "Data i godzina wydarzenia"
     },
     "placeholders": {
       "title": "Np. Ślub Ani i Pawła",
       "description": "Tu wpisz treść zaproszenia…",
-      "select": "— wybierz —"
+      "select": "— wybierz —",
+      "dressCode": "Np. formalny, smart casual"
     }
   },
   "guests": {
@@ -430,7 +441,8 @@
     "move_up": "Przenieś wyżej",
     "move_down": "Przenieś niżej",
     "warning": "Uwaga",
-    "all_data_will_be_lost": "Utracisz wprowadzone dane."
+    "all_data_will_be_lost": "Utracisz wprowadzone dane.",
+    "optional": "opcjonalne"
   },
   "button": {
     "discard": "Odrzuć",

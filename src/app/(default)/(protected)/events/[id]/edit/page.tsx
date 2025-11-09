@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import type {
   UpdateEventDto,
@@ -13,7 +13,36 @@ import { useEventForm } from "@/components/event/form/useEventForm";
 import { PreviewPanel } from "@/components/event/PreviewPanel";
 import { programControllerList } from "@/entities/program";
 import { translate } from "@/locales";
-import { toDatetimeLocalFromIso, toIsoFromDatetimeLocal } from "@/common/utils";
+
+// === Helpers: konwersje ISO <-> 'dd.MM.yyyy hh:mm' ===
+function pad(n: number) {
+  return String(n).padStart(2, "0");
+}
+function isoToDisplay(iso?: string | null): string {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  return `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()} ${pad(
+    d.getHours()
+  )}:${pad(d.getMinutes())}`;
+}
+function displayToIso(display?: string | null): string | undefined {
+  if (!display) return undefined;
+  const m = display.match(/^(\d{2})\.(\d{2})\.(\d{4})\s(\d{2}):(\d{2})$/);
+  if (!m) return undefined;
+  const [, dd, mm, yyyy, hh, mi] = m;
+  const d = new Date(
+    Number(yyyy),
+    Number(mm) - 1,
+    Number(dd),
+    Number(hh),
+    Number(mi),
+    0,
+    0
+  );
+  if (Number.isNaN(d.getTime())) return undefined;
+  return d.toISOString();
+}
 
 export default function EditEventPage() {
   const router = useRouter();
@@ -35,12 +64,17 @@ export default function EditEventPage() {
         const res = await getOne(params.id);
         if (!res.ok) throw new Error(res.message);
         const e = res.data;
+
         form.reset({
           title: e.title ?? "",
           description: e.description ?? "",
-          datetime: toDatetimeLocalFromIso(e.date),
+          // główna data wydarzenia -> display
+          datetime: isoToDisplay(e.date),
           location: e.location ?? "",
           templateKey: e.templateKey ?? "",
+          // 🆕 pola
+          dressCode: e.dressCode ?? "",
+          rsvpDeadline: isoToDisplay(e.rsvpDeadline),
         });
 
         const programData = await programControllerList(params.id, {
@@ -65,16 +99,22 @@ export default function EditEventPage() {
       }
     }
     void load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.id]);
 
   async function onSubmit(values: any) {
     const payload: UpdateEventDto = {
       title: values.title.trim(),
       description: values.description?.trim() || undefined,
-      date: toIsoFromDatetimeLocal(values.datetime),
+      // display -> ISO
+      date: displayToIso(values.datetime)!,
       location: values.location?.trim() || undefined,
       templateKey: values.templateKey,
+      // 🆕
+      dressCode: values.dressCode?.trim() || undefined,
+      rsvpDeadline: displayToIso(values.rsvpDeadline) || undefined,
     };
+
     const res = await update(params.id, payload);
     if (res.ok) {
       await program.saveBulkUpsert(params.id);
@@ -126,7 +166,8 @@ export default function EditEventPage() {
           templateKey={current.templateKey}
           title={current.title}
           description={current.description}
-          date={toIsoFromDatetimeLocal(current.datetime)}
+          // PreviewPanel potrzebuje ISO → konwersja display -> ISO
+          date={displayToIso(current.datetime)}
           location={current.location}
           program={program.items}
         />
