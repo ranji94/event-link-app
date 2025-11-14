@@ -22,12 +22,17 @@ export const minimalistNavy: TemplateDef = {
     program,
     rsvpStatus,
     sending,
+    dressCode,
+    rsvpDeadline,
     onAccept,
     onDecline,
     inviteeName,
   }) => {
     const titleText = title || "Zaproszenie";
     const locationText = location || "Miejsce wydarzenia";
+
+    console.log("RSVPDEADLINE: ", rsvpDeadline);
+    console.log("DRESSCODE: ", dressCode);
 
     // Formatowanie daty - zakładamy że date jest stringiem lub obiektem Date
     const dateText = date

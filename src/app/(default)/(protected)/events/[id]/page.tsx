@@ -339,7 +339,6 @@ export default function EventDetailsPage() {
                       <div className="min-w-0">
                         <div className="flex flex-wrap items-center gap-2">
                           <div className="truncate font-medium">{display}</div>
-                          {/* ⇩ status obok nazwy, widoczny na mobile */}
                           <StatusPill status={g.status} />
                         </div>
                         {g.groupName && (
@@ -446,6 +445,8 @@ export default function EventDetailsPage() {
           description={item.description ?? undefined}
           date={item.date}
           location={item.location ?? undefined}
+          dressCode={item.dressCode ?? undefined}
+          rsvpDeadline={item.rsvpDeadline}
           program={program}
           inviteeName="Helena Goździkowa"
         />

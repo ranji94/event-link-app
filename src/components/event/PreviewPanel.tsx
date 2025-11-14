@@ -1,12 +1,16 @@
 "use client";
 import { useMemo } from "react";
 import { templates } from "@/templates/registry";
-import { getTemplateById } from "@/components/templates/TemplatePicker";
+import {
+  getDefaultTemplateByKind,
+  getTemplateById,
+} from "@/components/templates/TemplatePicker";
 import { FullscreenPreview } from "@/components/templates/FullScreenPreview";
 import { translate } from "@/locales";
 import { useState } from "react";
 import type { CreateProgramItemDto } from "@/entities/api.gen.schemas";
 import { Separator } from "@/components/ui/separator";
+import { EventKind } from "@/common/enum";
 
 export function PreviewPanel({
   templateKey,
@@ -15,7 +19,9 @@ export function PreviewPanel({
   date,
   location,
   program,
-  className,
+  eventKind,
+  dressCode,
+  rsvpDeadline,
 }: {
   templateKey: string;
   title?: string;
@@ -23,13 +29,15 @@ export function PreviewPanel({
   date?: string;
   location?: string;
   program?: CreateProgramItemDto[];
-  className?: string;
+  eventKind: EventKind;
+  dressCode?: string;
+  rsvpDeadline?: string;
 }) {
   const [fsOpen, setFsOpen] = useState(false);
 
   const SelectedPreview =
     useMemo(() => getTemplateById(templateKey)?.Preview, [templateKey]) ??
-    templates[0].Preview;
+    getDefaultTemplateByKind(eventKind).Preview;
 
   return (
     <div className="-mx-[calc(50vw-50%)] w-screen overflow-hidden">
@@ -41,10 +49,11 @@ export function PreviewPanel({
         <Separator className="flex-1" />
       </div>
 
-      {/* Właściwy szablon — zero ramek, zero paddingu */}
       <div className="w-full">
         <SelectedPreview
           title={title}
+          dressCode={dressCode}
+          rsvpDeadline={rsvpDeadline}
           description={description}
           date={date}
           location={location}
@@ -55,6 +64,8 @@ export function PreviewPanel({
       <FullscreenPreview open={fsOpen} onClose={() => setFsOpen(false)}>
         <SelectedPreview
           title={title}
+          dressCode={dressCode}
+          rsvpDeadline={rsvpDeadline}
           description={description}
           date={date}
           location={location}

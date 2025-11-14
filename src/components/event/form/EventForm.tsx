@@ -6,8 +6,10 @@ import { TemplatePicker } from "@/components/templates/TemplatePicker";
 import { ScheduleBuilder } from "@/components/event/ScheduleBuilder";
 import type { EventFormValues } from "./schema";
 import type { CreateProgramItemDto } from "@/entities/api.gen.schemas";
+import { EventKind } from "@/common/enum";
 
 export type EventFormProps = {
+  kind: EventKind;
   form: UseFormReturn<EventFormValues>;
   builder: {
     items: CreateProgramItemDto[];
@@ -101,6 +103,7 @@ function nowNative(): string {
 }
 
 export function EventForm({
+  kind,
   form,
   builder,
   onChangeTemplate,
@@ -310,6 +313,7 @@ export function EventForm({
               {translate("events.fields.template")}
             </label>
             <TemplatePicker
+              eventKind={kind}
               value={current?.templateKey}
               onChange={(id) => {
                 setValue("templateKey", id, { shouldDirty: true });

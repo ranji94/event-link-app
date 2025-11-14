@@ -262,6 +262,7 @@ export function useGuests(eventId: string) {
         text: shareText,
         url,
       });
+
       if (res.shared) {
         toast.success(translate("guests.toasts.shared"));
       } else if (res.copied) {

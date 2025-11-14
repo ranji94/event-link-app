@@ -13,6 +13,7 @@ import { useEventForm } from "@/components/event/form/useEventForm";
 import { PreviewPanel } from "@/components/event/PreviewPanel";
 import { programControllerList } from "@/entities/program";
 import { translate } from "@/locales";
+import { EventKind } from "@/common/enum";
 
 // === Helpers: konwersje ISO <-> 'dd.MM.yyyy hh:mm' ===
 function pad(n: number) {
@@ -48,6 +49,7 @@ export default function EditEventPage() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
   const { getOne, update, isUpdating, updateError } = useEvents();
+  const [kind, setKind] = useState<EventKind>();
   const confirm = useConfirm();
 
   const program = useProgramBuilder([]);
@@ -76,6 +78,8 @@ export default function EditEventPage() {
           dressCode: e.dressCode ?? "",
           rsvpDeadline: isoToDisplay(e.rsvpDeadline),
         });
+
+        setKind(e.kind);
 
         const programData = await programControllerList(params.id, {
           credentials: "include",
@@ -149,6 +153,7 @@ export default function EditEventPage() {
 
   return (
     <EventForm
+      kind={kind}
       form={form}
       builder={program}
       onChangeTemplate={() => {}}
@@ -163,7 +168,10 @@ export default function EditEventPage() {
       renderSchedule={(slot) => slot}
       right={
         <PreviewPanel
+          eventKind={kind}
           templateKey={current.templateKey}
+          dressCode={current.dressCode}
+          rsvpDeadline={displayToIso(current.rsvpDeadline)}
           title={current.title}
           description={current.description}
           // PreviewPanel potrzebuje ISO → konwersja display -> ISO

@@ -15,6 +15,8 @@ export type PreviewProps = {
   }[];
   inviteeName?: string;
   rsvpStatus?: "ACCEPTED" | "DECLINED" | null;
+  dressCode?: string;
+  rsvpDeadline?: string; // ISO
   sending?: boolean;
   onAccept?: () => void;
   onDecline?: () => void;

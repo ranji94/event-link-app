@@ -84,6 +84,7 @@ function NewEventPageInner() {
 
   return (
     <EventForm
+      kind={kindParam}
       form={form}
       builder={program}
       onChangeTemplate={() => {}}
@@ -98,12 +99,15 @@ function NewEventPageInner() {
       renderSchedule={(slot) => slot}
       right={
         <PreviewPanel
+          eventKind={kindParam}
           templateKey={current.templateKey}
           title={current.title}
           description={current.description}
           date={toIsoFromDatetimeLocal(current.datetime)}
           location={current.location}
           program={program.items}
+          dressCode={current.dressCode}
+          rsvpDeadline={current.rsvpDeadline}
         />
       }
     />

@@ -13,20 +13,11 @@ import {
   eventsControllerRemove,
 } from "@/entities/events";
 import { translate } from "@/locales";
+import { EventKind } from "@/common/enum";
 
 // ===== Helpers =====
 type Ok<T> = { ok: true; data: T };
 type Err = { ok: false; message: string };
-
-type EventKind =
-  | "WEDDING"
-  | "BAPTISM"
-  | "BIRTHDAY_18"
-  | "BIRTHDAY_30"
-  | "BIRTHDAY_50"
-  | "BABY_SHOWER"
-  | "HOLY_COMMUNION"
-  | "OTHER";
 
 export type EventListItem = {
   id: string;
