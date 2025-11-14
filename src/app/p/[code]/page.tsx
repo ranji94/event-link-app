@@ -95,6 +95,8 @@ export default function PublicInvitationPage() {
         location={event.location ?? undefined}
         program={event.program ?? []}
         inviteeName={invitee.fullName}
+        dressCode={event.dressCode}
+        rsvpDeadline={event.rsvpDeadline}
         rsvpStatus={rsvpStatus}
         sending={sending}
         onAccept={() => handleRsvp("ACCEPTED")}
