@@ -34,7 +34,44 @@ export default function NewEventPage() {
 function NewEventPageInner() {
   const router = useRouter();
   const params = useSearchParams();
-  const kindParam = (params.get("kind") as EventKind) || EventKind.WEDDING;
+
+  const kindParamRaw = params.get("kind");
+
+  const kindParam = useMemo(() => {
+    if (!kindParamRaw) {
+      return EventKind.OTHER;
+    }
+
+    const isValid = Object.values(EventKind).includes(
+      kindParamRaw as EventKind
+    );
+
+    return isValid ? (kindParamRaw as EventKind) : null;
+  }, [kindParamRaw]);
+
+  if (kindParam === null) {
+    return (
+      <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4 px-4 text-center">
+        <p className="text-lg font-semibold">
+          {translate("events.new.not_found.this_type_of_event") + " "}
+          {kindParamRaw && (
+            <span className="font-mono text-sm">({kindParamRaw}) </span>
+          )}
+          {translate("events.new.not_found.not_exists")}
+        </p>
+        <p className="text-sm text-muted-foreground">
+          {translate("events.new.not_found.make_sure_youre_using_correct_link")}
+        </p>
+        <button
+          type="button"
+          onClick={() => router.push("/")}
+          className="cursor-pointer mt-2 rounded-md border px-4 py-2 text-sm font-medium hover:bg-accent"
+        >
+          {translate("events.new.not_found.go_back")}
+        </button>
+      </div>
+    );
+  }
 
   const { create, isCreating, createError } = useEvents();
   const confirm = useConfirm();

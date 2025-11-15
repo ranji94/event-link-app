@@ -270,6 +270,12 @@
       "rsvp_leq_date": "RSVP nie może być później niż data wydarzenia"
     },
     "new": {
+      "not_found": {
+        "this_type_of_event": "Podany typ wydarzenia",
+        "not_exists": "nie istnieje.",
+        "make_sure_youre_using_correct_link": "Upewnij się, że korzystasz z prawidłowego linku i spróbuj ponownie.",
+        "go_back": "Wróć na stronę główną"
+      },
       "schedule": {
         "title": "Harmonogram",
         "add_item": "Dodaj punkt",
