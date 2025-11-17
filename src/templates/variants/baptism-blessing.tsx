@@ -1,7 +1,10 @@
+import * as React from "react";
 import * as Lucide from "lucide-react";
 import { TemplateDef } from "../types";
 import { pl } from "date-fns/locale";
 import { format } from "date-fns";
+import { translate } from "@/locales";
+import { useRsvpCountdown } from "../utils/useRsvpCountdown";
 
 /**
  * BAPTISM BLESSING - Delikatny szablon na chrzciny
@@ -25,17 +28,23 @@ export const baptismBlessing: TemplateDef = {
     onAccept,
     onDecline,
     inviteeName,
+    dressCode,
+    rsvpDeadline,
   }) => {
-    const titleText = title || "Zaproszenie na Chrzciny";
-    const locationText = location || "Kościół";
+    const titleText =
+      title || translate("templates.baptism_blessing.title_default");
+    const locationText =
+      location || translate("templates.baptism_blessing.location_default");
 
     const dateText = date
       ? format(new Date(date), "d MMMM yyyy, 'godzina' HH:mm", { locale: pl })
-      : "Sobota, 14:30";
+      : translate("templates.baptism_blessing.date_fallback");
 
-    const personalizedGreeting = inviteeName
-      ? `${inviteeName}`
-      : "Drodzy Goście";
+    const personalizedGreeting =
+      inviteeName || translate("templates.baptism_blessing.greeting_default");
+
+    const { deadlineDate, countdown, isExpired } =
+      useRsvpCountdown(rsvpDeadline);
 
     return (
       <div className="relative min-h-screen w-full bg-gradient-to-b from-sky-50 via-blue-50 to-sky-100">
@@ -74,11 +83,14 @@ export const baptismBlessing: TemplateDef = {
               <div className="mb-10 text-center">
                 <div className="mx-auto max-w-2xl rounded-2xl border-2 border-sky-200 bg-gradient-to-br from-sky-50 to-blue-50 p-6">
                   <Lucide.Quote className="mx-auto mb-3 h-8 w-8 text-sky-400" />
+                  <p className="mt-4 text-lg font-medium text-sky-700">
+                    {translate("templates.baptism_blessing.sacrament_label")}
+                  </p>
                   <p className="font-serif italic text-sky-900">
-                    "Pozwólcie dzieciom przychodzić do Mnie"
+                    {translate("templates.baptism_blessing.quote_text")}
                   </p>
                   <p className="mt-2 text-xs uppercase tracking-wider text-sky-600">
-                    — Ewangelia według św. Marka 10:14
+                    {translate("templates.baptism_blessing.quote_reference")}
                   </p>
                 </div>
               </div>
@@ -89,7 +101,7 @@ export const baptismBlessing: TemplateDef = {
                   {personalizedGreeting}
                 </p>
                 <p className="mt-3 text-gray-600">
-                  Z radością zapraszamy na uroczystość
+                  {translate("templates.baptism_blessing.invitation_intro")}
                 </p>
               </div>
 
@@ -105,13 +117,22 @@ export const baptismBlessing: TemplateDef = {
                   label="Miejsce"
                   value={locationText}
                 />
+                {dressCode && (
+                  <BaptismCard
+                    icon="Shirt"
+                    label={translate(
+                      "templates.baptism_blessing.dress_code_label"
+                    )}
+                    value={dressCode}
+                  />
+                )}
               </div>
 
               {/* Opis */}
               <div className="mx-auto max-w-2xl">
                 <p className="whitespace-pre-wrap text-center leading-relaxed text-gray-700">
                   {description ||
-                    "Mamy zaszczyt zaprosić Państwa na uroczystość Chrztu Świętego naszego dziecka. To wyjątkowy dzień, w którym nasze maleństwo zostanie przyjęte do wspólnoty Kościoła. Będzie nam niezmiernie miło dzielić z Wami tę radosną chwilę."}
+                    translate("templates.baptism_blessing.description_default")}
                 </p>
               </div>
 
@@ -120,7 +141,7 @@ export const baptismBlessing: TemplateDef = {
                 <div className="mx-auto mt-12 max-w-3xl">
                   <div className="mb-8 text-center">
                     <h3 className="text-sm font-bold uppercase tracking-widest text-sky-700">
-                      Program Uroczystości
+                      {translate("templates.baptism_blessing.program_title")}
                     </h3>
                     <div className="mx-auto mt-3 h-0.5 w-20 bg-sky-300" />
                   </div>
@@ -173,31 +194,70 @@ export const baptismBlessing: TemplateDef = {
               {/* RSVP */}
               <div className="mt-12 rounded-3xl border-2 border-sky-200 bg-gradient-to-br from-sky-50 to-blue-50 p-8">
                 {!rsvpStatus ? (
-                  <div className="space-y-6">
-                    <p className="text-center text-sm font-medium text-gray-700">
-                      Prosimy o potwierdzenie obecności
-                    </p>
-                    <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-                      <button
-                        disabled={sending}
-                        onClick={onAccept}
-                        className="group relative overflow-hidden rounded-full bg-gradient-to-r from-sky-400 to-blue-500 px-10 py-4 font-bold text-white shadow-lg transition hover:shadow-xl hover:scale-105 disabled:opacity-50"
-                      >
-                        <span className="relative z-10 flex items-center gap-2">
-                          <Lucide.Check className="h-5 w-5" />
-                          Potwierdzam obecność
-                        </span>
-                        <div className="absolute inset-0 bg-gradient-to-r from-sky-500 to-blue-600 opacity-0 transition group-hover:opacity-100" />
-                      </button>
-                      <button
-                        disabled={sending}
-                        onClick={onDecline}
-                        className="rounded-full border-2 border-sky-300 bg-white px-10 py-4 font-bold text-sky-700 transition hover:border-sky-400 hover:bg-sky-50 disabled:opacity-50"
-                      >
-                        Nie mogę uczestniczyć
-                      </button>
-                    </div>
-                  </div>
+                  <>
+                    {deadlineDate && (
+                      <div className="mb-6 text-center">
+                        {!isExpired && countdown ? (
+                          <div className="inline-flex flex-col items-center gap-2">
+                            <p className="text-xs font-medium text-sky-800">
+                              {translate(
+                                "templates.baptism_blessing.rsvp_deadline_label"
+                              )}
+                            </p>
+                            <div className="rounded-full bg-sky-100 px-5 py-2 text-sm font-semibold text-sky-900">
+                              {countdown}
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="space-y-1 text-center">
+                            <p className="text-sm font-semibold text-sky-900">
+                              {translate(
+                                "templates.baptism_blessing.rsvp_deadline_expired_title"
+                              )}
+                            </p>
+                            <p className="text-xs text-sky-700">
+                              {translate(
+                                "templates.baptism_blessing.rsvp_deadline_expired_at"
+                              )}{" "}
+                              {format(deadlineDate, "dd.MM.yyyy, HH:mm")}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {!deadlineDate || (!isExpired && countdown) ? (
+                      <div className="space-y-6">
+                        <p className="text-center text-sm font-medium text-gray-700">
+                          {translate("templates.baptism_blessing.rsvp_request")}
+                        </p>
+                        <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+                          <button
+                            disabled={sending}
+                            onClick={onAccept}
+                            className="group relative overflow-hidden rounded-full bg-gradient-to-r from-sky-400 to-blue-500 px-10 py-4 font-bold text-white shadow-lg transition hover:shadow-xl hover:scale-105 disabled:opacity-50"
+                          >
+                            <span className="relative z-10 flex items-center gap-2">
+                              <Lucide.Check className="h-5 w-5" />
+                              {translate(
+                                "templates.baptism_blessing.rsvp_accept_label"
+                              )}
+                            </span>
+                            <div className="absolute inset-0 bg-gradient-to-r from-sky-500 to-blue-600 opacity-0 transition group-hover:opacity-100" />
+                          </button>
+                          <button
+                            disabled={sending}
+                            onClick={onDecline}
+                            className="rounded-full border-2 border-sky-300 bg-white px-10 py-4 font-bold text-sky-700 transition hover:border-sky-400 hover:bg-sky-50 disabled:opacity-50"
+                          >
+                            {translate(
+                              "templates.baptism_blessing.rsvp_decline_label"
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                    ) : null}
+                  </>
                 ) : rsvpStatus === "ACCEPTED" ? (
                   <div className="flex flex-col items-center gap-4 text-center">
                     <div className="relative">
@@ -208,10 +268,14 @@ export const baptismBlessing: TemplateDef = {
                     </div>
                     <div>
                       <p className="text-2xl font-bold text-sky-900">
-                        Dziękujemy! 🙏
+                        {translate(
+                          "templates.baptism_blessing.rsvp_accepted_title"
+                        )}
                       </p>
                       <p className="mt-2 text-sky-700">
-                        Cieszymy się, że będziecie z nami
+                        {translate(
+                          "templates.baptism_blessing.rsvp_accepted_text"
+                        )}
                       </p>
                     </div>
                     <BlessingHands />
@@ -222,10 +286,14 @@ export const baptismBlessing: TemplateDef = {
                       <Lucide.Heart className="h-10 w-10 text-sky-400" />
                     </div>
                     <p className="text-lg font-semibold text-gray-700">
-                      Dziękujemy za odpowiedź
+                      {translate(
+                        "templates.baptism_blessing.rsvp_declined_title"
+                      )}
                     </p>
                     <p className="text-sm text-gray-600">
-                      Jesteście w naszych modlitwach
+                      {translate(
+                        "templates.baptism_blessing.rsvp_declined_text"
+                      )}
                     </p>
                   </div>
                 )}
