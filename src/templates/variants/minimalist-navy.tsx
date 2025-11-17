@@ -1,7 +1,11 @@
+"use client";
+
+import * as React from "react";
 import { format } from "date-fns";
 import { TemplateDef } from "../types";
 import { pl } from "date-fns/locale";
 import * as Lucide from "lucide-react";
+import { translate } from "@/locales";
 
 /**
  * MINIMALIST NAVY - Elegancki szablon z granatową paletą
@@ -10,6 +14,29 @@ import * as Lucide from "lucide-react";
  * - Geometryczne elementy dekoracyjne
  * - Uniwersalny dla różnych okazji
  */
+
+function getCountdownLabel(deadline: Date, now: Date) {
+  const diffMs = deadline.getTime() - now.getTime();
+  if (diffMs <= 0) {
+    return { expired: true as const, label: "" };
+  }
+
+  const totalMinutes = Math.floor(diffMs / 60000);
+  const days = Math.floor(totalMinutes / (60 * 24));
+  const hours = Math.floor((totalMinutes % (60 * 24)) / 60);
+  const minutes = totalMinutes % 60;
+
+  const parts: string[] = [];
+  if (days > 0) parts.push(`${days} d`);
+  if (hours > 0 || days > 0) parts.push(`${hours} h`);
+  parts.push(`${minutes} min`);
+
+  return {
+    expired: false as const,
+    label: parts.join(" "),
+  };
+}
+
 export const minimalistNavy: TemplateDef = {
   id: "minimalist-navy",
   name: "Minimalist Navy",
@@ -28,20 +55,36 @@ export const minimalistNavy: TemplateDef = {
     onDecline,
     inviteeName,
   }) => {
-    const titleText = title || "Zaproszenie";
-    const locationText = location || "Miejsce wydarzenia";
+    const titleText =
+      title || translate("templates.minimalist_navy.title_fallback");
+    const locationText =
+      location || translate("templates.minimalist_navy.location_fallback");
 
-    console.log("RSVPDEADLINE: ", rsvpDeadline);
-    console.log("DRESSCODE: ", dressCode);
+    const [now, setNow] = React.useState(() => new Date());
 
-    // Formatowanie daty - zakładamy że date jest stringiem lub obiektem Date
+    const deadlineDate = rsvpDeadline ? new Date(rsvpDeadline) : null;
+    const countdown = deadlineDate
+      ? getCountdownLabel(deadlineDate, now)
+      : null;
+    const isDeadlineExpired = !!countdown && countdown.expired;
+
+    // Odświeżanie co minutę (minute-by-minute)
+    React.useEffect(() => {
+      if (!deadlineDate) return;
+      const id = setInterval(() => {
+        setNow(new Date());
+      }, 60_000);
+      return () => clearInterval(id);
+    }, [deadlineDate?.getTime()]);
+
+    // Formatowanie daty wydarzenia
     const dateText = date
       ? format(new Date(date), "d MMMM yyyy, 'godzina' HH:mm", { locale: pl })
       : "Sobota, 14:30";
 
     const personalizedGreeting = inviteeName
-      ? `${inviteeName}`
-      : "Drodzy Goście";
+      ? inviteeName
+      : translate("templates.minimalist_navy.greeting_fallback");
 
     return (
       <div className="relative min-h-screen w-full bg-slate-50">
@@ -78,7 +121,7 @@ export const minimalistNavy: TemplateDef = {
                   </div>
                   <div>
                     <div className="text-xs font-medium uppercase tracking-wider text-slate-500">
-                      Data
+                      {translate("templates.minimalist_navy.date_label")}
                     </div>
                     <div className="font-semibold text-slate-800">
                       {dateText}
@@ -92,7 +135,7 @@ export const minimalistNavy: TemplateDef = {
                   </div>
                   <div>
                     <div className="text-xs font-medium uppercase tracking-wider text-slate-500">
-                      Miejsce
+                      {translate("templates.minimalist_navy.location_label")}
                     </div>
                     <div className="font-semibold text-slate-800">
                       {locationText}
@@ -104,15 +147,33 @@ export const minimalistNavy: TemplateDef = {
               <div className="mx-auto max-w-2xl">
                 <p className="whitespace-pre-wrap text-center leading-relaxed text-slate-600">
                   {description ||
-                    "Mamy przyjemność zaprosić Państwa na to wyjątkowe wydarzenie. Będzie nam niezmiernie miło gościć Was w tym szczególnym dniu."}
+                    translate("templates.minimalist_navy.description_fallback")}
                 </p>
               </div>
 
+              {/* DRESS CODE */}
+              {dressCode && (
+                <div className="mx-auto mt-10 flex max-w-md items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-white shadow-md">
+                    <Lucide.Shirt className="h-4 w-4" />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-xs font-semibold uppercase tracking-widest text-slate-400">
+                      {translate("templates.minimalist_navy.dresscode_label")}
+                    </span>
+                    <span className="mt-0.5 font-medium text-slate-800">
+                      {dressCode}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* PROGRAM */}
               {program && program.length > 0 && (
                 <div className="mx-auto mt-12 max-w-3xl">
                   <div className="mb-8 text-center">
                     <h3 className="text-sm font-bold uppercase tracking-widest text-slate-400">
-                      Program Wydarzenia
+                      {translate("templates.minimalist_navy.program_title")}
                     </h3>
                     <div className="mx-auto mt-3 h-0.5 w-16 bg-rose-400" />
                   </div>
@@ -139,7 +200,7 @@ export const minimalistNavy: TemplateDef = {
                               <Icon className="h-5 w-5" />
                             </div>
 
-                            <div className="flex-1 min-w-0">
+                            <div className="min-w-0 flex-1">
                               <div className="font-semibold text-slate-900">
                                 {it.header}
                               </div>
@@ -160,25 +221,73 @@ export const minimalistNavy: TemplateDef = {
                 </div>
               )}
 
+              {/* COUNTDOWN / DEADLINE INFO */}
+              {deadlineDate && (
+                <div className="mt-12 flex flex-col items-center gap-2 text-center">
+                  {!isDeadlineExpired && countdown && (
+                    <>
+                      <div className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-slate-100">
+                        <Lucide.Clock className="h-4 w-4 text-rose-300" />
+                        <span>
+                          {translate(
+                            "templates.minimalist_navy.countdown_prefix"
+                          )}
+                        </span>
+                      </div>
+                      <p className="text-sm font-medium text-slate-800">
+                        {countdown.label}
+                      </p>
+                      <p className="text-xs text-slate-400">
+                        {translate(
+                          "templates.minimalist_navy.countdown_until_prefix"
+                        )}{" "}
+                        {format(deadlineDate, "d MMMM yyyy, HH:mm", {
+                          locale: pl,
+                        })}
+                      </p>
+                    </>
+                  )}
+
+                  {isDeadlineExpired && (
+                    <div className="max-w-md rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-900">
+                      <div className="mb-1 flex items-center justify-center gap-2">
+                        <Lucide.Clock className="h-4 w-4" />
+                        <span className="font-semibold">
+                          {translate(
+                            "templates.minimalist_navy.deadline_expired_title"
+                          )}
+                        </span>
+                      </div>
+                      <p className="text-xs text-rose-900/80">
+                        {translate(
+                          "templates.minimalist_navy.deadline_expired_subtitle"
+                        )}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* RSVP */}
               <div className="mt-12 border-t border-slate-200 pt-10">
                 {!rsvpStatus ? (
                   <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
                     <button
-                      disabled={sending}
+                      disabled={sending || isDeadlineExpired}
                       onClick={onAccept}
-                      className="group relative overflow-hidden rounded-full bg-gradient-to-r from-slate-800 to-slate-900 px-8 py-4 font-bold text-white shadow-lg transition hover:shadow-xl disabled:opacity-50"
+                      className="cursor-pointer group relative overflow-hidden rounded-full bg-gradient-to-r from-slate-800 to-slate-900 px-8 py-4 font-bold text-white shadow-lg transition hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       <span className="relative z-10">
-                        Potwierdzam obecność
+                        {translate("templates.minimalist_navy.rsvp_accept")}
                       </span>
                       <div className="absolute inset-0 bg-gradient-to-r from-slate-700 to-slate-800 opacity-0 transition group-hover:opacity-100" />
                     </button>
                     <button
-                      disabled={sending}
+                      disabled={sending || isDeadlineExpired}
                       onClick={onDecline}
-                      className="rounded-full border-2 border-slate-300 px-8 py-4 font-bold text-slate-700 transition hover:border-slate-400 hover:bg-slate-50 disabled:opacity-50"
+                      className="cursor-pointer rounded-full border-2 border-slate-300 px-8 py-4 font-bold text-slate-700 transition hover:border-slate-400 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
                     >
-                      Nie mogę uczestniczyć
+                      {translate("templates.minimalist_navy.rsvp_decline")}
                     </button>
                   </div>
                 ) : rsvpStatus === "ACCEPTED" ? (
@@ -187,10 +296,14 @@ export const minimalistNavy: TemplateDef = {
                       <Lucide.CheckCircle2 className="h-8 w-8 text-green-600" />
                     </div>
                     <p className="text-lg font-semibold text-slate-800">
-                      Dziękujemy za potwierdzenie!
+                      {translate(
+                        "templates.minimalist_navy.rsvp_done_title_accept"
+                      )}
                     </p>
                     <p className="text-sm text-slate-500">
-                      Cieszymy się, że będziecie z nami
+                      {translate(
+                        "templates.minimalist_navy.rsvp_done_sub_accept"
+                      )}
                     </p>
                   </div>
                 ) : (
@@ -199,7 +312,9 @@ export const minimalistNavy: TemplateDef = {
                       <Lucide.XCircle className="h-8 w-8 text-amber-600" />
                     </div>
                     <p className="text-lg font-semibold text-slate-800">
-                      Szkoda, że nie będziecie mogli uczestniczyć
+                      {translate(
+                        "templates.minimalist_navy.rsvp_done_title_decline"
+                      )}
                     </p>
                   </div>
                 )}

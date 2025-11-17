@@ -475,6 +475,25 @@
       "wonderful": "Wspaniale!",
       "see_you": "Do zobaczenia na parkiecie!",
       "footer_countdown_description": "Happy New Year!"
+    },
+    "minimalist_navy": {
+      "title_fallback": "Zaproszenie",
+      "location_fallback": "Miejsce wydarzenia",
+      "greeting_fallback": "Drodzy Goście",
+      "description_fallback": "Mamy przyjemność zaprosić Państwa na to wyjątkowe wydarzenie. Będzie nam niezmiernie miło gościć Was w tym szczególnym dniu.",
+      "date_label": "Data",
+      "location_label": "Miejsce",
+      "dresscode_label": "Dress code",
+      "program_title": "Program Wydarzenia",
+      "countdown_prefix": "Pozostało na potwierdzenie:",
+      "countdown_until_prefix": "do",
+      "deadline_expired_title": "Czas na potwierdzenie obecności minął",
+      "deadline_expired_subtitle": "Jeśli chcesz, skontaktuj się proszę bezpośrednio z organizatorem wydarzenia.",
+      "rsvp_accept": "Potwierdzam obecność",
+      "rsvp_decline": "Nie mogę uczestniczyć",
+      "rsvp_done_title_accept": "Dziękujemy za potwierdzenie!",
+      "rsvp_done_sub_accept": "Cieszymy się, że będziecie z nami",
+      "rsvp_done_title_decline": "Szkoda, że nie będziecie mogli uczestniczyć"
     }
   },
   "invitation": {
@@ -483,7 +502,11 @@
     "not_found": "Nie znaleziono zaproszenia",
     "rsvp": {
       "accepted": "Dziękujemy za potwierdzenie!",
-      "declined": "Dziękujemy za informację."
+      "declined": "Dziękujemy za informację.",
+      "deadline_passed_title": "Termin potwierdzenia obecności minął",
+      "deadline_passed_description": "Nie możesz już potwierdzić obecności przez formularz online. W razie potrzeby skontaktuj się bezpośrednio z organizatorem.",
+      "deadline_passed_date_prefix": "Czas na odpowiedź upłynął: ",
+      "deadline_passed_toast": "Termin potwierdzenia obecności już minął."
     },
     "errors": {
       "not_found": "Nie znaleziono zaproszenia.",

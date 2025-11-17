@@ -21,19 +21,19 @@ export interface ResetPasswordDto {
   newPassword: string;
 }
 
-export type CreateEventDtoKind =
-  (typeof CreateEventDtoKind)[keyof typeof CreateEventDtoKind];
+export type CreateEventDtoKind = typeof CreateEventDtoKind[keyof typeof CreateEventDtoKind];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CreateEventDtoKind = {
-  WEDDING: "WEDDING",
-  BAPTISM: "BAPTISM",
-  BIRTHDAY_18: "BIRTHDAY_18",
-  BIRTHDAY_30: "BIRTHDAY_30",
-  BIRTHDAY_50: "BIRTHDAY_50",
-  BABY_SHOWER: "BABY_SHOWER",
-  HOLY_COMMUNION: "HOLY_COMMUNION",
-  OTHER: "OTHER",
+  WEDDING: 'WEDDING',
+  BAPTISM: 'BAPTISM',
+  BIRTHDAY_18: 'BIRTHDAY_18',
+  BIRTHDAY_30: 'BIRTHDAY_30',
+  BIRTHDAY_50: 'BIRTHDAY_50',
+  BABY_SHOWER: 'BABY_SHOWER',
+  HOLY_COMMUNION: 'HOLY_COMMUNION',
+  OTHER: 'OTHER',
 } as const;
 
 export interface CreateEventDto {
@@ -41,24 +41,27 @@ export interface CreateEventDto {
   description?: string;
   /** ISO 8601 */
   date?: string;
+  /** ISO 8601 */
+  rsvpDeadline?: string;
+  dressCode?: string;
   location?: string;
   kind?: CreateEventDtoKind;
   templateKey?: string;
 }
 
-export type UpdateEventDtoKind =
-  (typeof UpdateEventDtoKind)[keyof typeof UpdateEventDtoKind];
+export type UpdateEventDtoKind = typeof UpdateEventDtoKind[keyof typeof UpdateEventDtoKind];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UpdateEventDtoKind = {
-  WEDDING: "WEDDING",
-  BAPTISM: "BAPTISM",
-  BIRTHDAY_18: "BIRTHDAY_18",
-  BIRTHDAY_30: "BIRTHDAY_30",
-  BIRTHDAY_50: "BIRTHDAY_50",
-  BABY_SHOWER: "BABY_SHOWER",
-  HOLY_COMMUNION: "HOLY_COMMUNION",
-  OTHER: "OTHER",
+  WEDDING: 'WEDDING',
+  BAPTISM: 'BAPTISM',
+  BIRTHDAY_18: 'BIRTHDAY_18',
+  BIRTHDAY_30: 'BIRTHDAY_30',
+  BIRTHDAY_50: 'BIRTHDAY_50',
+  BABY_SHOWER: 'BABY_SHOWER',
+  HOLY_COMMUNION: 'HOLY_COMMUNION',
+  OTHER: 'OTHER',
 } as const;
 
 export interface UpdateEventDto {
@@ -66,6 +69,7 @@ export interface UpdateEventDto {
   description?: string;
   /** ISO 8601 */
   date?: string;
+  /** ISO 8601 */
   rsvpDeadline?: string;
   dressCode?: string;
   location?: string;
@@ -112,19 +116,17 @@ export interface InvitationsStatsDto {
   viewed: number;
 }
 
-export interface PublicInvitationGetResponseDto {
-  [key: string]: unknown;
-}
+export interface PublicInvitationGetResponseDto { [key: string]: unknown }
 
-export type PublicRsvpDtoStatus =
-  (typeof PublicRsvpDtoStatus)[keyof typeof PublicRsvpDtoStatus];
+export type PublicRsvpDtoStatus = typeof PublicRsvpDtoStatus[keyof typeof PublicRsvpDtoStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PublicRsvpDtoStatus = {
-  ACCEPTED: "ACCEPTED",
-  DECLINED: "DECLINED",
-  TENTATIVE: "TENTATIVE",
-  PENDING: "PENDING",
+  ACCEPTED: 'ACCEPTED',
+  DECLINED: 'DECLINED',
+  TENTATIVE: 'TENTATIVE',
+  PENDING: 'PENDING',
 } as const;
 
 export interface PublicRsvpDto {
@@ -134,15 +136,15 @@ export interface PublicRsvpDto {
   note?: string;
 }
 
-export type PublicRsvpResponseDtoStatus =
-  (typeof PublicRsvpResponseDtoStatus)[keyof typeof PublicRsvpResponseDtoStatus];
+export type PublicRsvpResponseDtoStatus = typeof PublicRsvpResponseDtoStatus[keyof typeof PublicRsvpResponseDtoStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PublicRsvpResponseDtoStatus = {
-  ACCEPTED: "ACCEPTED",
-  DECLINED: "DECLINED",
-  TENTATIVE: "TENTATIVE",
-  PENDING: "PENDING",
+  ACCEPTED: 'ACCEPTED',
+  DECLINED: 'DECLINED',
+  TENTATIVE: 'TENTATIVE',
+  PENDING: 'PENDING',
 } as const;
 
 export type PublicRsvpResponseDtoRsvpAt = { [key: string]: unknown };
@@ -173,11 +175,11 @@ export interface BulkCreateInviteesDto {
 }
 
 export type AuthControllerVerifyEmailParams = {
-  token: string;
+token: string;
 };
 
 export type AuthControllerRequestPasswordResetParams = {
-  email: string;
+email: string;
 };
 
 export type ProgramControllerList200Item = { [key: string]: unknown };
@@ -195,16 +197,17 @@ export type ProgramControllerReorderBody = {
   order?: ProgramControllerReorderBodyOrderItem[];
 };
 
-export type InviteesControllerUpdateStatusBodyStatus =
-  (typeof InviteesControllerUpdateStatusBodyStatus)[keyof typeof InviteesControllerUpdateStatusBodyStatus];
+export type InviteesControllerUpdateStatusBodyStatus = typeof InviteesControllerUpdateStatusBodyStatus[keyof typeof InviteesControllerUpdateStatusBodyStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const InviteesControllerUpdateStatusBodyStatus = {
-  PENDING: "PENDING",
-  ACCEPTED: "ACCEPTED",
-  DECLINED: "DECLINED",
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  DECLINED: 'DECLINED',
 } as const;
 
 export type InviteesControllerUpdateStatusBody = {
   status?: InviteesControllerUpdateStatusBodyStatus;
 };
+
