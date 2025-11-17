@@ -1,13 +1,11 @@
+import * as React from "react";
 import type { TemplateDef } from "../types";
 import * as Lucide from "lucide-react";
 import { format } from "date-fns";
 import { pl } from "date-fns/locale";
+import { translate } from "@/locales";
+import { useRsvpCountdown } from "../utils/useRsvpCountdown";
 
-/**
- * 30TH BIRTHDAY — Black & Gold Neon
- * - Ciemne, eleganckie tło + złote akcenty i neonowa „30”
- * - Layout „boarding pass / VIP pass” z sekcją hero i blokami info
- */
 export const thirtyBlackGoldNeon: TemplateDef = {
   id: "thirty-black-gold-neon",
   name: "30th — Black & Gold Neon",
@@ -23,15 +21,24 @@ export const thirtyBlackGoldNeon: TemplateDef = {
     onAccept,
     onDecline,
     inviteeName,
+    dressCode,
+    rsvpDeadline,
   }) => {
-    const titleText = title || "Trzydziestka!";
+    const titleText =
+      title || translate("templates.birthday_black_gold.title_default");
     const whenText = date
       ? format(new Date(date), "EEEE, d MMMM yyyy 'o' HH:mm", { locale: pl })
-      : "Sobota, 20:00";
-    const whereText = location || "Miejsce imprezy";
+      : translate("templates.birthday_black_gold.date_fallback");
+    const whereText =
+      location || translate("templates.birthday_black_gold.location_default");
     const hi = inviteeName
-      ? `${inviteeName}, świętujemy 30!`
-      : "Świętujemy 30!";
+      ? translate("templates.birthday_black_gold.greeting_personalized", {
+          name: inviteeName,
+        })
+      : translate("templates.birthday_black_gold.greeting_default");
+
+    const { deadlineDate, countdown, isExpired } =
+      useRsvpCountdown(rsvpDeadline);
 
     return (
       <div className="relative min-h-[80vh] w-full overflow-hidden bg-black">
@@ -70,6 +77,14 @@ export const thirtyBlackGoldNeon: TemplateDef = {
                 <div className="mt-4 inline-flex flex-wrap items-center justify-center gap-4 sm:justify-start">
                   <InfoPill icon={Lucide.CalendarDays} label={whenText} />
                   <InfoPill icon={Lucide.MapPin} label={whereText} />
+                  {dressCode && (
+                    <InfoPill
+                      icon={Lucide.Shirt}
+                      label={`${translate(
+                        "templates.birthday_black_gold.dress_code_label"
+                      )} ${dressCode}`}
+                    />
+                  )}
                 </div>
               </div>
             </div>
@@ -132,31 +147,72 @@ export const thirtyBlackGoldNeon: TemplateDef = {
             {/* RSVP */}
             <div className="px-6 pb-10 sm:px-10">
               {!rsvpStatus ? (
-                <div className="flex flex-col justify-center gap-3 sm:flex-row">
-                  <button
-                    disabled={sending}
-                    onClick={onAccept}
-                    className="rounded-xl bg-amber-500 px-6 py-3 font-semibold text-black shadow hover:bg-amber-400 disabled:opacity-60"
-                  >
-                    Będę!
-                  </button>
-                  <button
-                    disabled={sending}
-                    onClick={onDecline}
-                    className="rounded-xl border border-amber-400/50 px-6 py-3 font-semibold text-amber-300 hover:bg-amber-400/10 disabled:opacity-60"
-                  >
-                    Tym razem nie dam rady
-                  </button>
-                </div>
+                <>
+                  {deadlineDate && (
+                    <div className="mb-4 text-center">
+                      {!isExpired && countdown ? (
+                        <div className="inline-flex flex-col items-center gap-2">
+                          <p className="text-xs font-medium text-amber-300">
+                            {translate(
+                              "templates.birthday_black_gold.rsvp_deadline_label"
+                            )}
+                          </p>
+                          <div className="rounded-full border border-amber-400/60 bg-zinc-900/60 px-5 py-2 text-sm font-semibold text-amber-200">
+                            {countdown}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="space-y-1 text-center">
+                          <p className="text-sm font-semibold text-amber-200">
+                            {translate(
+                              "templates.birthday_black_gold.rsvp_deadline_expired_title"
+                            )}
+                          </p>
+                          <p className="text-xs text-amber-300/80">
+                            {translate(
+                              "templates.birthday_black_gold.rsvp_deadline_expired_at"
+                            )}{" "}
+                            {format(deadlineDate, "dd.MM.yyyy, HH:mm")}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {!deadlineDate || (!isExpired && countdown) ? (
+                    <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-between sm:gap-4">
+                      <button
+                        disabled={sending}
+                        onClick={onAccept}
+                        className="w-full rounded-full bg-amber-400 px-8 py-3 text-sm font-bold text-black shadow-lg transition hover:bg-amber-300 disabled:opacity-50 sm:w-auto"
+                      >
+                        {translate(
+                          "templates.birthday_black_gold.rsvp_accept_label"
+                        )}
+                      </button>
+                      <button
+                        disabled={sending}
+                        onClick={onDecline}
+                        className="w-full rounded-full border border-amber-500/60 bg-transparent px-8 py-3 text-sm font-semibold text-amber-200 transition hover:bg-amber-500/10 disabled:opacity-50 sm:w-auto"
+                      >
+                        {translate(
+                          "templates.birthday_black_gold.rsvp_decline_label"
+                        )}
+                      </button>
+                    </div>
+                  ) : null}
+                </>
               ) : rsvpStatus === "ACCEPTED" ? (
-                <div className="text-center font-medium text-amber-300">
-                  <Lucide.ThumbsUp className="mx-auto mb-2 h-8 w-8" />
-                  Super — do zobaczenia na parkiecie!
+                <div className="mt-6 text-center text-sm font-semibold text-amber-200">
+                  {translate(
+                    "templates.birthday_black_gold.rsvp_accepted_text"
+                  )}
                 </div>
               ) : (
-                <div className="text-center font-medium text-zinc-300">
-                  <Lucide.CircleSlash2 className="mx-auto mb-2 h-8 w-8 text-amber-300" />
-                  Szkoda, że się nie spotkamy.
+                <div className="mt-6 text-center text-sm font-semibold text-amber-200/80">
+                  {translate(
+                    "templates.birthday_black_gold.rsvp_declined_text"
+                  )}
                 </div>
               )}
             </div>

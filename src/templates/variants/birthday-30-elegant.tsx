@@ -1,7 +1,10 @@
+import * as React from "react";
 import { format } from "date-fns";
 import { TemplateDef } from "../types";
 import { pl } from "date-fns/locale";
 import * as Lucide from "lucide-react";
+import { translate } from "@/locales";
+import { useRsvpCountdown } from "../utils/useRsvpCountdown";
 
 export const birthday30Elegant: TemplateDef = {
   id: "birthday-30-elegant",
@@ -18,17 +21,25 @@ export const birthday30Elegant: TemplateDef = {
     onAccept,
     onDecline,
     inviteeName,
+    dressCode,
+    rsvpDeadline,
   }) => {
-    const titleText = title || "30 Urodziny";
-    const locationText = location || "Restauracja";
+    const titleText =
+      title || translate("templates.birthday_30_elegant.title_default");
+    const locationText =
+      location || translate("templates.birthday_30_elegant.location_default");
     const dateText = date
       ? format(new Date(date), "d MMMM yyyy, 'godzina' HH:mm", { locale: pl })
-      : "Sobota, 18:00";
+      : translate("templates.birthday_30_elegant.date_fallback");
 
     const personalizedGreeting = inviteeName
-      ? `${inviteeName}, mam przyjemność zaprosić Cię`
-      : "Zapraszam serdecznie";
+      ? translate("templates.birthday_30_elegant.greeting_personalized", {
+          name: inviteeName,
+        })
+      : translate("templates.birthday_30_elegant.greeting_default");
 
+    const { deadlineDate, countdown, isExpired } =
+      useRsvpCountdown(rsvpDeadline);
     return (
       <div className="relative min-h-[80vh] w-full overflow-hidden bg-slate-50">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-100/20 via-transparent to-transparent" />
@@ -44,6 +55,14 @@ export const birthday30Elegant: TemplateDef = {
                 {locationText}
               </p>
               <p className="mt-1 text-xs text-slate-500">{dateText}</p>
+              {dressCode && (
+                <p className="mt-2 text-xs uppercase tracking-widest text-slate-500">
+                  {translate("templates.birthday_30_elegant.dress_code_label")}{" "}
+                  <span className="font-semibold normal-case text-slate-700">
+                    {dressCode}
+                  </span>
+                </p>
+              )}
             </div>
 
             <div className="mx-auto mt-8 max-w-xl text-slate-700">
@@ -52,14 +71,16 @@ export const birthday30Elegant: TemplateDef = {
               </p>
               <p className="mt-4 whitespace-pre-wrap text-center leading-relaxed">
                 {description ||
-                  "na kameralne przyjęcie z okazji moich trzydziestych urodzin. Będzie to wieczór pełen dobrych rozmów, wyśmienitego jedzenia i wina."}
+                  translate(
+                    "templates.birthday_30_elegant.description_default"
+                  )}
               </p>
             </div>
 
             {program && program.length > 0 && (
               <div className="mx-auto mt-10">
                 <h3 className="mb-6 text-center text-xs font-semibold uppercase tracking-widest text-slate-500">
-                  Program wieczoru
+                  {translate("templates.birthday_30_elegant.program_title")}
                 </h3>
                 <div className="space-y-4">
                   {program
@@ -99,31 +120,70 @@ export const birthday30Elegant: TemplateDef = {
             )}
 
             {!rsvpStatus ? (
-              <div className="mt-10 flex flex-col gap-3 sm:flex-row justify-center">
-                <button
-                  disabled={sending}
-                  onClick={onAccept}
-                  className="cursor-pointer border-2 border-slate-900 bg-slate-900 px-8 py-3 font-medium text-white transition hover:bg-slate-800"
-                >
-                  Potwierdzam obecność
-                </button>
-                <button
-                  disabled={sending}
-                  onClick={onDecline}
-                  className="cursor-pointer border-2 border-slate-300 px-8 py-3 font-medium text-slate-700 transition hover:bg-slate-50"
-                >
-                  Nie będę mógł/mogła
-                </button>
-              </div>
+              <>
+                {deadlineDate && (
+                  <div className="mb-4 text-center">
+                    {!isExpired && countdown ? (
+                      <div className="inline-flex flex-col items-center gap-2">
+                        <p className="text-xs font-medium text-slate-700">
+                          {translate(
+                            "templates.birthday_30_elegant.rsvp_deadline_label"
+                          )}
+                        </p>
+                        <div className="rounded-full border border-amber-400/60 bg-amber-50 px-5 py-2 text-sm font-semibold text-slate-900">
+                          {countdown}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="space-y-1 text-center">
+                        <p className="text-sm font-semibold text-slate-900">
+                          {translate(
+                            "templates.birthday_30_elegant.rsvp_deadline_expired_title"
+                          )}
+                        </p>
+                        <p className="text-xs text-slate-600">
+                          {translate(
+                            "templates.birthday_30_elegant.rsvp_deadline_expired_at"
+                          )}{" "}
+                          {format(deadlineDate, "dd.MM.yyyy, HH:mm")}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {!deadlineDate || (!isExpired && countdown) ? (
+                  <div className="flex flex-col gap-3 sm:flex-row justify-center">
+                    <button
+                      disabled={sending}
+                      onClick={onAccept}
+                      className="cursor-pointer border-2 border-slate-900 bg-slate-900 px-8 py-3 font-medium text-white transition hover:bg-slate-800 disabled:opacity-50"
+                    >
+                      {translate(
+                        "templates.birthday_30_elegant.rsvp_accept_label"
+                      )}
+                    </button>
+                    <button
+                      disabled={sending}
+                      onClick={onDecline}
+                      className="cursor-pointer border-2 border-slate-300 px-8 py-3 font-medium text-slate-700 transition hover:bg-slate-50 disabled:opacity-50"
+                    >
+                      {translate(
+                        "templates.birthday_30_elegant.rsvp_decline_label"
+                      )}
+                    </button>
+                  </div>
+                ) : null}
+              </>
             ) : rsvpStatus === "ACCEPTED" ? (
               <div className="mt-10 text-center font-medium text-slate-700">
-                <CheckCircle2 className="mx-auto mb-2 h-7 w-7" />
-                Wspaniale, dziękuję!
+                <Lucide.CheckCircle2 className="mx-auto mb-2 h-7 w-7" />
+                {translate("templates.birthday_30_elegant.rsvp_accepted_text")}
               </div>
             ) : (
               <div className="mt-10 text-center font-medium text-slate-500">
-                <XCircle className="mx-auto mb-2 h-7 w-7" />
-                Przykro mi, że nie dasz rady.
+                <Lucide.XCircle className="mx-auto mb-2 h-7 w-7" />
+                {translate("templates.birthday_30_elegant.rsvp_declined_text")}
               </div>
             )}
 

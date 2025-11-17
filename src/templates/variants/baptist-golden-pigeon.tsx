@@ -1,7 +1,10 @@
+import * as React from "react";
 import * as Lucide from "lucide-react";
 import { TemplateDef } from "../types";
 import { format } from "date-fns";
 import { pl } from "date-fns/locale";
+import { translate } from "@/locales";
+import { useRsvpCountdown } from "../utils/useRsvpCountdown";
 
 /**
  * CHRZEST ŚWIĘTY - ZŁOTA GOŁĘBICA
@@ -14,7 +17,7 @@ import { pl } from "date-fns/locale";
 export const baptistGoldenPigeon: TemplateDef = {
   id: "chrzest-zlota-golebica",
   name: "Złota Gołębica",
-  accent: "amber", // Używamy 'amber' dla złotych tonów
+  accent: "amber",
   Preview: ({
     title,
     description,
@@ -26,21 +29,30 @@ export const baptistGoldenPigeon: TemplateDef = {
     onAccept,
     onDecline,
     inviteeName,
+    dressCode,
+    rsvpDeadline,
   }) => {
-    const titleText = title || "Chrzest Święty";
-    const locationText = location || "Kościół Parafialny, Miejscowość";
+    const titleText =
+      title || translate("templates.baptist_golden_pigeon.title_default");
+    const locationText =
+      location || translate("templates.baptist_golden_pigeon.location_default");
 
     const dateText = date
       ? format(new Date(date), "d MMMM yyyy, 'godzina' HH:mm", { locale: pl })
-      : "Niedziela, 12:00";
+      : translate("templates.baptist_golden_pigeon.date_fallback");
 
     const personalizedGreeting = inviteeName
-      ? `Szanowna/y ${inviteeName},`
-      : "Drodzy Goście,";
+      ? translate("templates.baptist_golden_pigeon.greeting_personalized", {
+          name: inviteeName,
+        })
+      : translate("templates.baptist_golden_pigeon.greeting_default");
 
     const descriptionText =
       description ||
-      "Z wielką radością pragniemy zaprosić Was na uroczystość przyjęcia Sakramentu Chrztu Świętego naszego dziecka.\n\nPo ceremonii w kościele serdecznie zapraszamy na uroczysty obiad.";
+      translate("templates.baptist_golden_pigeon.description_default");
+
+    const { deadlineDate, countdown, isExpired } =
+      useRsvpCountdown(rsvpDeadline);
 
     return (
       <div className="relative min-h-screen w-full bg-gray-50">
@@ -79,19 +91,33 @@ export const baptistGoldenPigeon: TemplateDef = {
               </div>
 
               {/* Informacje o dacie i miejscu */}
-              <div className="mt-10 mb-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
+              <div className="mt-10 mb-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
                 <InfoBlock
                   icon="CalendarDays"
-                  label="Data i Godzina"
+                  label={translate(
+                    "templates.baptist_golden_pigeon.info_date_label"
+                  )}
                   value={dateText}
                   color="amber"
                 />
                 <InfoBlock
                   icon="Church"
-                  label="Miejsce Ceremonii"
+                  label={translate(
+                    "templates.baptist_golden_pigeon.info_location_label"
+                  )}
                   value={locationText}
                   color="green"
                 />
+                {dressCode && (
+                  <InfoBlock
+                    icon="Shirt"
+                    label={translate(
+                      "templates.baptist_golden_pigeon.dress_code_label"
+                    )}
+                    value={dressCode}
+                    color="amber"
+                  />
+                )}
               </div>
 
               {/* Program */}
@@ -99,7 +125,9 @@ export const baptistGoldenPigeon: TemplateDef = {
                 <div className="mx-auto mt-12 max-w-3xl">
                   <div className="mb-8 text-center">
                     <h3 className="text-sm font-bold uppercase tracking-widest text-amber-600">
-                      🕊️ Plan Uroczystości 🕊️
+                      {translate(
+                        "templates.baptist_golden_pigeon.program_title"
+                      )}
                     </h3>
                   </div>
 
@@ -156,30 +184,71 @@ export const baptistGoldenPigeon: TemplateDef = {
               {/* RSVP */}
               <div className="mt-12 rounded-2xl bg-gray-50/70 p-8">
                 {!rsvpStatus ? (
-                  <div className="space-y-4">
-                    <p className="text-center text-sm font-medium text-gray-700">
-                      Prosimy o potwierdzenie przybycia
-                    </p>
-                    <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-                      <button
-                        disabled={sending}
-                        onClick={onAccept}
-                        className="group relative overflow-hidden rounded-full bg-gradient-to-r from-amber-400 to-yellow-500 px-8 py-3 font-bold text-white shadow-lg transition hover:shadow-xl hover:scale-105 disabled:opacity-50"
-                      >
-                        <span className="relative z-10 flex items-center gap-2">
-                          <Lucide.Check className="h-5 w-5" />
-                          Potwierdzam
-                        </span>
-                      </button>
-                      <button
-                        disabled={sending}
-                        onClick={onDecline}
-                        className="rounded-full border-2 border-gray-300 bg-white px-8 py-3 font-bold text-gray-700 transition hover:border-gray-400 hover:bg-gray-50 disabled:opacity-50"
-                      >
-                        Nie mogę przybyć
-                      </button>
-                    </div>
-                  </div>
+                  <>
+                    {deadlineDate && (
+                      <div className="mb-5 text-center">
+                        {!isExpired && countdown ? (
+                          <div className="inline-flex flex-col items-center gap-2">
+                            <p className="text-xs font-medium text-amber-800">
+                              {translate(
+                                "templates.baptist_golden_pigeon.rsvp_deadline_label"
+                              )}
+                            </p>
+                            <div className="rounded-full bg-amber-100 px-5 py-2 text-sm font-semibold text-amber-900">
+                              {countdown}
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="space-y-1 text-center">
+                            <p className="text-sm font-semibold text-amber-900">
+                              {translate(
+                                "templates.baptist_golden_pigeon.rsvp_deadline_expired_title"
+                              )}
+                            </p>
+                            <p className="text-xs text-amber-700">
+                              {translate(
+                                "templates.baptist_golden_pigeon.rsvp_deadline_expired_at"
+                              )}{" "}
+                              {format(deadlineDate, "dd.MM.yyyy, HH:mm")}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {!deadlineDate || (!isExpired && countdown) ? (
+                      <div className="space-y-4">
+                        <p className="text-center text-sm font-medium text-gray-700">
+                          {translate(
+                            "templates.baptist_golden_pigeon.rsvp_request"
+                          )}
+                        </p>
+                        <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+                          <button
+                            disabled={sending}
+                            onClick={onAccept}
+                            className="group relative overflow-hidden rounded-full bg-gradient-to-r from-amber-400 to-yellow-500 px-8 py-3 font-bold text-white shadow-lg transition hover:shadow-xl hover:scale-105 disabled:opacity-50"
+                          >
+                            <span className="relative z-10 flex items-center gap-2">
+                              <Lucide.Check className="h-5 w-5" />
+                              {translate(
+                                "templates.baptist_golden_pigeon.rsvp_accept_label"
+                              )}
+                            </span>
+                          </button>
+                          <button
+                            disabled={sending}
+                            onClick={onDecline}
+                            className="rounded-full border-2 border-gray-300 bg-white px-8 py-3 font-bold text-gray-700 transition hover:border-gray-400 hover:bg-gray-50 disabled:opacity-50"
+                          >
+                            {translate(
+                              "templates.baptist_golden_pigeon.rsvp_decline_label"
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                    ) : null}
+                  </>
                 ) : rsvpStatus === "ACCEPTED" ? (
                   <div className="flex flex-col items-center gap-4 text-center">
                     <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-green-100 to-emerald-100">
@@ -187,10 +256,14 @@ export const baptistGoldenPigeon: TemplateDef = {
                     </div>
                     <div>
                       <p className="text-xl font-bold text-gray-800">
-                        Potwierdzono!
+                        {translate(
+                          "templates.baptist_golden_pigeon.rsvp_accepted_title"
+                        )}
                       </p>
                       <p className="mt-1 text-sm text-gray-600">
-                        Dziękujemy i do zobaczenia!
+                        {translate(
+                          "templates.baptist_golden_pigeon.rsvp_accepted_text"
+                        )}
                       </p>
                     </div>
                   </div>
@@ -200,7 +273,9 @@ export const baptistGoldenPigeon: TemplateDef = {
                       <Lucide.Frown className="h-8 w-8 text-gray-500" />
                     </div>
                     <p className="text-lg font-semibold text-gray-700">
-                      Rozumiemy. Będzie nam Was brakowało.
+                      {translate(
+                        "templates.baptist_golden_pigeon.rsvp_declined_title"
+                      )}
                     </p>
                   </div>
                 )}

@@ -88,6 +88,8 @@ function NewEventPageInner() {
     const payload: CreateEventDto = {
       title: values.title.trim(),
       description: values.description?.trim() || undefined,
+      dressCode: values.dressCode?.trim() || undefined,
+      rsvpDeadline: values.rsvpDeadline?.trim() || undefined,
       date: toIsoFromDatetimeLocal(values.datetime),
       location: values.location?.trim() || undefined,
       kind: kindParam,
