@@ -1,35 +1,6 @@
 import { z } from "zod";
 import { translate } from "@/locales";
-
-// dd.MM.yyyy hh:mm  (np. 09.11.2025 18:30)
-const DISPLAY_REGEX = /^\d{2}\.\d{2}\.\d{4}\s\d{2}:\d{2}$/;
-
-function parseDisplayToDate(value: string): Date | null {
-  if (!DISPLAY_REGEX.test(value)) return null;
-
-  const m = value.match(/^(\d{2})\.(\d{2})\.(\d{4}),\s(\d{2}):(\d{2})$/);
-  if (!m) return null;
-
-  const [, d, mo, y, hh, mm] = m;
-  const year = Number(y);
-  const monthIndex = Number(mo) - 1;
-  const day = Number(d);
-  const hour = Number(hh);
-  const minute = Number(mm);
-
-  const date = new Date(year, monthIndex, day, hour, minute, 0, 0);
-
-  if (
-    date.getFullYear() !== year ||
-    date.getMonth() !== monthIndex ||
-    date.getDate() !== day ||
-    date.getHours() !== hour ||
-    date.getMinutes() !== minute
-  ) {
-    return null;
-  }
-  return date;
-}
+import { DISPLAY_REGEX, parseDisplayToDate } from "@/common/utils";
 
 export const eventFormSchema = z
   .object({
@@ -40,7 +11,7 @@ export const eventFormSchema = z
 
     // główna data wydarzenia - w formacie dd.MM.yyyy hh:mm
     datetime: z.string().regex(DISPLAY_REGEX, {
-      message: translate("events.new.errors.date_format"), // dodaj tłumaczenie
+      message: translate("events.new.errors.date_format"),
     }),
 
     location: z.string().optional(),

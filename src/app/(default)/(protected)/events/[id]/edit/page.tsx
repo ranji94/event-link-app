@@ -14,37 +14,7 @@ import { PreviewPanel } from "@/components/event/PreviewPanel";
 import { programControllerList } from "@/entities/program";
 import { translate } from "@/locales";
 import { EventKind } from "@/common/enum";
-
-function pad(n: number) {
-  return String(n).padStart(2, "0");
-}
-
-function isoToDisplay(iso?: string | null): string {
-  if (!iso) return "";
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return "";
-  return `${pad(d.getDate())}.${pad(
-    d.getMonth() + 1
-  )}.${d.getFullYear()}, ${pad(d.getHours())}:${pad(d.getMinutes())}`;
-}
-
-function displayToIso(display?: string | null): string | undefined {
-  if (!display) return undefined;
-  const m = display.match(/^(\d{2})\.(\d{2})\.(\d{4}),\s(\d{2}):(\d{2})$/);
-  if (!m) return undefined;
-  const [, dd, mm, yyyy, hh, mi] = m;
-  const d = new Date(
-    Number(yyyy),
-    Number(mm) - 1,
-    Number(dd),
-    Number(hh),
-    Number(mi),
-    0,
-    0
-  );
-  if (Number.isNaN(d.getTime())) return undefined;
-  return d.toISOString();
-}
+import { displayToIso, isoToDisplay } from "@/common/utils";
 
 export default function EditEventPage() {
   const router = useRouter();

@@ -7,6 +7,13 @@ import { ScheduleBuilder } from "@/components/event/ScheduleBuilder";
 import type { EventFormValues } from "./schema";
 import type { CreateProgramItemDto } from "@/entities/api.gen.schemas";
 import { EventKind } from "@/common/enum";
+import {
+  displayToNative,
+  laterNative,
+  maxOneYearNative,
+  nativeToDisplay,
+  nowNative,
+} from "@/common/utils";
 
 export type EventFormProps = {
   kind: EventKind;
@@ -30,87 +37,6 @@ export type EventFormProps = {
   right?: React.ReactNode;
   placeholderTitle?: string;
 };
-
-function laterNative(a?: string, b?: string): string {
-  const da = a ? new Date(a) : null;
-  const db = b ? new Date(b) : null;
-  if (!da && !db) return "";
-  if (da && !db) return a!;
-  if (!da && db) return b!;
-  return da!.getTime() >= db!.getTime() ? a! : b!;
-}
-
-function maxOneYearNative(): string {
-  const d = new Date();
-  d.setFullYear(d.getFullYear() + 1);
-  d.setSeconds(0, 0);
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(
-    d.getHours()
-  )}:${pad(d.getMinutes())}`;
-}
-
-function parseDisplayToDate(value: string): Date | null {
-  const m = value.match(/^(\d{2})\.(\d{2})\.(\d{4}),\s(\d{2}):(\d{2})$/);
-  if (!m) return null;
-  const [, d, mo, y, h, mi] = m;
-  const date = new Date(
-    Number(y),
-    Number(mo) - 1,
-    Number(d),
-    Number(h),
-    Number(mi),
-    0,
-    0
-  );
-  // sanity check
-  if (
-    date.getFullYear() !== Number(y) ||
-    date.getMonth() !== Number(mo) - 1 ||
-    date.getDate() !== Number(d) ||
-    date.getHours() !== Number(h) ||
-    date.getMinutes() !== Number(mi)
-  )
-    return null;
-  return date;
-}
-
-// Date -> 'dd.MM.yyyy, hh:mm'
-function formatDisplay(date: Date): string {
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${pad(date.getDate())}.${pad(
-    date.getMonth() + 1
-  )}.${date.getFullYear()}, ${pad(date.getHours())}:${pad(date.getMinutes())}`;
-}
-
-// 'dd.MM.yyyy hh:mm' -> 'YYYY-MM-DDTHH:mm' (native input)
-function displayToNative(value?: string): string {
-  if (!value) return "";
-  const d = parseDisplayToDate(value);
-  if (!d) return "";
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(
-    d.getHours()
-  )}:${pad(d.getMinutes())}`;
-}
-
-// 'YYYY-MM-DDTHH:mm' -> 'dd.MM.yyyy hh:mm'
-function nativeToDisplay(value?: string): string {
-  if (!value) return "";
-  const d = new Date(value);
-  if (Number.isNaN(d.getTime())) return "";
-  return formatDisplay(d);
-}
-
-// teraz (zaokrąglony do minuty) w formacie 'YYYY-MM-DDTHH:mm'
-function nowNative(): string {
-  const d = new Date();
-  d.setSeconds(0, 0);
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(
-    d.getHours()
-  )}:${pad(d.getMinutes())}`;
-}
 
 export function EventForm({
   kind,

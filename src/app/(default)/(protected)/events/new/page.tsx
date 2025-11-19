@@ -14,7 +14,7 @@ import { useProgramBuilder } from "@/lib/events/program/use-program-builder";
 import { EventForm } from "@/components/event/form/EventForm";
 import { useEventForm } from "@/components/event/form/useEventForm";
 import { PreviewPanel } from "@/components/event/PreviewPanel";
-import { toIsoFromDatetimeLocal } from "@/common/utils";
+import { displayToIso } from "@/common/utils";
 import { translate } from "@/locales";
 
 export default function NewEventPage() {
@@ -29,24 +29,6 @@ export default function NewEventPage() {
       <NewEventPageInner />
     </Suspense>
   );
-}
-
-function displayToIso(display?: string | null): string | undefined {
-  if (!display) return undefined;
-  const m = display.match(/^(\d{2})\.(\d{2})\.(\d{4}),\s(\d{2}):(\d{2})$/);
-  if (!m) return undefined;
-  const [, dd, mm, yyyy, hh, mi] = m;
-  const d = new Date(
-    Number(yyyy),
-    Number(mm) - 1,
-    Number(dd),
-    Number(hh),
-    Number(mi),
-    0,
-    0
-  );
-  if (Number.isNaN(d.getTime())) return undefined;
-  return d.toISOString();
 }
 
 function NewEventPageInner() {
