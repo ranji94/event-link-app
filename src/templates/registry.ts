@@ -37,5 +37,6 @@ export const getTemplatesByEventKind = (
 
   const universal = [minimalistNavy];
 
-  return [...tematic, ...universal];
+  // return [...tematic, ...universal];
+  return templates;
 };

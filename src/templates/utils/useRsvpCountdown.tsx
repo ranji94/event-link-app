@@ -1,6 +1,14 @@
 import * as React from "react";
 
-export function useRsvpCountdown(rsvpDeadline?: string | null) {
+export type RsvpCountdownResult = {
+  deadlineDate: Date | null;
+  isExpired: boolean;
+  countdown: string | null;
+};
+
+export function useRsvpCountdown(
+  rsvpDeadline?: string | null
+): RsvpCountdownResult {
   const [now, setNow] = React.useState<Date>(() => new Date());
 
   const deadlineDate = React.useMemo(
@@ -12,23 +20,19 @@ export function useRsvpCountdown(rsvpDeadline?: string | null) {
     if (!deadlineDate) return;
     const id = setInterval(() => {
       setNow(new Date());
-    }, 60_000); // minuta po minucie
+    }, 60_000); // aktualizacja co minutę
     return () => clearInterval(id);
-  }, [deadlineDate]);
+  }, [deadlineDate?.getTime()]);
 
   if (!deadlineDate) {
-    return {
-      deadlineDate: null as Date | null,
-      isExpired: false,
-      countdown: null as null,
-    };
+    return { deadlineDate: null, isExpired: false, countdown: null };
   }
 
   const diffMs = deadlineDate.getTime() - now.getTime();
   const isExpired = diffMs <= 0;
 
   if (isExpired) {
-    return { deadlineDate, isExpired: true, countdown: null as null };
+    return { deadlineDate, isExpired: true, countdown: null };
   }
 
   const totalMinutes = Math.floor(diffMs / 60000);
@@ -37,13 +41,13 @@ export function useRsvpCountdown(rsvpDeadline?: string | null) {
   const minutes = totalMinutes % 60;
 
   const parts: string[] = [];
-  if (days > 0) parts.push(String(days).padStart(2, "0"));
-  parts.push(String(hours).padStart(2, "0"));
-  parts.push(String(minutes).padStart(2, "0"));
+  if (days > 0) parts.push(`${days} d`);
+  if (hours > 0 || days > 0) parts.push(`${hours} h`);
+  parts.push(`${minutes} min`);
 
   return {
     deadlineDate,
     isExpired: false,
-    countdown: parts.join(":"), // np. "02:05:13" (dni:godziny:minuty lub godziny:minuty)
+    countdown: parts.join(" "),
   };
 }

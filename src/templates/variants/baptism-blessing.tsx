@@ -5,6 +5,8 @@ import { pl } from "date-fns/locale";
 import { format } from "date-fns";
 import { translate } from "@/locales";
 import { useRsvpCountdown } from "../utils/useRsvpCountdown";
+import { normalizeProgram } from "../utils/program";
+import { formatEventDate } from "../utils/date";
 
 /**
  * BAPTISM BLESSING - Delikatny szablon na chrzciny
@@ -37,7 +39,7 @@ export const baptismBlessing: TemplateDef = {
       location || translate("templates.baptism_blessing.location_default");
 
     const dateText = date
-      ? format(new Date(date), "d MMMM yyyy, 'godzina' HH:mm", { locale: pl })
+      ? formatEventDate(date)
       : translate("templates.baptism_blessing.date_fallback");
 
     const personalizedGreeting =
@@ -45,6 +47,8 @@ export const baptismBlessing: TemplateDef = {
 
     const { deadlineDate, countdown, isExpired } =
       useRsvpCountdown(rsvpDeadline);
+
+    const normalizedProgram = normalizeProgram(program);
 
     return (
       <div className="relative min-h-screen w-full bg-gradient-to-b from-sky-50 via-blue-50 to-sky-100">
@@ -137,7 +141,7 @@ export const baptismBlessing: TemplateDef = {
               </div>
 
               {/* Program */}
-              {program && program.length > 0 && (
+              {normalizedProgram && normalizedProgram.length > 0 && (
                 <div className="mx-auto mt-12 max-w-3xl">
                   <div className="mb-8 text-center">
                     <h3 className="text-sm font-bold uppercase tracking-widest text-sky-700">
@@ -147,46 +151,37 @@ export const baptismBlessing: TemplateDef = {
                   </div>
 
                   <div className="space-y-4">
-                    {program
-                      .slice()
-                      .map((it, idx) => ({
-                        ...it,
-                        _pos:
-                          typeof it.position === "number" ? it.position : idx,
-                      }))
-                      .sort((a, b) => a._pos - b._pos)
-                      .map((it, idx) => {
-                        const Icon =
-                          (it.icon && Lucide[it.icon]) || Lucide.Heart;
+                    {normalizedProgram.map((it, idx) => {
+                      const Icon = (it.icon && Lucide[it.icon]) || Lucide.Heart;
 
-                        return (
-                          <div
-                            key={idx}
-                            className="group relative overflow-hidden rounded-2xl border border-sky-200 bg-gradient-to-r from-white to-sky-50 p-6 transition hover:border-sky-300 hover:shadow-md"
-                          >
-                            <div className="flex items-center gap-4">
-                              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-sky-200 to-blue-300 shadow-sm">
-                                <Icon className="h-6 w-6 text-sky-800" />
+                      return (
+                        <div
+                          key={idx}
+                          className="group relative overflow-hidden rounded-2xl border border-sky-200 bg-gradient-to-r from-white to-sky-50 p-6 transition hover:border-sky-300 hover:shadow-md"
+                        >
+                          <div className="flex items-center gap-4">
+                            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-sky-200 to-blue-300 shadow-sm">
+                              <Icon className="h-6 w-6 text-sky-800" />
+                            </div>
+
+                            <div className="flex-1 min-w-0">
+                              <div className="font-semibold text-gray-900">
+                                {it.header}
                               </div>
-
-                              <div className="flex-1 min-w-0">
-                                <div className="font-semibold text-gray-900">
-                                  {it.header}
+                              {it.subheader && (
+                                <div className="mt-1 text-sm text-gray-600">
+                                  {it.subheader}
                                 </div>
-                                {it.subheader && (
-                                  <div className="mt-1 text-sm text-gray-600">
-                                    {it.subheader}
-                                  </div>
-                                )}
-                              </div>
+                              )}
+                            </div>
 
-                              <div className="shrink-0 rounded-full bg-sky-200 px-4 py-2 text-sm font-semibold text-sky-800">
-                                {it.time}
-                              </div>
+                            <div className="shrink-0 rounded-full bg-sky-200 px-4 py-2 text-sm font-semibold text-sky-800">
+                              {it.time}
                             </div>
                           </div>
-                        );
-                      })}
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )}

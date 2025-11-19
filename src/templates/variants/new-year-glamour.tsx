@@ -6,6 +6,9 @@ import { TemplateDef } from "../types";
 import { format } from "date-fns";
 import { pl } from "date-fns/locale";
 import { translate } from "@/locales";
+import { useRsvpCountdown } from "../utils/useRsvpCountdown";
+import { normalizeProgram } from "../utils/program";
+import { formatEventDate } from "../utils/date";
 
 /**
  * New Year Glamour – sylwestrowy szablon premium:
@@ -13,59 +16,6 @@ import { translate } from "@/locales";
  * - fajerwerki, konfetti, błyszczące dekoracje
  * - elegancki box z RSVP i odliczaniem
  */
-
-function useRsvpCountdown(rsvpDeadline?: string | null) {
-  const [now, setNow] = React.useState<Date>(() => new Date());
-
-  const deadlineDate = React.useMemo(
-    () => (rsvpDeadline ? new Date(rsvpDeadline) : null),
-    [rsvpDeadline]
-  );
-
-  React.useEffect(() => {
-    if (!deadlineDate) return;
-    const id = setInterval(() => {
-      setNow(new Date());
-    }, 60_000); // minuta po minucie
-    return () => clearInterval(id);
-  }, [deadlineDate]);
-
-  if (!deadlineDate) {
-    return {
-      deadlineDate: null as Date | null,
-      isExpired: false,
-      countdown: null as string | null,
-    };
-  }
-
-  const diffMs = deadlineDate.getTime() - now.getTime();
-  const isExpired = diffMs <= 0;
-
-  if (isExpired) {
-    return { deadlineDate, isExpired: true, countdown: null as string | null };
-  }
-
-  const totalMinutes = Math.floor(diffMs / 60000);
-  const days = Math.floor(totalMinutes / (60 * 24));
-  const hours = Math.floor((totalMinutes % (60 * 24)) / 60);
-  const minutes = totalMinutes % 60;
-
-  // format: dd:hh:mm (dni:godziny:minuty)
-  const parts: string[] = [];
-  if (days > 0) {
-    parts.push(String(days).padStart(2, "0"));
-  } else {
-    parts.push("00");
-  }
-  parts.push(String(hours).padStart(2, "0"));
-  parts.push(String(minutes).padStart(2, "0"));
-
-  return {
-    deadlineDate,
-    isExpired: false,
-    countdown: parts.join(":"), // np. 01:05:23
-  };
-}
 
 export const newYearGlamour: TemplateDef = {
   id: "new-year-glamour",
@@ -90,7 +40,7 @@ export const newYearGlamour: TemplateDef = {
     const locationText =
       location || translate("templates.new_year_glamour.location_default");
     const dateText = date
-      ? format(new Date(date), "d MMMM yyyy, 'godzina' HH:mm", { locale: pl })
+      ? formatEventDate(date)
       : translate("templates.new_year_glamour.date_fallback");
 
     const personalizedGreeting = inviteeName
@@ -98,6 +48,8 @@ export const newYearGlamour: TemplateDef = {
           "templates.new_year_glamour.greeting_personalized"
         )}`
       : translate("templates.new_year_glamour.greeting");
+
+    const normalizedProgram = normalizeProgram(program);
 
     const undertitle = translate("templates.new_year_glamour.undertitle");
 
@@ -188,23 +140,15 @@ export const newYearGlamour: TemplateDef = {
               </div>
 
               {/* Program */}
-              {program && program.length > 0 && (
-                <div className="mt-2 space-y-4">
+              {normalizedProgram && normalizedProgram.length > 0 && (
+                <div className="mt-2 normalizedProgram-y-4">
                   <h3 className="text-center text-xs font-semibold uppercase tracking-[0.25em] text-amber-300 sm:text-sm">
                     {translate("templates.new_year_glamour.program_title")}
                   </h3>
                   <div className="space-y-3">
-                    {program
-                      .slice()
-                      .map((it, idx) => ({
-                        ...it,
-                        _pos:
-                          typeof it.position === "number" ? it.position : idx,
-                      }))
-                      .sort((a, b) => a._pos - b._pos)
-                      .map((it, idx) => (
-                        <ProgramStep key={idx} item={it} index={idx} />
-                      ))}
+                    {normalizedProgram.map((it, idx) => (
+                      <ProgramStep key={idx} item={it} index={idx} />
+                    ))}
                   </div>
                 </div>
               )}

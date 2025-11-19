@@ -5,6 +5,8 @@ import { format } from "date-fns";
 import { pl } from "date-fns/locale";
 import { translate } from "@/locales";
 import { useRsvpCountdown } from "../utils/useRsvpCountdown";
+import { normalizeProgram } from "../utils/program";
+import { formatEventDate } from "../utils/date";
 
 export const thirtyBlackGoldNeon: TemplateDef = {
   id: "thirty-black-gold-neon",
@@ -27,7 +29,7 @@ export const thirtyBlackGoldNeon: TemplateDef = {
     const titleText =
       title || translate("templates.birthday_black_gold.title_default");
     const whenText = date
-      ? format(new Date(date), "EEEE, d MMMM yyyy 'o' HH:mm", { locale: pl })
+      ? formatEventDate(date)
       : translate("templates.birthday_black_gold.date_fallback");
     const whereText =
       location || translate("templates.birthday_black_gold.location_default");
@@ -36,6 +38,8 @@ export const thirtyBlackGoldNeon: TemplateDef = {
           name: inviteeName,
         })
       : translate("templates.birthday_black_gold.greeting_default");
+
+    const normalizedProgram = normalizeProgram(program);
 
     const { deadlineDate, countdown, isExpired } =
       useRsvpCountdown(rsvpDeadline);
@@ -100,46 +104,39 @@ export const thirtyBlackGoldNeon: TemplateDef = {
             </div>
 
             {/* PROGRAM — karty w rzędzie */}
-            {program && program.length > 0 && (
+            {normalizedProgram && normalizedProgram.length > 0 && (
               <div className="px-6 pb-8 sm:px-10">
                 <h3 className="mb-3 text-center text-xs font-semibold uppercase tracking-widest text-amber-300 sm:text-left">
                   Plan imprezy
                 </h3>
                 <div className="grid gap-3 sm:grid-cols-3">
-                  {program
-                    .slice()
-                    .map((it, idx) => ({
-                      ...it,
-                      _pos: typeof it.position === "number" ? it.position : idx,
-                    }))
-                    .sort((a, b) => a._pos - b._pos)
-                    .map((it, idx) => {
-                      const Icon =
-                        (it.icon && (Lucide as any)[it.icon]) || Lucide.Music2;
-                      return (
-                        <div
-                          key={idx}
-                          className="rounded-2xl border border-amber-400/20 bg-zinc-900/60 p-4 text-zinc-100"
-                        >
-                          <div className="mb-2 flex items-center gap-2">
-                            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-amber-400/15 ring-1 ring-amber-400/30">
-                              <Icon className="h-4 w-4 text-amber-300" />
-                            </span>
-                            <div className="text-sm font-semibold text-white">
-                              {it.header}
-                            </div>
-                            <span className="ml-auto text-xs font-medium text-amber-300">
-                              {it.time}
-                            </span>
+                  {normalizedProgram.map((it, idx) => {
+                    const Icon =
+                      (it.icon && (Lucide as any)[it.icon]) || Lucide.Music2;
+                    return (
+                      <div
+                        key={idx}
+                        className="rounded-2xl border border-amber-400/20 bg-zinc-900/60 p-4 text-zinc-100"
+                      >
+                        <div className="mb-2 flex items-center gap-2">
+                          <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-amber-400/15 ring-1 ring-amber-400/30">
+                            <Icon className="h-4 w-4 text-amber-300" />
+                          </span>
+                          <div className="text-sm font-semibold text-white">
+                            {it.header}
                           </div>
-                          {it.subheader && (
-                            <div className="text-xs text-zinc-300">
-                              {it.subheader}
-                            </div>
-                          )}
+                          <span className="ml-auto text-xs font-medium text-amber-300">
+                            {it.time}
+                          </span>
                         </div>
-                      );
-                    })}
+                        {it.subheader && (
+                          <div className="text-xs text-zinc-300">
+                            {it.subheader}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}

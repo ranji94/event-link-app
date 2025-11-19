@@ -6,6 +6,9 @@ import { TemplateDef } from "../types";
 import { pl } from "date-fns/locale";
 import * as Lucide from "lucide-react";
 import { translate } from "@/locales";
+import { useRsvpCountdown } from "../utils/useRsvpCountdown";
+import { normalizeProgram } from "../utils/program";
+import { formatEventDate } from "../utils/date";
 
 /**
  * MINIMALIST NAVY - Elegancki szablon z granatową paletą
@@ -60,27 +63,14 @@ export const minimalistNavy: TemplateDef = {
     const locationText =
       location || translate("templates.minimalist_navy.location_fallback");
 
-    const [now, setNow] = React.useState(() => new Date());
+    const { deadlineDate, countdown, isExpired } =
+      useRsvpCountdown(rsvpDeadline);
+    const isDeadlineExpired = isExpired;
 
-    const deadlineDate = rsvpDeadline ? new Date(rsvpDeadline) : null;
-    const countdown = deadlineDate
-      ? getCountdownLabel(deadlineDate, now)
-      : null;
-    const isDeadlineExpired = !!countdown && countdown.expired;
-
-    // Odświeżanie co minutę (minute-by-minute)
-    React.useEffect(() => {
-      if (!deadlineDate) return;
-      const id = setInterval(() => {
-        setNow(new Date());
-      }, 60_000);
-      return () => clearInterval(id);
-    }, [deadlineDate?.getTime()]);
+    const normalizedProgram = normalizeProgram(program);
 
     // Formatowanie daty wydarzenia
-    const dateText = date
-      ? format(new Date(date), "d MMMM yyyy, 'godzina' HH:mm", { locale: pl })
-      : "Sobota, 14:30";
+    const dateText = date ? formatEventDate(date) : "Sobota, 14:30";
 
     const personalizedGreeting = inviteeName
       ? inviteeName
@@ -169,7 +159,7 @@ export const minimalistNavy: TemplateDef = {
               )}
 
               {/* PROGRAM */}
-              {program && program.length > 0 && (
+              {normalizedProgram && normalizedProgram.length > 0 && (
                 <div className="mx-auto mt-12 max-w-3xl">
                   <div className="mb-8 text-center">
                     <h3 className="text-sm font-bold uppercase tracking-widest text-slate-400">
@@ -179,44 +169,36 @@ export const minimalistNavy: TemplateDef = {
                   </div>
 
                   <div className="space-y-4">
-                    {program
-                      .slice()
-                      .map((it, idx) => ({
-                        ...it,
-                        _pos:
-                          typeof it.position === "number" ? it.position : idx,
-                      }))
-                      .sort((a, b) => a._pos - b._pos)
-                      .map((it, idx) => {
-                        const Icon =
-                          (it.icon && Lucide[it.icon]) || Lucide.Circle;
+                    {normalizedProgram.map((it, idx) => {
+                      const Icon =
+                        (it.icon && Lucide[it.icon]) || Lucide.Circle;
 
-                        return (
-                          <div
-                            key={idx}
-                            className="group flex items-start gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-5 transition hover:border-slate-300 hover:bg-white hover:shadow-md"
-                          >
-                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-slate-700 to-slate-900 text-white shadow-lg">
-                              <Icon className="h-5 w-5" />
-                            </div>
-
-                            <div className="min-w-0 flex-1">
-                              <div className="font-semibold text-slate-900">
-                                {it.header}
-                              </div>
-                              {it.subheader && (
-                                <div className="mt-1 text-sm text-slate-500">
-                                  {it.subheader}
-                                </div>
-                              )}
-                            </div>
-
-                            <div className="shrink-0 rounded-lg bg-rose-100 px-3 py-1.5 text-sm font-bold text-rose-700">
-                              {it.time}
-                            </div>
+                      return (
+                        <div
+                          key={idx}
+                          className="group flex items-start gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-5 transition hover:border-slate-300 hover:bg-white hover:shadow-md"
+                        >
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-slate-700 to-slate-900 text-white shadow-lg">
+                            <Icon className="h-5 w-5" />
                           </div>
-                        );
-                      })}
+
+                          <div className="min-w-0 flex-1">
+                            <div className="font-semibold text-slate-900">
+                              {it.header}
+                            </div>
+                            {it.subheader && (
+                              <div className="mt-1 text-sm text-slate-500">
+                                {it.subheader}
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="shrink-0 rounded-lg bg-rose-100 px-3 py-1.5 text-sm font-bold text-rose-700">
+                            {it.time}
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )}

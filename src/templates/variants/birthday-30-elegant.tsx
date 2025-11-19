@@ -5,6 +5,8 @@ import { pl } from "date-fns/locale";
 import * as Lucide from "lucide-react";
 import { translate } from "@/locales";
 import { useRsvpCountdown } from "../utils/useRsvpCountdown";
+import { normalizeProgram } from "../utils/program";
+import { formatEventDate } from "../utils/date";
 
 export const birthday30Elegant: TemplateDef = {
   id: "birthday-30-elegant",
@@ -29,7 +31,7 @@ export const birthday30Elegant: TemplateDef = {
     const locationText =
       location || translate("templates.birthday_30_elegant.location_default");
     const dateText = date
-      ? format(new Date(date), "d MMMM yyyy, 'godzina' HH:mm", { locale: pl })
+      ? formatEventDate(date)
       : translate("templates.birthday_30_elegant.date_fallback");
 
     const personalizedGreeting = inviteeName
@@ -40,6 +42,9 @@ export const birthday30Elegant: TemplateDef = {
 
     const { deadlineDate, countdown, isExpired } =
       useRsvpCountdown(rsvpDeadline);
+
+    const normalizedProgram = normalizeProgram(program);
+
     return (
       <div className="relative min-h-[80vh] w-full overflow-hidden bg-slate-50">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-100/20 via-transparent to-transparent" />
@@ -77,44 +82,37 @@ export const birthday30Elegant: TemplateDef = {
               </p>
             </div>
 
-            {program && program.length > 0 && (
+            {normalizedProgram && normalizedProgram.length > 0 && (
               <div className="mx-auto mt-10">
                 <h3 className="mb-6 text-center text-xs font-semibold uppercase tracking-widest text-slate-500">
                   {translate("templates.birthday_30_elegant.program_title")}
                 </h3>
                 <div className="space-y-4">
-                  {program
-                    .slice()
-                    .map((it, idx) => ({
-                      ...it,
-                      _pos: typeof it.position === "number" ? it.position : idx,
-                    }))
-                    .sort((a, b) => a._pos - b._pos)
-                    .map((it, idx) => {
-                      const Icon =
-                        (it.icon && (Lucide as any)[it.icon]) || Minus;
-                      return (
-                        <div
-                          key={idx}
-                          className="flex items-start gap-4 border-l-2 border-amber-400 pl-4"
-                        >
-                          <Icon className="mt-1 h-5 w-5 flex-shrink-0 text-amber-600" />
-                          <div className="flex-1">
-                            <div className="font-medium text-slate-900">
-                              {it.header}
+                  {normalizedProgram.map((it, idx) => {
+                    const Icon =
+                      (it.icon && (Lucide as any)[it.icon]) || Lucide.Minus;
+                    return (
+                      <div
+                        key={idx}
+                        className="flex items-start gap-4 border-l-2 border-amber-400 pl-4"
+                      >
+                        <Icon className="mt-1 h-5 w-5 flex-shrink-0 text-amber-600" />
+                        <div className="flex-1">
+                          <div className="font-medium text-slate-900">
+                            {it.header}
+                          </div>
+                          {it.subheader && (
+                            <div className="text-sm text-slate-600">
+                              {it.subheader}
                             </div>
-                            {it.subheader && (
-                              <div className="text-sm text-slate-600">
-                                {it.subheader}
-                              </div>
-                            )}
-                          </div>
-                          <div className="text-sm font-medium text-slate-700">
-                            {it.time}
-                          </div>
+                          )}
                         </div>
-                      );
-                    })}
+                        <div className="text-sm font-medium text-slate-700">
+                          {it.time}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}

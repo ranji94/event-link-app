@@ -5,6 +5,9 @@ import { format } from "date-fns";
 import { pl } from "date-fns/locale";
 import { translate } from "@/locales";
 import { useRsvpCountdown } from "../utils/useRsvpCountdown";
+import { normalize } from "path";
+import { normalizeProgram } from "../utils/program";
+import { formatEventDate } from "../utils/date";
 
 /**
  * CHRZEST ŚWIĘTY - ZŁOTA GOŁĘBICA
@@ -38,7 +41,7 @@ export const baptistGoldenPigeon: TemplateDef = {
       location || translate("templates.baptist_golden_pigeon.location_default");
 
     const dateText = date
-      ? format(new Date(date), "d MMMM yyyy, 'godzina' HH:mm", { locale: pl })
+      ? formatEventDate(date)
       : translate("templates.baptist_golden_pigeon.date_fallback");
 
     const personalizedGreeting = inviteeName
@@ -46,6 +49,8 @@ export const baptistGoldenPigeon: TemplateDef = {
           name: inviteeName,
         })
       : translate("templates.baptist_golden_pigeon.greeting_default");
+
+    const normalizedProgram = normalizeProgram(program);
 
     const descriptionText =
       description ||
@@ -121,7 +126,7 @@ export const baptistGoldenPigeon: TemplateDef = {
               </div>
 
               {/* Program */}
-              {program && program.length > 0 && (
+              {normalizedProgram && normalizedProgram.length > 0 && (
                 <div className="mx-auto mt-12 max-w-3xl">
                   <div className="mb-8 text-center">
                     <h3 className="text-sm font-bold uppercase tracking-widest text-amber-600">
@@ -132,51 +137,42 @@ export const baptistGoldenPigeon: TemplateDef = {
                   </div>
 
                   <div className="space-y-4">
-                    {program
-                      .slice()
-                      .map((it, idx) => ({
-                        ...it,
-                        _pos:
-                          typeof it.position === "number" ? it.position : idx,
-                      }))
-                      .sort((a, b) => a._pos - b._pos)
-                      .map((it, idx) => {
-                        const Icon =
-                          (it.icon && Lucide[it.icon]) || Lucide.Gift;
-                        const colors = [
-                          "bg-amber-100 text-amber-700",
-                          "bg-emerald-100 text-emerald-700",
-                        ];
-                        const colorClass = colors[idx % colors.length];
+                    {normalizedProgram.map((it, idx) => {
+                      const Icon = (it.icon && Lucide[it.icon]) || Lucide.Gift;
+                      const colors = [
+                        "bg-amber-100 text-amber-700",
+                        "bg-emerald-100 text-emerald-700",
+                      ];
+                      const colorClass = colors[idx % colors.length];
 
-                        return (
+                      return (
+                        <div
+                          key={idx}
+                          className="flex items-center gap-4 rounded-2xl border border-amber-100 bg-white p-5 shadow-sm"
+                        >
                           <div
-                            key={idx}
-                            className="flex items-center gap-4 rounded-2xl border border-amber-100 bg-white p-5 shadow-sm"
+                            className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full ${colorClass}`}
                           >
-                            <div
-                              className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full ${colorClass}`}
-                            >
-                              <Icon className="h-6 w-6" />
-                            </div>
-
-                            <div className="flex-1 min-w-0">
-                              <div className="font-bold text-gray-800">
-                                {it.header}
-                              </div>
-                              {it.subheader && (
-                                <div className="mt-1 text-sm text-gray-600">
-                                  {it.subheader}
-                                </div>
-                              )}
-                            </div>
-
-                            <div className="shrink-0 rounded-full bg-amber-100 px-4 py-2 text-sm font-bold text-amber-800">
-                              {it.time}
-                            </div>
+                            <Icon className="h-6 w-6" />
                           </div>
-                        );
-                      })}
+
+                          <div className="flex-1 min-w-0">
+                            <div className="font-bold text-gray-800">
+                              {it.header}
+                            </div>
+                            {it.subheader && (
+                              <div className="mt-1 text-sm text-gray-600">
+                                {it.subheader}
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="shrink-0 rounded-full bg-amber-100 px-4 py-2 text-sm font-bold text-amber-800">
+                            {it.time}
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )}

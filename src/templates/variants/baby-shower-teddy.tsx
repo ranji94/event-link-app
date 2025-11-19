@@ -6,6 +6,9 @@ import { TemplateDef } from "../types";
 import { format } from "date-fns";
 import { pl } from "date-fns/locale";
 import { translate } from "@/locales";
+import { useRsvpCountdown } from "../utils/useRsvpCountdown";
+import { normalizeProgram } from "../utils/program";
+import { formatEventDate } from "../utils/date";
 
 /**
  * BABY SHOWER DREAMS - Słodki szablon na baby shower
@@ -14,28 +17,6 @@ import { translate } from "@/locales";
  * - Miękkie, zaokrąglone kształty
  * - Przyjazna, ciepła atmosfera
  */
-
-function getCountdownLabel(deadline: Date, now: Date) {
-  const diffMs = deadline.getTime() - now.getTime();
-  if (diffMs <= 0) {
-    return { expired: true as const, label: "" };
-  }
-
-  const totalMinutes = Math.floor(diffMs / 60000);
-  const days = Math.floor(totalMinutes / (60 * 24));
-  const hours = Math.floor((totalMinutes % (60 * 24)) / 60);
-  const minutes = totalMinutes % 60;
-
-  const parts: string[] = [];
-  if (days > 0) parts.push(`${days} d`);
-  if (hours > 0 || days > 0) parts.push(`${hours} h`);
-  parts.push(`${minutes} min`);
-
-  return {
-    expired: false as const,
-    label: parts.join(" "),
-  };
-}
 
 export const babyShowerDreams: TemplateDef = {
   id: "baby-shower-dreams",
@@ -55,15 +36,13 @@ export const babyShowerDreams: TemplateDef = {
     dressCode,
     rsvpDeadline,
   }) => {
-    const [now, setNow] = React.useState(() => new Date());
-
     const titleText =
       title || translate("templates.baby_shower_teddy.title_fallback");
     const locationText =
       location || translate("templates.baby_shower_teddy.location_fallback");
 
     const dateText = date
-      ? format(new Date(date), "d MMMM yyyy, 'godzina' HH:mm", { locale: pl })
+      ? formatEventDate(date)
       : translate("templates.baby_shower_teddy.date_fallback");
 
     const personalizedGreeting = inviteeName
@@ -71,20 +50,11 @@ export const babyShowerDreams: TemplateDef = {
           "templates.baby_shower_teddy.greeting_personalized_prefix"
         )} ${inviteeName}!`
       : translate("templates.baby_shower_teddy.greeting_fallback");
+    const { deadlineDate, countdown, isExpired } =
+      useRsvpCountdown(rsvpDeadline);
+    const isDeadlineExpired = isExpired;
 
-    const deadlineDate = rsvpDeadline ? new Date(rsvpDeadline) : null;
-    const countdown = deadlineDate
-      ? getCountdownLabel(deadlineDate, now)
-      : null;
-    const isDeadlineExpired = !!countdown && countdown.expired;
-
-    React.useEffect(() => {
-      if (!deadlineDate) return;
-      const id = setInterval(() => {
-        setNow(new Date());
-      }, 60_000);
-      return () => clearInterval(id);
-    }, [deadlineDate?.getTime()]);
+    const normalizedProgram = normalizeProgram(program);
 
     return (
       <div className="relative min-h-screen w-full bg-gradient-to-b from-sky-50 via-blue-50 to-pink-50">
@@ -164,7 +134,7 @@ export const babyShowerDreams: TemplateDef = {
               </div>
 
               {/* Program */}
-              {program && program.length > 0 && (
+              {normalizedProgram && normalizedProgram.length > 0 && (
                 <div className="mx-auto mt-12 max-w-3xl">
                   <div className="mb-8 text-center">
                     <h3 className="text-sm font-bold uppercase tracking-widest text-sky-600">
@@ -173,52 +143,43 @@ export const babyShowerDreams: TemplateDef = {
                   </div>
 
                   <div className="space-y-4">
-                    {program
-                      .slice()
-                      .map((it, idx) => ({
-                        ...it,
-                        _pos:
-                          typeof it.position === "number" ? it.position : idx,
-                      }))
-                      .sort((a, b) => a._pos - b._pos)
-                      .map((it, idx) => {
-                        const Icon =
-                          (it.icon && Lucide[it.icon]) || Lucide.Baby;
-                        const colors = [
-                          "bg-sky-100 text-sky-700",
-                          "bg-pink-100 text-pink-700",
-                          "bg-purple-100 text-purple-700",
-                        ];
-                        const colorClass = colors[idx % colors.length];
+                    {normalizedProgram.map((it, idx) => {
+                      const Icon = (it.icon && Lucide[it.icon]) || Lucide.Baby;
+                      const colors = [
+                        "bg-sky-100 text-sky-700",
+                        "bg-pink-100 text-pink-700",
+                        "bg-purple-100 text-purple-700",
+                      ];
+                      const colorClass = colors[idx % colors.length];
 
-                        return (
+                      return (
+                        <div
+                          key={idx}
+                          className="flex items-center gap-4 rounded-2xl border-2 border-dashed border-sky-200 bg-gradient-to-r from-white to-sky-50/50 p-5"
+                        >
                           <div
-                            key={idx}
-                            className="flex items-center gap-4 rounded-2xl border-2 border-dashed border-sky-200 bg-gradient-to-r from-white to-sky-50/50 p-5"
+                            className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full ${colorClass} shadow-sm`}
                           >
-                            <div
-                              className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full ${colorClass} shadow-sm`}
-                            >
-                              <Icon className="h-6 w-6" />
-                            </div>
-
-                            <div className="min-w-0 flex-1">
-                              <div className="font-bold text-gray-800">
-                                {it.header}
-                              </div>
-                              {it.subheader && (
-                                <div className="mt-1 text-sm text-gray-600">
-                                  {it.subheader}
-                                </div>
-                              )}
-                            </div>
-
-                            <div className="shrink-0 rounded-full bg-sky-200 px-4 py-2 text-sm font-bold text-sky-800">
-                              {it.time}
-                            </div>
+                            <Icon className="h-6 w-6" />
                           </div>
-                        );
-                      })}
+
+                          <div className="min-w-0 flex-1">
+                            <div className="font-bold text-gray-800">
+                              {it.header}
+                            </div>
+                            {it.subheader && (
+                              <div className="mt-1 text-sm text-gray-600">
+                                {it.subheader}
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="shrink-0 rounded-full bg-sky-200 px-4 py-2 text-sm font-bold text-sky-800">
+                            {it.time}
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )}
