@@ -35,8 +35,7 @@ export const newYearGlamour: TemplateDef = {
     dressCode,
     rsvpDeadline,
   }) => {
-    const titleText =
-      title || translate("templates.new_year_glamour.title_fallback");
+    const titleText = title || translate("templates.new_year_glamour.greeting");
     const locationText =
       location || translate("templates.new_year_glamour.location_default");
     const dateText = date
@@ -56,6 +55,8 @@ export const newYearGlamour: TemplateDef = {
     const descriptionText =
       description ||
       translate("templates.new_year_glamour.description_default");
+
+    console.log("RSVP DEADLINE: ", rsvpDeadline);
 
     const { deadlineDate, countdown, isExpired } =
       useRsvpCountdown(rsvpDeadline);
@@ -143,7 +144,9 @@ export const newYearGlamour: TemplateDef = {
               {normalizedProgram && normalizedProgram.length > 0 && (
                 <div className="mt-2 normalizedProgram-y-4">
                   <h3 className="text-center text-xs font-semibold uppercase tracking-[0.25em] text-amber-300 sm:text-sm">
-                    {translate("templates.new_year_glamour.program_title")}
+                    {translate(
+                      "templates.new_year_glamour.program_of_the_night"
+                    )}
                   </h3>
                   <div className="space-y-3">
                     {normalizedProgram.map((it, idx) => (
@@ -171,7 +174,7 @@ export const newYearGlamour: TemplateDef = {
                             </div>
                             <p className="text-[11px] text-amber-200/80 sm:text-xs">
                               {translate(
-                                "templates.new_year_glamour.rsvp_deadline_until"
+                                "templates.new_year_glamour.rsvp_deadline_label"
                               )}{" "}
                               {format(deadlineDate, "dd.MM.yyyy, HH:mm")}
                             </p>
@@ -210,18 +213,14 @@ export const newYearGlamour: TemplateDef = {
                             onClick={onAccept}
                             className="w-full rounded-full bg-amber-400 px-8 py-3 text-sm font-bold text-black shadow-lg transition hover:bg-amber-300 disabled:opacity-50 sm:w-auto"
                           >
-                            {translate(
-                              "templates.new_year_glamour.rsvp_accept"
-                            )}
+                            {translate("templates.new_year_glamour.accepted")}
                           </button>
                           <button
                             disabled={sending}
                             onClick={onDecline}
                             className="w-full rounded-full border border-amber-500/60 bg-transparent px-8 py-3 text-sm font-semibold text-amber-200 transition hover:bg-amber-500/10 disabled:opacity-50 sm:w-auto"
                           >
-                            {translate(
-                              "templates.new_year_glamour.rsvp_decline"
-                            )}
+                            {translate("templates.new_year_glamour.declined")}
                           </button>
                         </div>
                       </>
@@ -233,14 +232,10 @@ export const newYearGlamour: TemplateDef = {
                       <Lucide.CheckCircle2 className="h-8 w-8 text-amber-300" />
                     </div>
                     <p className="text-sm font-semibold text-amber-100 sm:text-base">
-                      {translate(
-                        "templates.new_year_glamour.rsvp_accepted_heading"
-                      )}
+                      {translate("templates.new_year_glamour.wonderful")}
                     </p>
                     <p className="text-xs text-amber-200 sm:text-sm">
-                      {translate(
-                        "templates.new_year_glamour.rsvp_accepted_description"
-                      )}
+                      {translate("templates.new_year_glamour.see_you")}
                     </p>
                   </div>
                 ) : (
@@ -249,13 +244,11 @@ export const newYearGlamour: TemplateDef = {
                       <Lucide.XCircle className="h-8 w-8 text-amber-300" />
                     </div>
                     <p className="text-sm font-semibold text-amber-100 sm:text-base">
-                      {translate(
-                        "templates.new_year_glamour.rsvp_declined_heading"
-                      )}
+                      {translate("templates.new_year_glamour.declined")}
                     </p>
                     <p className="text-xs text-amber-200/90 sm:text-sm">
                       {translate(
-                        "templates.new_year_glamour.rsvp_declined_description"
+                        "templates.new_year_glamour.declined_description"
                       )}
                     </p>
                   </div>

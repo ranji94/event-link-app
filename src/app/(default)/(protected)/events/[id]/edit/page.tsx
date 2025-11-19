@@ -15,21 +15,22 @@ import { programControllerList } from "@/entities/program";
 import { translate } from "@/locales";
 import { EventKind } from "@/common/enum";
 
-// === Helpers: konwersje ISO <-> 'dd.MM.yyyy hh:mm' ===
 function pad(n: number) {
   return String(n).padStart(2, "0");
 }
+
 function isoToDisplay(iso?: string | null): string {
   if (!iso) return "";
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return "";
-  return `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()} ${pad(
-    d.getHours()
-  )}:${pad(d.getMinutes())}`;
+  return `${pad(d.getDate())}.${pad(
+    d.getMonth() + 1
+  )}.${d.getFullYear()}, ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
+
 function displayToIso(display?: string | null): string | undefined {
   if (!display) return undefined;
-  const m = display.match(/^(\d{2})\.(\d{2})\.(\d{4})\s(\d{2}):(\d{2})$/);
+  const m = display.match(/^(\d{2})\.(\d{2})\.(\d{4}),\s(\d{2}):(\d{2})$/);
   if (!m) return undefined;
   const [, dd, mm, yyyy, hh, mi] = m;
   const d = new Date(

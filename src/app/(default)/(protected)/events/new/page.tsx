@@ -31,6 +31,24 @@ export default function NewEventPage() {
   );
 }
 
+function displayToIso(display?: string | null): string | undefined {
+  if (!display) return undefined;
+  const m = display.match(/^(\d{2})\.(\d{2})\.(\d{4}),\s(\d{2}):(\d{2})$/);
+  if (!m) return undefined;
+  const [, dd, mm, yyyy, hh, mi] = m;
+  const d = new Date(
+    Number(yyyy),
+    Number(mm) - 1,
+    Number(dd),
+    Number(hh),
+    Number(mi),
+    0,
+    0
+  );
+  if (Number.isNaN(d.getTime())) return undefined;
+  return d.toISOString();
+}
+
 function NewEventPageInner() {
   const router = useRouter();
   const params = useSearchParams();
@@ -89,8 +107,10 @@ function NewEventPageInner() {
       title: values.title.trim(),
       description: values.description?.trim() || undefined,
       dressCode: values.dressCode?.trim() || undefined,
-      rsvpDeadline: values.rsvpDeadline?.trim() || undefined,
-      date: toIsoFromDatetimeLocal(values.datetime),
+      rsvpDeadline: values.rsvpDeadline
+        ? displayToIso(values.rsvpDeadline)
+        : undefined,
+      date: displayToIso(values.datetime),
       location: values.location?.trim() || undefined,
       kind: kindParam,
       templateKey: values.templateKey,
@@ -142,11 +162,11 @@ function NewEventPageInner() {
           templateKey={current.templateKey}
           title={current.title}
           description={current.description}
-          date={toIsoFromDatetimeLocal(current.datetime)}
+          date={displayToIso(current.datetime)}
           location={current.location}
           program={program.items}
           dressCode={current.dressCode}
-          rsvpDeadline={current.rsvpDeadline}
+          rsvpDeadline={displayToIso(current.rsvpDeadline)}
         />
       }
     />

@@ -6,21 +6,19 @@ const DISPLAY_REGEX = /^\d{2}\.\d{2}\.\d{4}\s\d{2}:\d{2}$/;
 
 function parseDisplayToDate(value: string): Date | null {
   if (!DISPLAY_REGEX.test(value)) return null;
-  // dd.MM.yyyy hh:mm
-  const [d, m, y, hh, mm] = [
-    value.slice(0, 2),
-    value.slice(3, 5),
-    value.slice(6, 10),
-    value.slice(11, 13),
-    value.slice(14, 16),
-  ];
+
+  const m = value.match(/^(\d{2})\.(\d{2})\.(\d{4}),\s(\d{2}):(\d{2})$/);
+  if (!m) return null;
+
+  const [, d, mo, y, hh, mm] = m;
   const year = Number(y);
-  const monthIndex = Number(m) - 1; // 0-11
+  const monthIndex = Number(mo) - 1;
   const day = Number(d);
   const hour = Number(hh);
   const minute = Number(mm);
+
   const date = new Date(year, monthIndex, day, hour, minute, 0, 0);
-  // prosta kontrola: czy komponenty się „nie rozlały” (np. 32 dzień)
+
   if (
     date.getFullYear() !== year ||
     date.getMonth() !== monthIndex ||

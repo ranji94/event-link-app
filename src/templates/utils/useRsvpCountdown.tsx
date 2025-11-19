@@ -11,10 +11,17 @@ export function useRsvpCountdown(
 ): RsvpCountdownResult {
   const [now, setNow] = React.useState<Date>(() => new Date());
 
-  const deadlineDate = React.useMemo(
-    () => (rsvpDeadline ? new Date(rsvpDeadline) : null),
-    [rsvpDeadline]
-  );
+  const deadlineDate = React.useMemo(() => {
+    if (!rsvpDeadline) return null;
+
+    const d = new Date(rsvpDeadline);
+
+    if (isNaN(d.getTime())) {
+      return null;
+    }
+
+    return d;
+  }, [rsvpDeadline]);
 
   React.useEffect(() => {
     if (!deadlineDate) return;

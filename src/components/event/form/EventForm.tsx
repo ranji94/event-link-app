@@ -40,8 +40,18 @@ function laterNative(a?: string, b?: string): string {
   return da!.getTime() >= db!.getTime() ? a! : b!;
 }
 
+function maxOneYearNative(): string {
+  const d = new Date();
+  d.setFullYear(d.getFullYear() + 1);
+  d.setSeconds(0, 0);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(
+    d.getHours()
+  )}:${pad(d.getMinutes())}`;
+}
+
 function parseDisplayToDate(value: string): Date | null {
-  const m = value.match(/^(\d{2})\.(\d{2})\.(\d{4})\s(\d{2}):(\d{2})$/);
+  const m = value.match(/^(\d{2})\.(\d{2})\.(\d{4}),\s(\d{2}):(\d{2})$/);
   if (!m) return null;
   const [, d, mo, y, h, mi] = m;
   const date = new Date(
@@ -65,12 +75,12 @@ function parseDisplayToDate(value: string): Date | null {
   return date;
 }
 
-// Date -> 'dd.MM.yyyy hh:mm'
+// Date -> 'dd.MM.yyyy, hh:mm'
 function formatDisplay(date: Date): string {
   const pad = (n: number) => String(n).padStart(2, "0");
   return `${pad(date.getDate())}.${pad(
     date.getMonth() + 1
-  )}.${date.getFullYear()} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+  )}.${date.getFullYear()}, ${pad(date.getHours())}:${pad(date.getMinutes())}`;
 }
 
 // 'dd.MM.yyyy hh:mm' -> 'YYYY-MM-DDTHH:mm' (native input)
@@ -181,27 +191,33 @@ export function EventForm({
                   nowNative(),
                   displayToNative(current?.rsvpDeadline)
                 )}
+                max={maxOneYearNative()}
                 onChange={(e) => {
                   const native = e.target.value;
                   const display = nativeToDisplay(native);
-                  // Ustaw nową datę wydarzenia
                   setValue("datetime", display, {
                     shouldDirty: true,
                     shouldValidate: true,
                   });
 
-                  // Jeśli istniejący RSVP > nowa data wydarzenia → skoryguj RSVP do nowej daty
                   const rsvpNative = displayToNative(current?.rsvpDeadline);
                   if (rsvpNative) {
                     const newEvent = new Date(native);
                     const currentRsvp = new Date(rsvpNative);
                     if (currentRsvp.getTime() > newEvent.getTime()) {
+                      // dociągnięcie RSVP do nowej daty wydarzenia
                       setValue("rsvpDeadline", display, {
                         shouldDirty: true,
                         shouldValidate: true,
                       });
                     }
                   }
+                }}
+                onKeyDown={(e) => e.preventDefault()}
+                onPaste={(e) => e.preventDefault()}
+                onFocus={(e) => {
+                  // @ts-expect-error
+                  if (e.target.showPicker) e.target.showPicker();
                 }}
               />
 
@@ -267,13 +283,19 @@ export function EventForm({
                 className="mt-1 w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
                 value={displayToNative(current?.rsvpDeadline)}
                 min={nowNative()}
-                max={displayToNative(current?.datetime) || undefined}
+                max={displayToNative(current?.datetime) || maxOneYearNative()}
                 onChange={(e) =>
                   setValue("rsvpDeadline", nativeToDisplay(e.target.value), {
                     shouldDirty: true,
                     shouldValidate: true,
                   })
                 }
+                onKeyDown={(e) => e.preventDefault()}
+                onPaste={(e) => e.preventDefault()}
+                onFocus={(e) => {
+                  // @ts-expect-error
+                  if (e.target.showPicker) e.target.showPicker();
+                }}
               />
 
               <div className="mt-1 text-xs text-gray-500">

@@ -482,7 +482,8 @@
       "description_default": "Zapraszamy na niezapomnianą Sylwestrową Noc! Czeka na nas szampan, doskonała muzyka, taniec do białego rana i toast o północy. Ubierz się elegancko i przygotuj na noc pełną blasku i dobrej zabawy!",
       "rsvp_deadline_label": "Pozostały czas na potwierdzenie obecności (dni:godziny:minuty):",
       "rsvp_deadline_expired_title": "Czas na potwierdzenie obecności minął",
-      "rsvp_deadline_expired_at": "Ostatni termin potwierdzenia:"
+      "rsvp_deadline_expired_at": "Ostatni termin potwierdzenia:",
+      "date_fallback": "Sobota, 18:00"
     },
     "minimalist_navy": {
       "title_fallback": "Zaproszenie",
