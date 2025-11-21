@@ -1,8 +1,8 @@
 # syntax=docker/dockerfile:1.6
 
-FROM node:20-alpine AS base
+FROM node:22-alpine AS base
 WORKDIR /app
-ARG PNPM_VERSION=8.15.1
+ARG PNPM_VERSION=10.23.0
 RUN corepack enable && corepack prepare pnpm@${PNPM_VERSION} --activate
 RUN apk add --no-cache libc6-compat openssl
 ENV NEXT_TELEMETRY_DISABLED=1
