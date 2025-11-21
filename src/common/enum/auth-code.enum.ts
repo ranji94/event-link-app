@@ -23,5 +23,6 @@ export namespace AuthCode {
     WorkspaceNotSelected = "WORKSPACE_NOT_SELECTED",
     WorkspaceNoAccess = "WORKSPACE_NO_ACCESS",
     AlreadyAuthenticated = "ALREADY_AUTHENTICATED",
+    Generic = "GENERIC",
   }
 }

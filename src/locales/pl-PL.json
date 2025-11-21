@@ -70,7 +70,8 @@
       "USER_INVALID_OR_EXPIRED_RESET_PASSWORD_TOKEN": "Link do resetu hasła jest nieprawidłowy lub wygasł.",
       "USER_CREATE_RESET_PASSWORD_TOKEN_SEND_FAILED": "Nie udało się wysłać linku do resetu hasła. Spróbuj ponownie.",
       "INSUFFICIENT_PERMISSIONS": "Brak uprawnień do wykonania tej operacji.",
-      "ALREADY_AUTHENTICATED": "Jesteś już zalogowany/a."
+      "ALREADY_AUTHENTICATED": "Jesteś już zalogowany/a.",
+      "GENERIC": "Wystąpił nieoczekiwany błąd po stronie serwera."
     }
   },
   "success": {
@@ -109,10 +110,11 @@
       }
     },
     "login": {
+      "google": "Zaloguj się przez Google",
+      "google_loading": "Logowanie przez Google...",
       "section_label": "Formularz logowania",
       "title": "Logowanie",
       "caption": "Zaloguj się, aby kontynuować",
-      "google": "Zaloguj przez Google",
       "facebook": "Zaloguj przez Facebook",
       "divider": "lub",
       "form": {
@@ -147,7 +149,8 @@
       "section_label": "Formularz rejestracji",
       "title": "Rejestracja",
       "caption": "Utwórz nowe konto, aby rozpocząć",
-      "google": "Załóż konto przez Google",
+      "google": "Zarejestruj się przez Google",
+      "google_loading": "Rejestracja przez Google...",
       "facebook": "Załóż konto przez Facebook",
       "divider": "lub",
       "form": {

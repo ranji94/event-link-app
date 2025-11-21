@@ -7,6 +7,7 @@
 import type {
   AuthControllerRequestPasswordResetParams,
   AuthControllerVerifyEmailParams,
+  GoogleLoginDto,
   LoginDto,
   RegisterDto,
   ResetPasswordDto
@@ -77,6 +78,39 @@ export const authControllerLogin = async (loginDto: LoginDto, options?: RequestI
     headers: { 'Content-Type': 'application/json', ...options?.headers },
     body: JSON.stringify(
       loginDto,)
+  }
+);}
+
+
+export type authControllerGoogleLoginResponse201 = {
+  data: void
+  status: 201
+}
+    
+export type authControllerGoogleLoginResponseSuccess = (authControllerGoogleLoginResponse201) & {
+  headers: Headers;
+};
+;
+
+export type authControllerGoogleLoginResponse = (authControllerGoogleLoginResponseSuccess)
+
+export const getAuthControllerGoogleLoginUrl = () => {
+
+
+  
+
+  return `/auth/google`
+}
+
+export const authControllerGoogleLogin = async (googleLoginDto: GoogleLoginDto, options?: RequestInit): Promise<authControllerGoogleLoginResponse> => {
+  
+  return orvalFetcher<authControllerGoogleLoginResponse>(getAuthControllerGoogleLoginUrl(),
+  {      
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      googleLoginDto,)
   }
 );}
 

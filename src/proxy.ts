@@ -7,6 +7,7 @@ const AUTH_PAGES = [
   "/reset-password",
   "/reset-password/confirm",
   "/verify",
+  "/auth",
 ];
 
 // (opcjonalnie) tu skonfiguruj wzorce tras chronionych

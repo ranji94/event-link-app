@@ -17,13 +17,14 @@ import { login } from "@/lib/auth-store";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { AppLogo } from "@/components/common/AppLogo";
 import { GoogleIcon } from "@/common/assets/google-icon";
 import { HeaderNotAuthenticated } from "@/components/common/HeaderNotAuthenticated";
+import { useGoogleLogin } from "@/lib/use-google-login";
 
 export default function Page() {
   const router = useRouter();
   const [showPassword, setShowPassword] = React.useState(false);
+  const { signInWithGoogle, isGoogleLoading } = useGoogleLogin();
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -124,19 +125,21 @@ export default function Page() {
                 type="button"
                 variant="outline"
                 className="cursor-pointer w-full"
-                onClick={() => console.log("Google sign-in clicked")}
+                onClick={signInWithGoogle}
+                disabled={isSubmitting || isGoogleLoading}
               >
-                <GoogleIcon />
-                {translate("auth.login.google")}
+                {isGoogleLoading ? (
+                  <span className="inline-flex items-center gap-2">
+                    <Loader2 className="animate-spin" size={16} />
+                    {translate("auth.login.google_loading")}
+                  </span>
+                ) : (
+                  <>
+                    <GoogleIcon />
+                    {translate("auth.login.google")}
+                  </>
+                )}
               </Button>
-              {/* <Button
-                type="button"
-                variant="outline"
-                className="cursor-pointer w-full"
-                onClick={() => console.log("Facebook sign-in clicked")}
-              >
-                {translate("auth.login.facebook")}
-              </Button> */}
             </div>
 
             <div className="my-6 flex items-center gap-3">

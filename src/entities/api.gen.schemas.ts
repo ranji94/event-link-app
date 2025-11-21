@@ -16,6 +16,8 @@ export interface LoginDto {
   password: string;
 }
 
+export interface GoogleLoginDto { [key: string]: unknown }
+
 export interface ResetPasswordDto {
   token: string;
   newPassword: string;

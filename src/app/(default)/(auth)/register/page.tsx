@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { GoogleIcon } from "@/common/assets/google-icon";
 import { HeaderNotAuthenticated } from "@/components/common/HeaderNotAuthenticated";
+import { useGoogleLogin } from "@/lib/use-google-login";
 
 /** ——— Password strength ——— */
 function getPasswordScore(pw: string) {
@@ -81,6 +82,8 @@ export default function Page() {
   const router = useRouter();
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirm, setShowConfirm] = React.useState(false);
+
+  const { signInWithGoogle, isGoogleLoading } = useGoogleLogin();
 
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
@@ -185,10 +188,20 @@ export default function Page() {
                 type="button"
                 variant="outline"
                 className="w-full cursor-pointer"
-                onClick={() => console.log("Google sign-up clicked")}
+                onClick={signInWithGoogle}
+                disabled={isSubmitting || isGoogleLoading}
               >
-                <GoogleIcon />
-                {translate("auth.register.google")}
+                {isGoogleLoading ? (
+                  <span className="inline-flex items-center gap-2">
+                    <Loader2 className="animate-spin" size={16} />
+                    {translate("auth.register.google_loading")}
+                  </span>
+                ) : (
+                  <>
+                    <GoogleIcon />
+                    {translate("auth.register.google")}
+                  </>
+                )}
               </Button>
               {/* Jeśli chcesz włączyć FB, odkomentuj i podłącz swoją ikonę */}
               {/* <Button
