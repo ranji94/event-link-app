@@ -266,121 +266,6 @@
   "not_found_description": "Wygląda na to, że szukana ścieżka nie istnieje lub została przeniesiona.",
   "not_found_go_back": "Wróć",
   "not_found_go_home": "Przejdź do strony powitalnej",
-  "events": {
-    "hint": {
-      "format": "Format: dd.MM.yyyy hh:mm",
-      "optional": "Pole opcjonalne",
-      "rsvp_leq_date": "RSVP nie może być później niż data wydarzenia"
-    },
-    "new": {
-      "not_found": {
-        "this_type_of_event": "Podany typ wydarzenia",
-        "not_exists": "nie istnieje.",
-        "make_sure_youre_using_correct_link": "Upewnij się, że korzystasz z prawidłowego linku i spróbuj ponownie.",
-        "go_back": "Wróć na stronę główną"
-      },
-      "schedule": {
-        "title": "Harmonogram",
-        "add_item": "Dodaj punkt",
-        "empty": "Brak punktów programu.",
-        "time": "Godzina",
-        "header": "Nagłówek",
-        "subheader": "Podnagłówek",
-        "header_ph": "Np. Ceremonia zaślubin",
-        "subheader_ph": "Np. Kościół św. Anny",
-        "icon": "Ikona",
-        "icon_presets": "Z listy",
-        "icon_custom": "Własna nazwa…",
-        "icon_title": "Nazwa ikony z lucide-react (np. Church, PartyPopper)",
-        "icon_pick": "Wybierz ikonę"
-      },
-      "fullscreen": "Pełny ekran",
-      "title": "Nowe wydarzenie",
-      "subtitle": "Uzupełnij dane i wybierz szablon zaproszenia.",
-      "submit": "Utwórz wydarzenie",
-      "live_preview": "Podgląd zaproszenia",
-      "exit_dialog": {
-        "warning": "Uwaga",
-        "description": "Wszelkie niezapisane zmiany zostaną usunięte. Czy kontynuować?"
-      },
-      "errors": {
-        "title_min": "Tytuł powinien mieć co najmniej 3 znaki.",
-        "date_required": "Podaj datę i godzinę wydarzenia.",
-        "create_failed": "Nie udało się utworzyć wydarzenia.",
-        "unknown": "Wystąpił nieoczekiwany błąd po stronie serwera. Spróbuj później.",
-        "no_response": "Brak odpowiedzi z serwera",
-        "date_format": "Nieprawidłowy format daty. Użyj formatu dd.MM.yyyy hh:mm",
-        "date_in_past": "Data nie może być wcześniejsza niż obecna",
-        "rsvp_after_event": "Termin RSVP nie może być późniejszy niż data wydarzenia"
-      },
-      "header": {
-        "WEDDING": "Nowe wydarzenie — Ślub/Wesele",
-        "BAPTISM": "Nowe wydarzenie — Chrzciny",
-        "BIRTHDAY_18": "Nowe wydarzenie — 18. urodziny",
-        "BIRTHDAY_30": "Nowe wydarzenie — 30. urodziny",
-        "BIRTHDAY_50": "Nowe wydarzenie — 50. urodziny",
-        "BABY_SHOWER": "Nowe wydarzenie — Baby Shower",
-        "HOLY_COMMUNION": "Nowe wydarzenie — Pierwsza Komunia",
-        "OTHER": "Nowe wydarzenie"
-      },
-      "placeholders": {
-        "title_by_kind": {
-          "WEDDING": "Np. Ślub Ani i Pawła",
-          "BAPTISM": "Np. Chrzciny Hani",
-          "BIRTHDAY_18": "Np. 18. urodziny Kuby",
-          "BIRTHDAY_30": "Np. 30. urodziny Oli",
-          "BIRTHDAY_50": "Np. 50. urodziny Jacka",
-          "BABY_SHOWER": "Np. Baby Shower Kasi",
-          "HOLY_COMMUNION": "Np. Komunia Święta Filipa",
-          "OTHER": "Np. Wyjątkowe wydarzenie"
-        }
-      }
-    },
-    "edit": {
-      "title": "Edycja wydarzenia",
-      "subtitle": "Zaktualizuj dane wydarzenia i harmonogram.",
-      "submit": "Zapisz zmiany",
-      "exit_dialog": {
-        "warning": "Odrzucić zmiany?",
-        "description": "Wprowadzone dane nie zostaną zapisane."
-      }
-    },
-    "list": {
-      "no_location": "Brak lokalizacji",
-      "card": {
-        "manage": "Zarządzaj",
-        "openAria": "Otwórz wydarzenie „{{title}}”"
-      },
-      "delete": {
-        "title": "Usunąć?",
-        "description": "Operacji nie można cofnąć. Zaproszenia i program wydarzeń zostanie usunięty."
-      }
-    },
-    "details": {
-      "back": "Wróć do listy",
-      "not_found": "Nie znaleziono wydarzenia lub brak uprawnień.",
-      "description": "Opis wydarzenia",
-      "no_description": "Brak opisu.",
-      "preview": "Podgląd szablonu",
-      "schedule": "Harmonogram",
-      "no_program": "Brak pozycji programu."
-    },
-    "fields": {
-      "title": "Tytuł",
-      "description": "Opis na zaproszeniu",
-      "location": "Lokalizacja",
-      "template": "Szablon",
-      "dressCode": "Strój",
-      "rsvpDeadline": "Termin potwierdzenia udziału",
-      "datetime": "Data i godzina wydarzenia"
-    },
-    "placeholders": {
-      "title": "Np. Ślub Ani i Pawła",
-      "description": "Tu wpisz treść zaproszenia…",
-      "select": "— wybierz —",
-      "dressCode": "Np. formalny, smart casual"
-    }
-  },
   "guests": {
     "header": {
       "title": "Zaproszeni goście",
@@ -530,6 +415,29 @@
       "rsvp_done_sub_accept": "Nie możemy się doczekać spotkania!",
       "rsvp_done_title_decline": "Będzie nam Ciebie brakowało! 💙"
     },
+    "baby_shower_bunny": {
+      "title_fallback": "Baby Shower",
+      "location_fallback": "Miejsce do ustalenia",
+      "date_fallback": "Data do ustalenia",
+      "greeting_personalized_prefix": "Drogi/a",
+      "greeting_fallback": "Zapraszamy!",
+      "header_subtitle": "Świętujmy razem nadchodzące cudowne chwile",
+      "date_label": "Data",
+      "location_label": "Miejsce",
+      "dresscode_label": "Dress Code",
+      "description_fallback": "Dołącz do nas na wyjątkowym przyjęciu, aby wspólnie cieszyć się tym magicznym czasem oczekiwania na maleństwo. Będzie pełno radości, śmiechu i miłych chwil!",
+      "program_title": "Program",
+      "countdown_prefix": "Potwierdź obecność do",
+      "countdown_until_prefix": "do",
+      "deadline_expired_title": "Termin minął",
+      "deadline_expired_subtitle": "Jeśli chcesz dołączyć, skontaktuj się z organizatorem",
+      "rsvp_prompt": "Daj nam znać, czy będziesz!",
+      "rsvp_accept": "Przyjdę z radością!",
+      "rsvp_decline": "Niestety nie mogę",
+      "rsvp_done_title_accept": "Wspaniale! Do zobaczenia!",
+      "rsvp_done_sub_accept": "Cieszymy się, że będziesz z nami świętować",
+      "rsvp_done_title_decline": "Przykro nam, że nie będziesz mogła/mógł dołączyć"
+    },
     "baptism_blessing": {
       "title_default": "Zaproszenie na Chrzciny",
       "location_default": "Kościół",
@@ -577,7 +485,7 @@
       "rsvp_deadline_expired_at": "Ostatni termin potwierdzenia:"
     },
     "birthday_30_elegant": {
-      "title_default": "30 Urodziny",
+      "title_default": "Zapraszamy na jubileusz",
       "location_default": "Restauracja",
       "date_fallback": "Sobota, 18:00",
       "greeting_default": "Zapraszam serdecznie",
@@ -624,6 +532,436 @@
     "errors": {
       "not_found": "Nie znaleziono zaproszenia.",
       "unknown": "Wystąpił nieoczekiwany błąd. Spróbuj ponownie później."
+    }
+  },
+  "events": {
+    "actions": {
+      "generateSuggestedDescription": "Wygeneruj proponowany opis zaproszenia"
+    },
+    "hint": {
+      "format": "Format: dd.MM.yyyy hh:mm",
+      "optional": "Pole opcjonalne",
+      "rsvp_leq_date": "RSVP nie może być później niż data wydarzenia"
+    },
+    "new": {
+      "not_found": {
+        "this_type_of_event": "Podany typ wydarzenia",
+        "not_exists": "nie istnieje.",
+        "make_sure_youre_using_correct_link": "Upewnij się, że korzystasz z prawidłowego linku i spróbuj ponownie.",
+        "go_back": "Wróć na stronę główną"
+      },
+      "schedule": {
+        "title": "Harmonogram",
+        "add_item": "Dodaj punkt",
+        "empty": "Brak punktów programu.",
+        "time": "Godzina",
+        "header": "Nagłówek",
+        "subheader": "Podnagłówek",
+        "header_ph": "Np. Ceremonia zaślubin",
+        "subheader_ph": "Np. Kościół św. Anny",
+        "icon": "Ikona",
+        "icon_presets": "Z listy",
+        "icon_custom": "Własna nazwa…",
+        "icon_title": "Nazwa ikony z lucide-react (np. Church, PartyPopper)",
+        "icon_pick": "Wybierz ikonę"
+      },
+      "fullscreen": "Pełny ekran",
+      "title": "Nowe wydarzenie",
+      "subtitle": "Uzupełnij dane i wybierz szablon zaproszenia.",
+      "submit": "Utwórz wydarzenie",
+      "live_preview": "Podgląd zaproszenia",
+      "exit_dialog": {
+        "warning": "Uwaga",
+        "description": "Wszelkie niezapisane zmiany zostaną usunięte. Czy kontynuować?"
+      },
+      "errors": {
+        "title_min": "Tytuł powinien mieć co najmniej 3 znaki.",
+        "date_required": "Podaj datę i godzinę wydarzenia.",
+        "create_failed": "Nie udało się utworzyć wydarzenia.",
+        "unknown": "Wystąpił nieoczekiwany błąd po stronie serwera. Spróbuj później.",
+        "no_response": "Brak odpowiedzi z serwera",
+        "date_format": "Nieprawidłowy format daty. Użyj formatu dd.MM.yyyy hh:mm",
+        "date_in_past": "Data nie może być wcześniejsza niż obecna",
+        "rsvp_after_event": "Termin RSVP nie może być późniejszy niż data wydarzenia"
+      },
+      "header": {
+        "WEDDING": "Nowe wydarzenie — Ślub/Wesele",
+        "BAPTISM": "Nowe wydarzenie — Chrzciny",
+        "BIRTHDAY_18": "Nowe wydarzenie — 18. urodziny",
+        "BIRTHDAY_30": "Nowe wydarzenie — 30. urodziny",
+        "BIRTHDAY_50": "Nowe wydarzenie — 50. urodziny",
+        "BABY_SHOWER": "Nowe wydarzenie — Baby Shower",
+        "HOLY_COMMUNION": "Nowe wydarzenie — Pierwsza Komunia",
+        "OTHER": "Nowe wydarzenie"
+      },
+      "placeholders": {
+        "title_by_kind": {
+          "WEDDING": "Np. Ślub Ani i Pawła",
+          "BAPTISM": "Np. Chrzciny Hani",
+          "BIRTHDAY_18": "Np. 18. urodziny Kuby",
+          "BIRTHDAY_30": "Np. 30. urodziny Oli",
+          "BIRTHDAY_50": "Np. 50. urodziny Jacka",
+          "BABY_SHOWER": "Np. Baby Shower Kasi",
+          "HOLY_COMMUNION": "Np. Komunia Święta Filipa",
+          "OTHER": "Np. Wyjątkowe wydarzenie"
+        }
+      }
+    },
+    "edit": {
+      "title": "Edycja wydarzenia",
+      "subtitle": "Zaktualizuj dane wydarzenia i harmonogram.",
+      "submit": "Zapisz zmiany",
+      "exit_dialog": {
+        "warning": "Odrzucić zmiany?",
+        "description": "Wprowadzone dane nie zostaną zapisane."
+      }
+    },
+    "list": {
+      "no_location": "Brak lokalizacji",
+      "card": {
+        "manage": "Zarządzaj",
+        "openAria": "Otwórz wydarzenie „{{title}}”"
+      },
+      "delete": {
+        "title": "Usunąć?",
+        "description": "Operacji nie można cofnąć. Zaproszenia i program wydarzeń zostanie usunięty."
+      }
+    },
+    "details": {
+      "back": "Wróć do listy",
+      "not_found": "Nie znaleziono wydarzenia lub brak uprawnień.",
+      "description": "Opis wydarzenia",
+      "no_description": "Brak opisu.",
+      "preview": "Podgląd szablonu",
+      "schedule": "Harmonogram",
+      "no_program": "Brak pozycji programu."
+    },
+    "fields": {
+      "title": "Tytuł",
+      "description": "Opis na zaproszeniu",
+      "location": "Lokalizacja",
+      "template": "Szablon",
+      "dressCode": "Strój",
+      "rsvpDeadline": "Termin potwierdzenia udziału",
+      "datetime": "Data i godzina wydarzenia"
+    },
+    "placeholders": {
+      "title": "Np. Ślub Ani i Pawła",
+      "description": "Tu wpisz treść zaproszenia…",
+      "select": "— wybierz —",
+      "dressCode": "Np. formalny, smart casual"
+    },
+    "WEDDING": {
+      "variant": {
+        "1": "Z radością zapraszamy na uroczystość zawarcia naszego małżeństwa i wspólne świętowanie tego wyjątkowego dnia.",
+        "2": "Połączeni miłością, pragniemy przeżyć ten szczególny moment w gronie najbliższych. Będzie nam miło, jeśli do nas dołączysz.",
+        "3": "Rozpoczynamy wspólną drogę życia i chcemy podzielić się tym wydarzeniem z osobami, które są dla nas ważne.",
+        "4": "To dla nas wyjątkowy dzień – będziemy zaszczyceni, jeśli przeżyjesz go razem z nami.",
+        "5": "Zapraszamy na nasz ślub i wesele, aby wspólnie celebrować początek naszej nowej, wspólnej historii.",
+        "6": "Chcemy podzielić się naszą radością i zaprosić Cię na uroczystość naszego ślubu.",
+        "7": "Miłość łączy nasze serca – będzie nam ogromnie miło, jeśli przeżyjesz ten dzień z nami.",
+        "8": "Wkraczamy na wspólną ścieżkę życia i zapraszamy Cię do świętowania tej chwili.",
+        "9": "To dla nas początek pięknej historii – dołącz do jej pierwszego rozdziału.",
+        "10": "Zapraszamy na ślub i wesele, aby wspólnie tworzyć wyjątkowe wspomnienia.",
+        "11": "Ten dzień jest dla nas szczególny – będzie nam bardzo miło Cię gościć.",
+        "12": "Z wielką radością ogłaszamy nasz ślub i zapraszamy na wspólne świętowanie.",
+        "13": "Pragniemy, abyś był częścią tego wyjątkowego wydarzenia w naszym życiu.",
+        "14": "Miłość celebruje się najlepiej w gronie bliskich – zapraszamy!",
+        "15": "Dołącz do nas w dniu, w którym złożymy sobie przysięgę małżeńską.",
+        "16": "Zapraszamy na uroczystość, która rozpocznie naszą wspólną przyszłość.",
+        "17": "Będzie dla nas zaszczytem, jeśli przeżyjesz z nami ten wyjątkowy dzień.",
+        "18": "Z radością ogłaszamy nasz ślub i zapraszamy do wspólnego świętowania.",
+        "19": "Chcemy, byś był częścią naszego wyjątkowego dnia – zapraszamy.",
+        "20": "Ta piękna chwila nabierze jeszcze większego znaczenia dzięki Twojej obecności.",
+        "21": "Zapraszamy na dzień pełen wzruszeń, radości i miłości.",
+        "22": "Nasza historia wkracza w nowy rozdział – przeżyj go razem z nami.",
+        "23": "Będzie nam niezwykle miło, jeśli zaszczycisz nas swoją obecnością.",
+        "24": "Niech ten wyjątkowy dzień stanie się naszym wspólnym wspomnieniem.",
+        "25": "Świętuj z nami początek naszej małżeńskiej przygody.",
+        "26": "Zapraszamy na ceremonię zaślubin i przyjęcie weselne.",
+        "27": "To dla nas ważny i piękny dzień – dołącz do naszej radości.",
+        "28": "Z serca zapraszamy na nasz ślub – Twoja obecność wiele dla nas znaczy.",
+        "29": "Razem stworzymy niezapomnianą atmosferę tego dnia.",
+        "30": "Będzie nam bardzo miło świętować nasz ślub w Twoim towarzystwie.",
+        "31": "Zapraszamy na dzień, który na zawsze pozostanie w naszej pamięci.",
+        "32": "Niech Twoja obecność towarzyszy nam w tym wyjątkowym momencie.",
+        "33": "Wypowiadamy sakramentalne „tak” i chcemy dzielić tę chwilę z Tobą.",
+        "34": "Zapraszamy na uroczystość zaślubin – bądź z nami w tym ważnym dniu.",
+        "35": "Świętujemy naszą miłość – będzie nam niezmiernie miło, jeśli dołączysz."
+      }
+    },
+    "BAPTISM": {
+      "variant": {
+        "1": "Z radością zapraszamy na uroczystość Chrztu Świętego naszego dziecka i wspólne przeżycie tego ważnego dnia.",
+        "2": "To wyjątkowy moment w życiu naszej rodziny – będzie nam miło, jeśli będziesz z nami podczas Chrztu Świętego.",
+        "3": "Pragniemy, abyś towarzyszył nam w dniu, w którym nasze dziecko zostanie przyjęte do wspólnoty Kościoła.",
+        "4": "Zapraszamy serdecznie na Chrzest Święty, aby wspólnie dzielić radość z tego pięknego wydarzenia.",
+        "5": "Ten dzień jest dla nas szczególny. Będzie nam niezmiernie miło, jeśli przeżyjesz go razem z nami.",
+        "6": "Zapraszamy na ważny dzień w życiu naszego dziecka – uroczystość Chrztu Świętego.",
+        "7": "Będzie nam miło, jeśli dołączysz do naszej radości w dniu Chrztu Świętego.",
+        "8": "To wyjątkowy moment dla naszego dziecka i naszej rodziny – zapraszamy.",
+        "9": "Pragniemy przeżyć ten dzień w gronie bliskich – zapraszamy na Chrzest.",
+        "10": "Z dumą i radością zapraszamy na Chrzest Święty naszego dziecka.",
+        "11": "Twoja obecność sprawi, że ten dzień będzie jeszcze piękniejszy.",
+        "12": "Zapraszamy na uroczystość, która ma wielkie znaczenie dla naszej rodziny.",
+        "13": "W tym ważnym momencie chcemy dzielić radość razem z Tobą.",
+        "14": "Świętuj z nami w dniu Chrztu Świętego naszego dziecka.",
+        "15": "To wyjątkowa chwila – zapraszamy serdecznie do udziału.",
+        "16": "Przyjdź i przeżyj z nami ten duchowy moment.",
+        "17": "Z radością zapraszamy na sakrament Chrztu naszego dziecka.",
+        "18": "Będzie nam niezmiernie miło, jeśli będziesz nam towarzyszyć w tym dniu.",
+        "19": "Zapraszamy, by wspólnie celebrować Chrzest naszego maleństwa.",
+        "20": "To ważny krok w życiu naszego dziecka – dołącz do nas.",
+        "21": "Niech ten dzień będzie pełen spokoju i radości – zapraszamy.",
+        "22": "Chcemy dzielić tę piękną chwilę z bliskimi – zapraszamy na Chrzest.",
+        "23": "Będzie nam ogromnie miło gościć Cię w dniu Chrztu Świętego.",
+        "24": "Przeżyjmy ten wyjątkowy dzień razem – zapraszamy.",
+        "25": "Zapraszamy na uroczystość Chrztu – ważny dzień dla naszej rodziny.",
+        "26": "To moment pełen łaski i radości – bądź z nami.",
+        "27": "Z serca zapraszamy na Chrzest naszego dziecka.",
+        "28": "Niech ten dzień stanie się pięknym wspomnieniem – zapraszamy.",
+        "29": "Zapraszamy do udziału w uroczystości Chrztu Świętego.",
+        "30": "Razem uczcimy ten wyjątkowy dzień w życiu naszego maleństwa.",
+        "31": "To dla nas bardzo ważny moment – będzie nam miło Cię gościć.",
+        "32": "Zapraszamy na duchową uroczystość przyjęcia sakramentu Chrztu.",
+        "33": "Świętuj z nami ten piękny dzień w życiu naszego dziecka.",
+        "34": "Zapraszamy, by wspólnie przeżyć uroczystość Chrztu Świętego.",
+        "35": "Razem sprawimy, że ten dzień stanie się naprawdę wyjątkowy."
+      }
+    },
+    "BIRTHDAY_18": {
+      "variant": {
+        "1": "Zapraszam na moje 18. urodziny – świętujmy razem wejście w dorosłość!",
+        "2": "To jedyny taki dzień – kończę 18 lat! Będzie mi bardzo miło, jeśli będziesz tam ze mną.",
+        "3": "Wkraczam w dorosłość i nie może Cię zabraknąć na mojej osiemnastce!",
+        "4": "Świętuję 18. urodziny i zapraszam Cię do wspólnej zabawy w tym wyjątkowym dniu.",
+        "5": "Osiemnastka to ważny moment – dołącz do mnie, aby wspólnie go celebrować!",
+        "6": "Zapraszam na moją osiemnastkę – świętujmy razem wejście w dorosłe życie!",
+        "7": "Nadchodzi wielki dzień – kończę 18 lat! Dołącz do zabawy!",
+        "8": "Wielkie świętowanie osiemnastki czas zacząć – zapraszam!",
+        "9": "Osiemnastka to wyjątkowy moment – bądź tam ze mną!",
+        "10": "Z radością zapraszam na moje 18. urodziny – będzie się działo!",
+        "11": "To mój pierwszy krok w dorosłość – świętujmy razem!",
+        "12": "Zapraszam na imprezę urodzinową z okazji mojej osiemnastki.",
+        "13": "Dołącz do mnie w dniu, w którym wkraczam w dorosłość.",
+        "14": "Ten dzień zapamiętam na długo – bądź jego częścią!",
+        "15": "Osiemnastka to idealny powód do świętowania – zapraszam!",
+        "16": "To ważny dzień – chciałbym przeżyć go w Twoim towarzystwie.",
+        "17": "Zapraszam na huczne świętowanie moich 18. urodzin!",
+        "18": "Wejście w dorosłość nie może odbyć się bez Ciebie!",
+        "19": "Moje 18. urodziny – zapraszam na wspólną zabawę.",
+        "20": "Świętuję 18 lat – dołącz do mnie!",
+        "21": "Zapraszam na wyjątkową imprezę z okazji osiemnastki.",
+        "22": "Nie może Cię zabraknąć na mojej osiemnastce!",
+        "23": "Zróbmy z tego dnia niezapomniane wspomnienie!",
+        "24": "Zapraszam serdecznie na moje pełnoletnie urodziny!",
+        "25": "Kończę 18 lat – świętujmy to razem!",
+        "26": "To mój wielki dzień – bądź jego częścią!",
+        "27": "Przyjdź świętować moje wejście w dorosłość!",
+        "28": "Moja osiemnastka będzie lepsza z Twoją obecnością.",
+        "29": "Zapraszam na imprezę z okazji ukończenia 18 lat!",
+        "30": "Pełnoletność wzywa – świętujmy ją wspólnie!",
+        "31": "Zapraszam na wyjątkowy wieczór z okazji mojej osiemnastki.",
+        "32": "To przełomowy dzień – bądź tam ze mną!",
+        "33": "Świętuję 18. urodziny – będzie mi bardzo miło Cię gościć.",
+        "34": "Zapraszam na osiemnastkę pełną radości i dobrej zabawy.",
+        "35": "Dołącz do mnie, aby uczcić moje wejście w dorosłe życie."
+      }
+    },
+    "BIRTHDAY_30": {
+      "variant": {
+        "1": "Zapraszam na moje 30. urodziny – świętujmy tę okrągłą rocznicę w wyjątkowej atmosferze!",
+        "2": "Trzydzieści lat mija raz – będzie mi bardzo miło, jeśli spędzisz ten wieczór ze mną.",
+        "3": "Wkraczam w nową dekadę i chcę ją rozpocząć w gronie bliskich mi osób. Dołącz!",
+        "4": "Zapraszam serdecznie na 30. urodziny – świętujmy razem ten szczególny dzień.",
+        "5": "Przed mną nowe wyzwania i nowe lata – uczcijmy 30. urodziny wspólną zabawą!",
+        "6": "Zapraszam na moje 30. urodziny – rozpocznijmy razem nową dekadę!",
+        "7": "Trzydziestka to idealny powód do wspólnego świętowania – dołącz!",
+        "8": "Kończę 30 lat i będzie mi bardzo miło spędzić ten dzień z Tobą.",
+        "9": "Nowa dekada, nowe wspomnienia – zapraszam na 30. urodziny.",
+        "10": "Moje 30. urodziny będą wyjątkowe – świętujmy je razem!",
+        "11": "Zapraszam na kameralne, ale pełne radości świętowanie mojej trzydziestki.",
+        "12": "Trzydzieści lat brzmi dumnie – uczcijmy to razem.",
+        "13": "Zapraszam na 30. urodziny – będzie spokojnie, miło i wyjątkowo.",
+        "14": "To ważna chwila – będzie mi miło, jeśli dołączysz do świętowania.",
+        "15": "Wkraczam w nową dekadę życia – świętujmy początek tej drogi.",
+        "16": "Zapraszam na urodzinowe spotkanie z okazji mojej trzydziestki.",
+        "17": "Moje 30. urodziny – spędźmy ten dzień w dobrym towarzystwie.",
+        "18": "Trzy dekady za mną – świętujmy początek kolejnych!",
+        "19": "Zapraszam na urodzinowe świętowanie w związku z moją trzydziestką.",
+        "20": "To idealny moment, by stworzyć nowe wspomnienia – zapraszam.",
+        "21": "Będzie mi bardzo miło Cię gościć na moich 30. urodzinach.",
+        "22": "Trzydzieści lat świętuje się tylko raz – zapraszam!",
+        "23": "Niech ta rocznica będzie pełna uśmiechu – dołącz do mnie.",
+        "24": "Spotkajmy się i razem uczcijmy moje 30. urodziny.",
+        "25": "Zapraszam na spokojne i radosne świętowanie mojej trzydziestki.",
+        "26": "To dla mnie szczególny dzień – bądź jego częścią.",
+        "27": "Z radością zapraszam na moje 30. urodziny.",
+        "28": "Nowy etap życia zaczyna się teraz – świętujmy go wspólnie.",
+        "29": "Zapraszam na 30. urodziny – niech to będzie piękny dzień.",
+        "30": "To dla mnie ważne wydarzenie – będzie mi miło Cię gościć.",
+        "31": "Trzydzieści lat minęło – świętujemy!",
+        "32": "Zapraszam na urodzinowe spotkanie pełne dobrej atmosfery.",
+        "33": "Dołącz do mnie w dniu, w którym kończę 30 lat.",
+        "34": "To dla mnie wyjątkowa chwila – spędź ją ze mną.",
+        "35": "Zapraszam na moje 30. urodziny – będzie kameralnie i wyjątkowo."
+      }
+    },
+    "BIRTHDAY_50": {
+      "variant": {
+        "1": "Serdecznie zapraszam na moje 50. urodziny – świętujmy pół wieku pięknych chwil!",
+        "2": "To wyjątkowy jubileusz – będzie mi ogromnie miło, jeśli spędzisz go razem ze mną.",
+        "3": "Pięćdziesiąt lat to doskonała okazja do świętowania – zapraszam do wspólnej celebracji!",
+        "4": "Zapraszam na moje 50. urodziny – spotkajmy się, aby razem uczcić ten ważny moment.",
+        "5": "Świętuję półwiecze życia i chcę to zrobić w gronie najbliższych. Będzie mi bardzo miło, jeśli dołączysz.",
+        "6": "Zapraszam na moje 50. urodziny – świętujmy ten jubileusz w miłej atmosferze.",
+        "7": "Pół wieku minęło – będzie mi bardzo miło spędzić ten dzień razem.",
+        "8": "Pięćdziesiąt lat doświadczeń, wspomnień i radości – uczcijmy to wspólnie.",
+        "9": "Zapraszam na moje 50. urodziny – niech to będzie wyjątkowy dzień.",
+        "10": "To szczególny jubileusz – świętujmy go razem.",
+        "11": "Zapraszam na uroczystość z okazji moich pięćdziesiątych urodzin.",
+        "12": "To dla mnie ważna chwila – będzie mi miło, jeśli dołączysz.",
+        "13": "Zapraszam serdecznie na spotkanie urodzinowe z okazji 50. rocznicy.",
+        "14": "Świętuję pół wieku życia – bądź tam ze mną.",
+        "15": "Piękne chwile warto celebrować – zapraszam na moje 50. urodziny.",
+        "16": "Czas świętować pięćdziesiątkę – dołącz do mnie.",
+        "17": "Zapraszam na radosne, spokojne świętowanie mojego jubileuszu.",
+        "18": "To okrągła rocznica – będzie mi miło, jeśli będziesz jej częścią.",
+        "19": "Ukończenie 50 lat to powód do celebrowania – zapraszam.",
+        "20": "Będzie mi niezmiernie miło gościć Cię na moich 50. urodzinach.",
+        "21": "Zapraszam na wyjątkowe urodzinowe spotkanie – pięćdziesiąte!",
+        "22": "Świętujmy razem pół wieku życia.",
+        "23": "To ważny etap – uczcijmy go wspólnie.",
+        "24": "Zapraszam na jubileuszowe przyjęcie z okazji moich 50 lat.",
+        "25": "Pięćdziesiątka to idealny moment na spotkanie – zapraszam.",
+        "26": "Świętuję wyjątkowy jubileusz – będzie mi bardzo miło Cię gościć.",
+        "27": "Zapraszam serdecznie na uroczystość moich 50. urodzin.",
+        "28": "Będzie mi niezmiernie miło, jeśli spędzisz ze mną ten wyjątkowy dzień.",
+        "29": "Pięćdziesiąte urodziny to powód do radości – świętujmy razem.",
+        "30": "Wkroczyłem w nowy etap życia – uczcijmy to wspólnie.",
+        "31": "Zapraszam na urodziny, które dla mnie wiele znaczą.",
+        "32": "To piękna rocznica – spędźmy ją wspólnie.",
+        "33": "Zapraszam na dzień pełen wspomnień i radości.",
+        "34": "Niech ten jubileusz będzie wyjątkowy – będzie mi miło Cię gościć.",
+        "35": "Świętuję 50 lat życia – zapraszam na wspólne celebrowanie."
+      }
+    },
+    "BABY_SHOWER": {
+      "variant": {
+        "1": "Zapraszamy na Baby Shower – wspólnie świętujmy zbliżające się powitanie naszego maluszka.",
+        "2": "To wyjątkowy moment dla naszej rodziny – będzie nam bardzo miło, jeśli dołączysz do Baby Shower.",
+        "3": "Oczekując przyjścia maleństwa, chcemy spędzić ten dzień w gronie najbliższych. Zapraszamy na Baby Shower!",
+        "4": "Z radością zapraszamy na Baby Shower – wspólnie przygotujmy się na nadchodzące wielkie wydarzenie.",
+        "5": "Czekamy na naszego malucha i chcemy dzielić tę radość z Tobą – zapraszamy na Baby Shower!",
+        "6": "Zapraszamy na Baby Shower – celebrujmy wspólnie oczekiwanie na maluszka.",
+        "7": "To szczególny moment – będzie nam miło, jeśli dołączysz do Baby Shower.",
+        "8": "Zbliża się wielki dzień – świętujmy oczekiwanie na nasze dziecko.",
+        "9": "Czekamy na maluszka i chcemy dzielić tę radość z Tobą.",
+        "10": "Zapraszamy na Baby Shower pełen radości i ciepłej atmosfery.",
+        "11": "To wyjątkowa okazja – spędźmy ją wspólnie.",
+        "12": "Świętujmy nadchodzące narodziny naszego maleństwa.",
+        "13": "Zapraszamy, by wspólnie celebrować ten piękny czas oczekiwania.",
+        "14": "Dołącz do nas na Baby Shower – będzie nam bardzo miło.",
+        "15": "Ten dzień będzie wyjątkowy – bądź jego częścią.",
+        "16": "Czekamy z radością – zapraszamy na Baby Shower.",
+        "17": "Świętujmy wspólnie czas oczekiwania na nasze dziecko.",
+        "18": "Zapraszamy na kameralny Baby Shower w gronie bliskich.",
+        "19": "Niech ten dzień będzie pełen uśmiechu – dołącz do nas.",
+        "20": "Cieszymy się, że już niedługo powitamy maluszka – zapraszamy.",
+        "21": "Zapraszamy na Baby Shower, który uczci ten piękny czas.",
+        "22": "To dla nas wielka chwila – świętuj ją razem z nami.",
+        "23": "Zapraszamy na spotkanie pełne radości związanej z oczekiwaniem.",
+        "24": "Świętujemy nowy etap – dołącz!",
+        "25": "Zapraszamy serdecznie na Baby Shower w miłej atmosferze.",
+        "26": "Będzie nam niezmiernie miło Cię gościć.",
+        "27": "Czekamy na cud narodzin – świętuj to z nami.",
+        "28": "Zapraszamy na spotkanie celebrujące nadchodzące powiększenie rodziny.",
+        "29": "Dołącz do nas na Baby Shower pełen radości.",
+        "30": "Świętujemy wielką radość – zapraszamy serdecznie.",
+        "31": "Chcemy przeżyć ten dzień w gronie bliskich – zapraszamy.",
+        "32": "Zapraszamy na uroczyste spotkanie z okazji Baby Shower.",
+        "33": "Ten dzień będzie wyjątkowy dla nas i naszego maleństwa – bądź z nami.",
+        "34": "Z radością zapraszamy na Baby Shower – wspólnie uczcijmy tę chwilę.",
+        "35": "Zapraszamy na Baby Shower – razem stworzymy piękne wspomnienia."
+      }
+    },
+    "HOLY_COMMUNION": {
+      "variant": {
+        "1": "Z radością zapraszamy na uroczystość Pierwszej Komunii Świętej, aby wspólnie przeżyć ten duchowy i ważny dzień.",
+        "2": "To szczególny moment w życiu naszego dziecka – będzie nam miło, jeśli będziesz nam towarzyszyć podczas Pierwszej Komunii Świętej.",
+        "3": "Zapraszamy na uroczystość Pierwszej Komunii Świętej, aby razem dzielić radość z tego wydarzenia.",
+        "4": "Ten dzień ma wyjątkowe znaczenie – zapraszamy na Pierwszą Komunię Świętą naszego dziecka.",
+        "5": "Serdecznie zapraszamy na świętowanie Pierwszej Komunii Świętej w gronie rodziny i przyjaciół.",
+        "6": "Z radością zapraszamy na uroczystość Pierwszej Komunii Świętej naszego dziecka.",
+        "7": "Twoja obecność uświetni tę ważną chwilę w życiu naszego dziecka.",
+        "8": "Zapraszamy do wspólnego przeżycia dnia pełnego duchowego znaczenia.",
+        "9": "To piękny moment w życiu naszego dziecka – będzie nam miło, jeśli dołączysz.",
+        "10": "Zapraszamy na uroczystość o wyjątkowym duchowym charakterze.",
+        "11": "W tym ważnym dniu pragniemy być wśród osób nam bliskich – zapraszamy.",
+        "12": "Razem uczcijmy ten wyjątkowy dzień Pierwszej Komunii Świętej.",
+        "13": "To dla nas szczególna chwila – będzie nam miło Cię gościć.",
+        "14": "Zapraszamy na uroczystość pełną spokoju, radości i duchowej głębi.",
+        "15": "Świętujmy wspólnie dzień Pierwszej Komunii Świętej naszego dziecka.",
+        "16": "Zapraszamy na wyjątkowy dzień w życiu naszej rodziny.",
+        "17": "Twoja obecność sprawi, że ten dzień będzie jeszcze piękniejszy.",
+        "18": "Przeżyjmy razem tę ważną duchową uroczystość.",
+        "19": "Zapraszamy do udziału w uroczystości Pierwszej Komunii Świętej.",
+        "20": "To dla nas wielka duma – będzie nam miło, jeśli dołączysz.",
+        "21": "Zapraszamy na uroczystość o głębokim znaczeniu dla naszego dziecka.",
+        "22": "Chcemy dzielić tę radość z bliskimi – zapraszamy.",
+        "23": "To dzień pełen łaski – przeżyjmy go wspólnie.",
+        "24": "Zapraszamy serdecznie na Pierwszą Komunię Świętą naszego dziecka.",
+        "25": "To ważna chwila w życiu naszej rodziny – bądź z nami.",
+        "26": "Zapraszamy, by razem przeżyć ten wyjątkowy dzień.",
+        "27": "Ten dzień ma dla nas ogromne znaczenie – zapraszamy.",
+        "28": "Wspólnie uczcijmy ten duchowy etap.",
+        "29": "Zapraszamy na spokojne i podniosłe świętowanie Pierwszej Komunii.",
+        "30": "To dzień radości i duchowej bliskości – zapraszamy.",
+        "31": "Zapraszamy na uroczystość pełną pięknych, rodzinnych chwil.",
+        "32": "Świętujemy ważny sakrament – bądź tego częścią.",
+        "33": "Zapraszamy na wyjątkowy dzień w życiu naszego dziecka.",
+        "34": "Razem przeżyjmy tę piękną uroczystość pełną wzruszeń.",
+        "35": "Zapraszamy serdecznie – Twoja obecność będzie dla nas zaszczytem."
+      }
+    },
+    "OTHER": {
+      "variant": {
+        "1": "Zapraszamy serdecznie na nasze wydarzenie – będzie nam bardzo miło gościć Cię tego dnia.",
+        "2": "To dla nas ważna chwila i chcemy przeżyć ją w gronie bliskich – liczymy na Twoją obecność.",
+        "3": "Organizujemy wyjątkowe spotkanie i będzie nam niezmiernie miło, jeśli do nas dołączysz.",
+        "4": "Zapraszamy na wydarzenie, które ma dla nas szczególne znaczenie. Twoja obecność będzie dla nas zaszczytem.",
+        "5": "Chcemy wspólnie przeżyć ten dzień – zapraszamy serdecznie na nasze wydarzenie.",
+        "6": "Zapraszamy serdecznie na wydarzenie, które ma dla nas duże znaczenie.",
+        "7": "Będzie nam niezmiernie miło, jeśli dołączysz do naszego wydarzenia.",
+        "8": "Organizujemy wyjątkowe spotkanie i chcemy przeżyć je w Twoim towarzystwie.",
+        "9": "To dla nas ważny moment – zapraszamy serdecznie.",
+        "10": "Zapraszamy na wydarzenie, które chcemy uczcić wspólnie z bliskimi.",
+        "11": "Będzie nam bardzo miło Cię gościć.",
+        "12": "Zapraszamy na spotkanie o szczególnym charakterze.",
+        "13": "Twoja obecność sprawi, że ten dzień będzie jeszcze bardziej wyjątkowy.",
+        "14": "Zapraszamy na wydarzenie, które chcemy przeżyć w dobrej atmosferze.",
+        "15": "Będzie nam ogromnie miło, jeśli weźmiesz udział w naszym wydarzeniu.",
+        "16": "Zapraszamy na wyjątkowy dzień – bądź tam z nami.",
+        "17": "To dla nas ważna chwila – dołącz do nas.",
+        "18": "Zapraszamy serdecznie na spotkanie pełne dobrej energii.",
+        "19": "Będzie nam bardzo miło spędzić ten dzień w Twoim towarzystwie.",
+        "20": "Organizujemy wydarzenie, które wiele dla nas znaczy – zapraszamy.",
+        "21": "Zapraszamy, aby wspólnie przeżyć ten wyjątkowy dzień.",
+        "22": "Będzie to dla nas zaszczyt, jeśli dołączysz.",
+        "23": "Zapraszamy na wydarzenie pełne pozytywnych emocji.",
+        "24": "To dla nas szczególny dzień – będzie nam bardzo miło Cię gościć.",
+        "25": "Zapraszamy na spotkanie, które chcemy spędzić w gronie bliskich.",
+        "26": "Będzie nam niezmiernie miło, jeśli przeżyjesz ten dzień z nami.",
+        "27": "Zapraszamy na wydarzenie o wyjątkowym znaczeniu.",
+        "28": "Twoja obecność będzie dla nas wielką radością.",
+        "29": "Zapraszamy, aby wspólnie celebrować ten dzień.",
+        "30": "Z radością zapraszamy na nasze wydarzenie.",
+        "31": "Dołącz do nas i przeżyj ten wyjątkowy dzień razem z nami.",
+        "32": "Zapraszamy na wydarzenie, które chcemy uczynić niezapomnianym.",
+        "33": "Twoja obecność jest dla nas ważna – zapraszamy.",
+        "34": "Zapraszamy na spotkanie pełne ciepła i dobrej atmosfery.",
+        "35": "Będzie nam bardzo miło, jeśli zaszczycisz nas swoją obecnością."
+      }
     }
   }
 }

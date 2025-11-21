@@ -1,58 +1,58 @@
-import plPL from './pl-PL.json'
+import plPL from "./pl-PL.json";
 
 const packages = {
-  'pl-PL': plPL,
-}
+  "pl-PL": plPL,
+};
 
-type Primitive = string | number | boolean | null | undefined
+type Primitive = string | number | boolean | null | undefined;
 
-type LeafPaths<T, P extends string = ''> = T extends Primitive
+type LeafPaths<T, P extends string = ""> = T extends Primitive
   ? P
   : T extends Array<any>
-    ? P
-    : {
-        [K in Extract<keyof T, string>]: LeafPaths<
-          T[K],
-          P extends '' ? K : `${P}.${K}`
-        >
-      }[Extract<keyof T, string>]
+  ? P
+  : {
+      [K in Extract<keyof T, string>]: LeafPaths<
+        T[K],
+        P extends "" ? K : `${P}.${K}`
+      >;
+    }[Extract<keyof T, string>];
 
-export type TranslationKey = LeafPaths<typeof plPL>
-type ReplacementParams = Record<string, string | number>
+export type TranslationKey = LeafPaths<typeof plPL>;
+type ReplacementParams = Record<string, string | number>;
 
 function getByPath(obj: unknown, path: string): unknown {
-  return path.split('.').reduce<unknown>((acc, key) => {
-    if (acc && typeof acc === 'object') return (acc as any)[key]
-    return undefined
-  }, obj)
+  return path.split(".").reduce<unknown>((acc, key) => {
+    if (acc && typeof acc === "object") return (acc as any)[key];
+    return undefined;
+  }, obj);
 }
 
 function applyReplacements(phrase: string, params: ReplacementParams): string {
-  let out = phrase
+  let out = phrase;
   for (const [k, v] of Object.entries(params)) {
-    out = out.replace(new RegExp(`\\{${k}\\}`, 'g'), String(v))
+    out = out.replace(new RegExp(`\\{${k}\\}`, "g"), String(v));
   }
-  return out
+  return out;
 }
 
 export const translate = (
   key: TranslationKey,
-  replacementParams: ReplacementParams = {},
+  replacementParams: ReplacementParams = {}
 ) => {
-  const locale = 'pl-PL'
-  const pack = packages[locale] as unknown
-  const value = getByPath(pack, key)
+  const locale = "pl-PL";
+  const pack = packages[locale] as unknown;
+  const value = getByPath(pack, key);
 
-  if (typeof value === 'string') {
+  if (typeof value === "string") {
     return Object.keys(replacementParams).length
       ? applyReplacements(value, replacementParams)
-      : value
+      : value;
   }
 
-  return `##${key}##`
-}
+  return `##${key}##`;
+};
 
 export const tEnum = (
-  ns: 'status' | 'propertyType' | 'valuationPurpose' | 'customerType',
-  v?: string,
-) => (v ? translate(`enums.${ns}.${v}`) : '')
+  ns: "status" | "propertyType" | "valuationPurpose" | "customerType",
+  v?: string
+) => (v ? translate(`enums.${ns}.${v}`) : "");

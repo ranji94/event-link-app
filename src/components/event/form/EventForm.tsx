@@ -14,6 +14,7 @@ import {
   nativeToDisplay,
   nowNative,
 } from "@/common/utils";
+import { Wand2 } from "lucide-react";
 
 export type EventFormProps = {
   kind: EventKind;
@@ -64,6 +65,25 @@ export function EventForm({
 
   const current = useWatch({ control });
 
+  function handleRandomDescription() {
+    const key = `events.${kind}.variant`;
+
+    const TOTAL_AVAILABLE_DESCRIPTIONS = 35 as const;
+
+    const random = Math.floor(Math.random() * TOTAL_AVAILABLE_DESCRIPTIONS) + 1;
+
+    const trKey = `${key}.${random}`;
+
+    const description = translate(trKey);
+
+    if (description && typeof description === "string") {
+      setValue("description", description, {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
+    }
+  }
+
   return (
     <div className="space-y-8">
       <section className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-black/5">
@@ -92,12 +112,28 @@ export function EventForm({
             <label className="block text-sm font-medium text-gray-700">
               {translate("events.fields.description")}
             </label>
-            <textarea
-              rows={5}
-              className="mt-1 w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
-              {...register("description")}
-              placeholder={translate("events.placeholders.description")}
-            />
+
+            <div className="relative">
+              <textarea
+                rows={5}
+                className="mt-1 w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 pr-10"
+                {...register("description")}
+                placeholder={translate("events.placeholders.description")}
+              />
+
+              {/* 🔮 Subtelna ikonka generowania */}
+              <button
+                type="button"
+                onClick={handleRandomDescription}
+                className="cursor-pointer absolute right-2 top-2 rounded-md p-1 text-gray-400 hover:text-indigo-600 hover:bg-gray-100 transition"
+                title={
+                  translate("events.actions.generateSuggestedDescription") ??
+                  "Wygeneruj opis"
+                }
+              >
+                <Wand2 className="h-5 w-5" />
+              </button>
+            </div>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
