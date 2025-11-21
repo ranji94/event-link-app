@@ -24,6 +24,11 @@ pipeline {
       choices: ['true', 'false'],
       description: 'Czy frontend ma używać lokalnego proxy /api → backend (true=tak, false=bezpośrednie połączenie)'
     )
+    string(
+      name: 'NEXT_PUBLIC_GOOGLE_CLIENT_ID',
+      defaultValue: '524955521332-2or389ka05p25pm3t5hdnjt8129m1qob.apps.googleusercontent.com',
+      description: 'Google Auth Client ID'
+    )
   }
 
   environment {
@@ -72,6 +77,7 @@ pipeline {
               --build-arg NEXT_PUBLIC_API_URL="${NEXT_PUBLIC_API_URL}" \
               --build-arg ORVAL_API_URL="${ORVAL_API_URL}" \
               --build-arg NEXT_PUBLIC_USE_PROXY="${NEXT_PUBLIC_USE_PROXY}" \
+              --build-arg NEXT_PUBLIC_GOOGLE_CLIENT_ID="${NEXT_PUBLIC_GOOGLE_CLIENT_ID}" \
               --target runner \
               -t ${IMAGE_NAME}:${IMAGE_TAG} \
               .
