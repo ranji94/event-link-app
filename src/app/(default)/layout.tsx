@@ -5,6 +5,7 @@ import { GlobalOverlay } from "@/components/common/global-overlay";
 import { translate } from "@/locales";
 import { Inter } from "next/font/google";
 import { Footer } from "@/components/common/Footer";
+import { CookieConsentBanner } from "@/components/common/CookieConsentBanner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,6 +28,7 @@ export default function RootLayout({
         className={`${inter.className} flex min-h-screen flex-col bg-background text-foreground`}
       >
         <GlobalOverlay />
+        <CookieConsentBanner />
         <main className="flex-1">
           <Providers>{children}</Providers>
         </main>

@@ -3,6 +3,41 @@
     "title": "To będzie wspaniała impreza!",
     "description": "EventSpot — Twój kompleksowy planer wydarzeń. Twórz, zarządzaj i zapraszaj gości w prosty sposób."
   },
+  "cookies": {
+    "title": "Ta strona korzysta z plików cookies",
+    "description": "Używamy plików cookies niezbędnych do działania serwisu oraz – za Twoją zgodą – analitycznych, funkcjonalnych i marketingowych. Możesz zaakceptować wszystkie, odrzucić nieobowiązkowe lub dostosować ustawienia.",
+    "link": {
+      "privacy": "Więcej informacji w Polityce Prywatności i Polityce Cookies"
+    },
+    "preferences": {
+      "title": "Dostosuj ustawienia plików cookies"
+    },
+    "category": {
+      "necessary": {
+        "title": "Niezbędne",
+        "description": "Zapewniają podstawowe działanie serwisu. Zawsze aktywne i niewymagające zgody."
+      },
+      "analytics": {
+        "title": "Analityczne",
+        "description": "Pomagają nam zrozumieć, w jaki sposób użytkownicy korzystają z serwisu, aby móc go ulepszać."
+      },
+      "functional": {
+        "title": "Funkcjonalne",
+        "description": "Pozwalają zapamiętać Twoje preferencje i personalizować działanie strony."
+      },
+      "marketing": {
+        "title": "Marketingowe",
+        "description": "Umożliwiają wyświetlanie treści i reklam dopasowanych do Twoich zainteresowań."
+      }
+    },
+    "actions": {
+      "rejectOptional": "Odrzuć nieobowiązkowe",
+      "customize": "Dostosuj ustawienia",
+      "acceptAll": "Akceptuję wszystkie",
+      "closePreferences": "Zamknij",
+      "savePreferences": "Zapisz wybór"
+    }
+  },
   "legal": {
     "about": {
       "title": "O nas",

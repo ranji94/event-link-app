@@ -3,7 +3,6 @@
 import { ConfirmProvider } from "@/components/common/confirm/confirm-provider";
 import Script from "next/script";
 import { PropsWithChildren } from "react";
-import React from "React";
 import { Toaster } from "sonner";
 
 export default function Providers({ children }: PropsWithChildren) {
