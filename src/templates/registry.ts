@@ -10,6 +10,9 @@ import { baptistGoldenPigeon } from "./variants/baptist-golden-pigeon";
 import { baptismBlessing } from "./variants/baptism-blessing";
 import { EventKind } from "@/common/enum";
 import { babyShowerBunny } from "./variants/baby-shower-bunny";
+import { birthday30Trendy } from "./variants/birthday-30-dirty";
+import { weddingGenZTrendy } from "./variants/wedding-aesthetic";
+import { wildWestUniversal } from "./variants/wild-west";
 
 export const templates: TemplateDef[] = [
   birthday30Elegant,
@@ -20,6 +23,9 @@ export const templates: TemplateDef[] = [
   baptistGoldenPigeon,
   baptismBlessing,
   babyShowerBunny,
+  birthday30Trendy,
+  weddingGenZTrendy,
+  wildWestUniversal,
 ];
 
 export const getTemplatesByEventKind = (
@@ -30,14 +36,18 @@ export const getTemplatesByEventKind = (
       [EventKind.BABY_SHOWER]: [babyShowerDreams, babyShowerBunny],
       [EventKind.BAPTISM]: [baptismBlessing, baptistGoldenPigeon],
       [EventKind.BIRTHDAY_18]: [],
-      [EventKind.BIRTHDAY_30]: [birthday30Elegant, thirtyBlackGoldNeon],
+      [EventKind.BIRTHDAY_30]: [
+        birthday30Elegant,
+        thirtyBlackGoldNeon,
+        birthday30Trendy,
+      ],
       [EventKind.BIRTHDAY_50]: [],
       [EventKind.HOLY_COMMUNION]: [],
-      [EventKind.WEDDING]: [],
+      [EventKind.WEDDING]: [weddingGenZTrendy],
       [EventKind.OTHER]: [newYearGlamour],
     }[eventKind] || [];
 
-  const universal = [minimalistNavy];
+  const universal = [minimalistNavy, wildWestUniversal];
 
   return [...tematic, ...universal];
   // return templates;
