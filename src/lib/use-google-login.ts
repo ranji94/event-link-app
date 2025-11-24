@@ -16,32 +16,21 @@ declare global {
 export function useGoogleLogin() {
   const router = useRouter();
   const [isGoogleLoading, setIsGoogleLoading] = React.useState(false);
+  const [gsiReady, setGsiReady] = React.useState(false);
 
-  const signInWithGoogle = React.useCallback(() => {
+  React.useEffect(() => {
     const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-
-    if (!clientId) {
-      toast.error("Brak NEXT_PUBLIC_GOOGLE_CLIENT_ID w env.");
-      return;
-    }
-
-    if (!window.google?.accounts?.id) {
-      toast.error("Google logowanie jest chwilowo niedostępne.");
-      return;
-    }
-
-    setIsGoogleLoading(true);
+    if (!clientId) return;
+    if (!window.google?.accounts?.id) return;
 
     window.google.accounts.id.initialize({
       client_id: clientId,
       ux_mode: "popup",
       auto_select: false,
       cancel_on_tap_outside: true,
-      use_fedcm_for_prompt: false, // bez FedCM
-
+      use_fedcm_for_prompt: true,
+      itp_support: true,
       callback: async (response: any) => {
-        console.log("GSI callback response:", response);
-
         const idToken = response?.credential;
         if (!idToken) {
           setIsGoogleLoading(false);
@@ -50,7 +39,6 @@ export function useGoogleLogin() {
         }
 
         try {
-          // użycie apiFetch zamiast fetch
           await apiFetch<{ message: string }>("/auth/google", {
             method: "POST",
             body: { idToken },
@@ -78,15 +66,39 @@ export function useGoogleLogin() {
       },
     });
 
-    // Prompt po kliknięciu
+    setGsiReady(true);
+  }, [router]);
+
+  const signInWithGoogle = React.useCallback(() => {
+    if (!gsiReady) {
+      toast.error("Google logowanie jest chwilowo niedostępne.");
+      return;
+    }
+
+    setIsGoogleLoading(true);
+
     window.google.accounts.id.prompt((notification: any) => {
       console.log("GSI prompt notification:", notification);
 
-      if (notification.isNotDisplayed?.() || notification.isSkippedMoment?.()) {
-        setIsGoogleLoading(false);
+      if (notification.isNotDisplayed?.()) {
+        const reason = notification.getNotDisplayedReason?.();
+        console.log("One Tap not displayed reason:", reason);
       }
+
+      if (notification.isSkippedMoment?.()) {
+        const reason = notification.getSkippedReason?.();
+        console.log("One Tap skipped reason:", reason);
+
+        if (reason === "dismissed_by_user") {
+          toast.info(
+            "Anulowałaś logowanie Google. Google może chwilowo nie pokazywać ponownie tego okna."
+          );
+        }
+      }
+
+      setIsGoogleLoading(false);
     });
-  }, [router]);
+  }, [gsiReady]);
 
   return { signInWithGoogle, isGoogleLoading };
 }

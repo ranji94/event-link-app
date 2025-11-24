@@ -622,6 +622,30 @@
       "rsvp_done_title_accept": "Potwierdzono!",
       "rsvp_done_sub_accept": "Do zobaczenia na szlaku, partnero",
       "rsvp_done_title_decline": "Szkoda, że cię nie będzie"
+    },
+    "birthday_18_gold": {
+      "title_fallback": "FINALLY 18",
+      "location_fallback": "Miejsce do ustalenia",
+      "date_fallback": "Data do ustalenia",
+      "greeting_personalized_prefix": "Drogi/a",
+      "greeting_fallback": "Witamy!",
+      "header_subtitle": "Celebrate this milestone moment with elegance & style",
+      "header_tagline": "Golden Celebration",
+      "date_label": "Data",
+      "location_label": "Miejsce",
+      "dresscode_label": "Dress Code",
+      "description_fallback": "Zapraszam na wyjątkowe przyjęcie z okazji moich 18. urodzin! To początek nowego rozdziału - świętujmy go razem w eleganckim stylu. Czeka nas niezapomniany wieczór pełen luksusu, dobrej zabawy i stylowych momentów.",
+      "program_title": "Program",
+      "countdown_prefix": "Potwierdź obecność do",
+      "countdown_until_prefix": "do",
+      "deadline_expired_title": "Termin minął",
+      "deadline_expired_subtitle": "Skontaktuj się z organizatorem jeśli chcesz dołączyć",
+      "rsvp_prompt": "Czy dołączysz do świętowania?",
+      "rsvp_accept": "Będę!",
+      "rsvp_decline": "Niestety nie mogę",
+      "rsvp_done_title_accept": "Wspaniale! Do zobaczenia!",
+      "rsvp_done_sub_accept": "Czekamy na Ciebie na tej wyjątkowej uroczystości",
+      "rsvp_done_title_decline": "Szkoda, że Cię nie będzie"
     }
   },
   "invitation": {

@@ -4,6 +4,7 @@ import * as React from "react";
 import { translate } from "@/locales";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { useRouter } from "next/navigation";
 
 type CookieCategories = {
   necessary: boolean;
@@ -20,6 +21,7 @@ type CookieConsent = {
 const STORAGE_KEY = "cookieConsent";
 
 export function CookieConsentBanner() {
+  const router = useRouter();
   const [isClient, setIsClient] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
   const [showPreferences, setShowPreferences] = React.useState(false);
@@ -120,7 +122,7 @@ export function CookieConsentBanner() {
               type="button"
               className="cursor-pointer mt-1 text-xs text-indigo-600 underline-offset-2 hover:underline sm:text-xs"
               onClick={() => {
-                // np. router.push("/polityka-prywatnosci");
+                router.push("/privacy");
               }}
             >
               {translate("cookies.link.privacy") ??

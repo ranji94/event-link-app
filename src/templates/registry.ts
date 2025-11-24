@@ -13,6 +13,7 @@ import { babyShowerBunny } from "./variants/baby-shower-bunny";
 import { birthday30Trendy } from "./variants/birthday-30-dirty";
 import { weddingGenZTrendy } from "./variants/wedding-aesthetic";
 import { wildWestUniversal } from "./variants/wild-west";
+import { birthday18Golden } from "./variants/birthday-18-gold";
 
 export const templates: TemplateDef[] = [
   birthday30Elegant,
@@ -26,6 +27,7 @@ export const templates: TemplateDef[] = [
   birthday30Trendy,
   weddingGenZTrendy,
   wildWestUniversal,
+  birthday18Golden,
 ];
 
 export const getTemplatesByEventKind = (
@@ -35,7 +37,7 @@ export const getTemplatesByEventKind = (
     {
       [EventKind.BABY_SHOWER]: [babyShowerDreams, babyShowerBunny],
       [EventKind.BAPTISM]: [baptismBlessing, baptistGoldenPigeon],
-      [EventKind.BIRTHDAY_18]: [],
+      [EventKind.BIRTHDAY_18]: [birthday18Golden],
       [EventKind.BIRTHDAY_30]: [
         birthday30Elegant,
         thirtyBlackGoldNeon,
