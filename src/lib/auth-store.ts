@@ -37,10 +37,14 @@ export const useAuthUser = () => useAuthStore((s) => s.user);
 
 /** Logowanie – po sukcesie pobiera /users/me i ustawia store */
 export async function login(credentials: { email: string; password: string }) {
-  await apiFetch("/auth/login", { method: "POST", body: credentials });
-  const me = await getMe();
-  useAuthStore.getState().setUser(me);
-  return me;
+  try {
+    await apiFetch("/auth/login", { method: "POST", body: credentials });
+    const me = await getMe();
+    useAuthStore.getState().setUser(me);
+    return me;
+  } catch (error) {
+    console.error("An error occurred!", error);
+  }
 }
 
 /** Wylogowanie – czyści cookie po stronie backendu i store po stronie frontu */

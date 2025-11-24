@@ -41,6 +41,7 @@ export default function Page() {
     try {
       await login(values);
       router.replace("/");
+      router.refresh();
     } catch (e: unknown) {
       const payload = (e as { data: { message: AuthCode.Failed } })?.data;
       const errorCode = payload?.message || AuthCode.Failed.InvalidCredentials;
