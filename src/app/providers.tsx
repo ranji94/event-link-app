@@ -9,10 +9,10 @@ export default function Providers({ children }: PropsWithChildren) {
   return (
     <>
       <Script
-        src="https://accounts.google.com/gsi/client"
         async
         defer
-        strategy="afterInteractive"
+        src="https://accounts.google.com/gsi/client"
+        strategy="beforeInteractive"
       />
       <Toaster richColors position="top-center" />
       <ConfirmProvider>{children}</ConfirmProvider>
