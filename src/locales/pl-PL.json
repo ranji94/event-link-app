@@ -646,6 +646,33 @@
       "rsvp_done_title_accept": "Wspaniale! Do zobaczenia!",
       "rsvp_done_sub_accept": "Czekamy na Ciebie na tej wyjątkowej uroczystości",
       "rsvp_done_title_decline": "Szkoda, że Cię nie będzie"
+    },
+    "communion_elegant": {
+      "title_default": "Pierwsza Komunia Święta",
+      "location_default": "Kościół parafialny",
+      "date_fallback": "Niedziela, 10:00",
+      "greeting_default": "Drodzy Goście",
+      "sacrament_label": "Sakrament Pierwszej Komunii Świętej",
+      "quote_label": "Słowa Ewangelii",
+      "quote_text": "„Pozwólcie dzieciom przychodzić do Mnie i nie zabraniajcie im, do takich bowiem należy Królestwo Boże.",
+      "quote_reference": "Ewangelia według św. Marka 10:14",
+      "invitation_intro": "Z radością zapraszamy na uroczystość Pierwszej Komunii Świętej naszego dziecka.",
+      "info_date_label": "Data i godzina",
+      "info_location_label": "Miejsce",
+      "dress_code_label": "Strój",
+      "description_default": "Mamy zaszczyt zaprosić Państwa na uroczystość Pierwszej Komunii Świętej naszego dziecka. To niezwykle ważny dzień duchowego rozwoju, który chcielibyśmy celebrować w gronie rodziny i przyjaciół. Po Mszy Świętej zapraszamy na uroczysty obiad.",
+      "program_title": "Plan uroczystości",
+      "rsvp_request": "Prosimy o potwierdzenie obecności",
+      "rsvp_accept_label": "Potwierdzam obecność",
+      "rsvp_decline_label": "Niestety nie mogę uczestniczyć",
+      "rsvp_accepted_title": "Dziękujemy za potwierdzenie!",
+      "rsvp_accepted_text": "Cieszymy się, że będziecie świętować z nami ten wyjątkowy dzień.",
+      "rsvp_declined_title": "Dziękujemy za informację",
+      "rsvp_declined_text": "Rozumiemy, że nie zawsze można być obecnym. Dziękujemy za odpowiedź.",
+      "rsvp_deadline_label": "Pozostały czas na potwierdzenie obecności:",
+      "rsvp_deadline_expired_title": "Czas na potwierdzenie obecności minął",
+      "rsvp_deadline_expired_at": "Ostatni termin potwierdzenia:",
+      "footer_blessing": "Niech Boże błogosławieństwo towarzyszy nam w tym wyjątkowym dniu"
     }
   },
   "invitation": {

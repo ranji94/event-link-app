@@ -14,6 +14,7 @@ import { birthday30Trendy } from "./variants/birthday-30-dirty";
 import { weddingGenZTrendy } from "./variants/wedding-aesthetic";
 import { wildWestUniversal } from "./variants/wild-west";
 import { birthday18Golden } from "./variants/birthday-18-gold";
+import { communionElegant } from "./variants/communion-elegant";
 
 export const templates: TemplateDef[] = [
   birthday30Elegant,
@@ -28,6 +29,7 @@ export const templates: TemplateDef[] = [
   weddingGenZTrendy,
   wildWestUniversal,
   birthday18Golden,
+  communionElegant,
 ];
 
 export const getTemplatesByEventKind = (
@@ -44,7 +46,7 @@ export const getTemplatesByEventKind = (
         birthday30Trendy,
       ],
       [EventKind.BIRTHDAY_50]: [],
-      [EventKind.HOLY_COMMUNION]: [],
+      [EventKind.HOLY_COMMUNION]: [communionElegant],
       [EventKind.WEDDING]: [weddingGenZTrendy],
       [EventKind.OTHER]: [newYearGlamour],
     }[eventKind] || [];
